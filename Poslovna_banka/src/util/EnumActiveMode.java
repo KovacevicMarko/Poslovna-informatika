@@ -1,6 +1,7 @@
 package util;
 
-public class ActiveMode {
+public class EnumActiveMode 
+{
 
 	public static final int IZMENA = 1;
     public static final int DODAVANJE = 2;
