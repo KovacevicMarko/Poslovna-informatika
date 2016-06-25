@@ -1,4 +1,4 @@
-package model;
+package gui.tablemodel;
 
 import java.sql.SQLException;
 import java.util.Vector;

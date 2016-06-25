@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -25,6 +26,7 @@ public class MainFrame extends JFrame{
 	
 	public static MainFrame instance;
 	private JMenuBar menuBar;
+	private ArrayList<DatabaseTableModel> tableModels;
 
 	private MainFrame()
 	{
@@ -34,8 +36,9 @@ public class MainFrame extends JFrame{
 		setLocationRelativeTo(null);
 		setTitle("Poslovna banka");
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		//setExtendedState(MAXIMIZED_BOTH);
+		tableModels = new ArrayList<DatabaseTableModel>();
 		setUpMenu();
+		
 
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -120,11 +123,21 @@ public class MainFrame extends JFrame{
 				}
 			}
 			databaseTableModel.setcolumnsModel(databaseColumnModel);
+			tableModels.add(databaseTableModel);
 			menuItem = new JMenuItem(databaseTableModel.getLabel());
 			menuItem.addActionListener(new MenuBarAction(databaseTableModel));
 			orgMenu.add(menuItem);
 
 		}
+	}
+	
+
+	public ArrayList<DatabaseTableModel> getTableModels() {
+		return tableModels;
+	}
+
+	public void setTableModels(ArrayList<DatabaseTableModel> tableModels) {
+		this.tableModels = tableModels;
 	}
 
 }

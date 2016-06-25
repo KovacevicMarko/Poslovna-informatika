@@ -2,27 +2,35 @@ package gui.standard.form;
 
 import gui.main.form.StatusBar;
 import gui.main.form.ToolBar;
+import gui.tablemodel.Table;
+import gui.tablemodel.TableModel;
 
 import java.awt.Window;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import util.EnumActiveMode;
-import model.Table;
-import model.TableModel;
 import net.miginfocom.swing.MigLayout;
+import util.EnumActiveMode;
+import actions.standard.form.CommitAction;
+import actions.standard.form.RollbackAction;
 import database.DBConnection;
 import databaseModel.DatabaseColumnModel;
 import databaseModel.DatabaseTableModel;
 
 public class GenericDialog extends JDialog 
 {
-	//private DataPanel dataPanel;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private InfoPanel infoPanel;
 	private StatusBar statusBar;
 	private Table table;
 	private JTextField field;
@@ -74,16 +82,13 @@ public class GenericDialog extends JDialog
 
 	private void init(DatabaseTableModel databaseTableModel) 
 	{
-
-		int width = 500 + (databaseTableModel.getcolumnsModel().size()-2)*50;
-
-		setSize(width, 400);
+		setSize(800, 400);
 		setLayout(new MigLayout("fill"));
 		this.toolbar = new ToolBar(this);
 		this.add(this.toolbar,"dock north");
 		this.table = new Table(this.getdatabaseTableModel());
-
 		this.add(new TablePane(this.table),"grow, wrap");
+		this.infoPanel = new InfoPanel(databaseTableModel, this);
 		
 		//set text for labels in StatusBar
 		statusBar = new StatusBar();
@@ -93,9 +98,10 @@ public class GenericDialog extends JDialog
 		//add new panel for textfields
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setLayout(new MigLayout("fillx"));
-
-		add(bottomPanel, "grow, wrap");
+		bottomPanel.add(infoPanel);
+		bottomPanel.add(panelWithButtons(),"dock east");
 		
+		add(bottomPanel, "grow, wrap");;
 		add(statusBar, "dock south");
 		
 
@@ -189,5 +195,26 @@ public class GenericDialog extends JDialog
 		} 
 
 
+	}
+	
+	/**
+	 * Create panel with buttons for commit and rollback.
+	 * @return
+	 */
+	public JPanel panelWithButtons()
+	{
+		JPanel panel = new JPanel();
+		JButton btnCommit = new JButton(new ImageIcon(getClass().getResource("/img/commit.gif")));
+		btnCommit.setToolTipText("Potvrdi");
+		btnCommit.addActionListener(new CommitAction((JDialog) this));
+		
+		JButton btnRollback = new JButton(new ImageIcon(getClass().getResource("/img/remove.gif")));
+		btnRollback.setToolTipText("Poništi");
+		btnRollback.addActionListener(new RollbackAction((JDialog) this));
+		
+		panel.setLayout(new MigLayout("wrap"));
+		panel.add(btnCommit);
+		panel.add(btnRollback);
+		return panel;
 	}
 }
