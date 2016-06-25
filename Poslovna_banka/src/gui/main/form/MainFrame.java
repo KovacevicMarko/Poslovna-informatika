@@ -7,7 +7,9 @@ import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -27,11 +29,12 @@ public class MainFrame extends JFrame{
 	private MainFrame()
 	{
 
-		setSize(new Dimension(800,600));
+		setSize(new Dimension(1000,700));
+		setContentPane(new JLabel(new ImageIcon(getClass().getResource("/img/bank.jpg"))));
 		setLocationRelativeTo(null);
 		setTitle("Poslovna banka");
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		setExtendedState(MAXIMIZED_BOTH);
+		//setExtendedState(MAXIMIZED_BOTH);
 		setUpMenu();
 
 		addWindowListener(new WindowAdapter() {

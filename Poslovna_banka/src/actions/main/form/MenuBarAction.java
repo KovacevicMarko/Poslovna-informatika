@@ -20,6 +20,7 @@ public class MenuBarAction implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
+		//Create new dialog with specified table model.
 		GenericDialog dialog = new GenericDialog(MainFrame.getInstance(), databaseTableModel);
 		dialog.setVisible(true);
 	}

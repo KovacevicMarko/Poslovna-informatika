@@ -1,19 +1,18 @@
 package gui.standard.form;
 
-import gui.main.form.MainFrame;
+import gui.main.form.StatusBar;
 import gui.main.form.ToolBar;
 
 import java.awt.Window;
-import java.lang.Thread.State;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import javax.naming.Context;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import util.EnumActiveMode;
 import model.Table;
 import model.TableModel;
 import net.miginfocom.swing.MigLayout;
@@ -24,6 +23,7 @@ import databaseModel.DatabaseTableModel;
 public class GenericDialog extends JDialog 
 {
 	//private DataPanel dataPanel;
+	private StatusBar statusBar;
 	private Table table;
 	private JTextField field;
 	private String code;
@@ -43,6 +43,7 @@ public class GenericDialog extends JDialog
 	public void setMode(int mode) 
 	{
 		this.mode = mode;
+		statusBar.init();
 	}
 
 	public GenericDialog(Window parent, DatabaseTableModel databaseTableModel, JTextField field, String code) {
@@ -83,17 +84,20 @@ public class GenericDialog extends JDialog
 		this.table = new Table(this.getdatabaseTableModel());
 
 		this.add(new TablePane(this.table),"grow, wrap");
-
-		//this.dataPanel=new DataPanel(databaseTableModel,this);
-		//statusBar = new StatusBar();
-
+		
+		//set text for labels in StatusBar
+		statusBar = new StatusBar();
+		setMode(EnumActiveMode.IZMENA);
+		statusBar.getLabelName().setText(databaseTableModel.getLabel());
+		
+		//add new panel for textfields
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setLayout(new MigLayout("fillx"));
-		//bottomPanel.add(dataPanel);
-		//bottomPanel.add(new ButtonsPanel(this),"dock east");
 
 		add(bottomPanel, "grow, wrap");
-
+		
+		add(statusBar, "dock south");
+		
 
 	}
 
@@ -139,7 +143,6 @@ public class GenericDialog extends JDialog
 			}
 		}
 	}
-	//GETTERS AND SETTERS
 	public DatabaseTableModel getdatabaseTableModel() {
 		return databaseTableModel;
 	}

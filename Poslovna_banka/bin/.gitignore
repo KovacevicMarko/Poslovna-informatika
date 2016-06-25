@@ -1,6 +1,10 @@
-/model/
-/gui/
+/DBConnection.properties
+/META-INF/
+/actions/
+/app/
 /database/
 /databaseModel/
-/actions/
+/gui/
+/img/
+/model/
 /util/

@@ -1,10 +1,14 @@
 package actions.standard.form;
 
+import gui.standard.form.GenericDialog;
+
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+
+import util.EnumActiveMode;
 
 public class DeleteAction extends AbstractAction
 {
@@ -21,6 +25,9 @@ public class DeleteAction extends AbstractAction
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
-		
+		if(standardForm instanceof GenericDialog)
+		{
+			
+		}
 	}
 }

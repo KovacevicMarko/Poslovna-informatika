@@ -1,5 +1,7 @@
 package actions.standard.form;
 
+import gui.standard.form.GenericDialog;
+
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -18,8 +20,14 @@ public class CommitAction extends AbstractAction
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-
+	public void actionPerformed(ActionEvent e) 
+	{
+		if(standardForm instanceof GenericDialog)
+		{
+			//((GenericDialog) standardForm).commit();
+			
+		}
+		
 	}
 }
 
