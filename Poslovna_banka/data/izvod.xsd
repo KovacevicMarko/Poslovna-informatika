@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+
+    <xs:simpleType name="Str20">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="20"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Str255">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Str18">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="18"/>
+            <xs:maxLength value="18"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Str1">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Dec15d2">
+        <xs:restriction base="xs:decimal">
+            <xs:totalDigits value="15"/>
+            <xs:fractionDigits value="2"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Num6">
+        <xs:restriction base="xs:nonNegativeInteger">
+            <xs:totalDigits value="6"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Num2">
+        <xs:restriction base="xs:nonNegativeInteger">
+            <xs:totalDigits value="2"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+	<xs:element name="presek">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="zaglavlje">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="brojRacuna" type="Str18"/>
+							<xs:element name="datumNaloga" type="xs:date"/>
+							<xs:element name="brojPreseka" type="Num2"/>
+							<xs:element name="prethodnoStanje" type="Dec15d2"/>
+							<xs:element name="brojPromenaUKorist" type="Num6"/>
+							<xs:element name="ukupnoUKorist" type="Dec15d2"/>
+							<xs:element name="brojPromenaNaTeret" type="Num6"/>
+							<xs:element name="ukupnoNaTeret" type="Dec15d2"/>
+							<xs:element name="novoStanje" type="Dec15d2"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element maxOccurs="unbounded" name="stavka">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="duznik" type="Str255"/>
+							<xs:element name="svrhaPlacanja" type="Str255"/>
+							<xs:element name="primalac" type="Str255"/>
+							<xs:element name="datumNaloga" type="xs:date"/>
+							<xs:element name="datumValute" type="xs:date"/>
+							<xs:element name="racunDuznika" type="Str18"/>
+							<xs:element name="modelZaduzenja" type="Num2"/>
+							<xs:element name="pozivNaBrojZaduzenja" type="Str20"/>
+							<xs:element name="racunPrimaoca" type="Str18"/>
+							<xs:element name="modelOdobrenja" type="Num2"/>
+							<xs:element name="pozivNaBrojOdobrenja" type="Str20"/>
+							<xs:element name="iznos" type="Dec15d2"/>
+							<xs:element name="smer" type="Str1"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

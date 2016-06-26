@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nalogZaPlacanje xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="file:/C:/Users/Milos/Dropbox/knjizurine/XML%20scheme/nalog.xsd">
+    <id>id0</id>
+    <duznik>duznik0</duznik>
+    <svrhaPlacanja>svrhaPlacanja0</svrhaPlacanja>
+    <primalac>primalac0</primalac>
+    <datumNaloga>2006-05-04</datumNaloga>
+    <datumValute>2006-05-04</datumValute>
+    <racunDuznika>840-2-22</racunDuznika>
+    <modelZaduzenja>97</modelZaduzenja>
+    <pozivNaBrojZaduzenja>pozivNaBrojZaduzenja</pozivNaBrojZaduzenja>
+    <racunPrimaoca>840-7-77</racunPrimaoca>
+    <modelOdobrenja>97</modelOdobrenja>
+    <pozivNaBrojOdobrenja>pozivNaBrojOdobrenja</pozivNaBrojOdobrenja>
+    <iznos>300.00</iznos>
+    <oznakaValute>ozn</oznakaValute>
+    <hitno>false</hitno>
+</nalogZaPlacanje>

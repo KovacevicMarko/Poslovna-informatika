@@ -1,10 +1,11 @@
 package actions.main.form;
 
-import gui.standard.form.GenericDialog;
-
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JTextField;
+
+import gui.standard.form.GenericDialog;
 
 public class GenericDialogActions 
 {
@@ -46,5 +47,10 @@ public class GenericDialogActions
 			
 		}
 	}
+	
+		
+		
+	
+	
 
 }
