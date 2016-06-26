@@ -59,13 +59,7 @@ public class TableModel extends DefaultTableModel
 		this.databaseTableModel = databaseTableModel;
 	}
 
-	// otvaranje upita
-	public void open() throws SQLException
-	{
-		fillData(tableName);
-	}
-
-	private void fillData(String tableName) throws SQLException 
+	public void fillData() throws SQLException 
 	{
 		String[] colValues = new String[databaseTableModel.getcolumnsModel().size()];
 		setRowCount(0);
@@ -85,6 +79,27 @@ public class TableModel extends DefaultTableModel
 		stmt.close();
 		fireTableDataChanged();
 
+	}
+	
+	public void fillSearchData(String searchQuery) throws SQLException
+	{
+		String[] colValues = new String[databaseTableModel.getcolumnsModel().size()];
+		setRowCount(0);
+		
+		Statement stmt = DBConnection.getDatabaseWrapper().getConnection().createStatement();
+		ResultSet rset = stmt.executeQuery(searchQuery);
+		
+		while (rset.next()) 
+		{
+			for (int i = 0; i < databaseTableModel.getcolumnsModel().size(); i++) {
+				colValues[i] = rset.getString(databaseTableModel.getcolumnsModel().get(i).getCode());
+			}
+			addRow(prepareRow(colValues));
+		}
+
+		rset.close();
+		stmt.close();
+		fireTableDataChanged();
 	}
 
 	private String[] prepareRow(String[] colValues) 

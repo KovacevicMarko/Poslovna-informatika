@@ -108,7 +108,7 @@ public class GenericDialog extends JDialog
 		this.table.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent e) {
-						if (e.getValueIsAdjusting())
+						if (e.getValueIsAdjusting() && getMode() == EnumActiveMode.IZMENA)
 							return;
 						actions.sync();
 					}
@@ -126,7 +126,7 @@ public class GenericDialog extends JDialog
 		table.setModel(tableModel);
 
 		try {
-			tableModel.open();
+			tableModel.fillData();
 			table.setRowSelectionInterval(index, index);
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "GRESKA", JOptionPane.ERROR_MESSAGE);			

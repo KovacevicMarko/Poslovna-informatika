@@ -44,6 +44,17 @@ public class CommitAction extends AbstractAction
 			else if(((GenericDialog)standardForm).getMode() == EnumActiveMode.IZMENA)
 			{
 				updateRowInTalbe(action);
+			}else
+			{
+				String query = action.makeSearchQuery();
+				TableModel tableModel = (TableModel)((GenericDialog) standardForm).getTable().getModel();
+				try 
+				{
+					tableModel.fillSearchData(query);
+				} catch (SQLException e1) 
+				{
+					e1.printStackTrace();
+				}
 			}
 		}
 		

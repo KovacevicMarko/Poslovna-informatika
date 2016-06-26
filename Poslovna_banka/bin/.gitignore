@@ -1,3 +1,4 @@
+/img/
 /DBConnection.properties
 /META-INF/
 /actions/
@@ -5,6 +6,5 @@
 /database/
 /databaseModel/
 /gui/
-/img/
 /model/
 /util/

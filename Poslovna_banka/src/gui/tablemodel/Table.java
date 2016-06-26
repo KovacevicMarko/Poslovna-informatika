@@ -30,7 +30,7 @@ public class Table extends JTable
 		this.setModel(this.model);
 		try 
 		{
-			this.model.open();
+			this.model.fillData();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
