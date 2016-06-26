@@ -1,10 +1,14 @@
 package actions.standard.form;
 
+import gui.standard.form.GenericDialog;
+
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+
+import actions.main.form.GenericDialogActions;
 
 public class NextAction extends AbstractAction
 {
@@ -23,6 +27,7 @@ public class NextAction extends AbstractAction
 	@Override
 	public void actionPerformed(ActionEvent arg0) 
 	{
-	
+		GenericDialogActions action = new GenericDialogActions((GenericDialog) standardForm);
+		action.goNext();
 	}
 }

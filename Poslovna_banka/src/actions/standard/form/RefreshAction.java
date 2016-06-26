@@ -1,10 +1,16 @@
 package actions.standard.form;
 
+import gui.standard.form.GenericDialog;
+
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+
+import util.EnumActiveMode;
+import actions.main.form.GenericDialogActions;
 
 public class RefreshAction extends AbstractAction 
 {
@@ -22,5 +28,15 @@ public class RefreshAction extends AbstractAction
 	@Override
 	public void actionPerformed(ActionEvent arg0) 
 	{
+		GenericDialogActions action = new GenericDialogActions((GenericDialog) standardForm);
+		if(standardForm instanceof JDialog)
+		{
+			try {
+				action.refresh();	
+				((GenericDialog) standardForm).setMode(EnumActiveMode.IZMENA);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			};
+		}
 	}
 }

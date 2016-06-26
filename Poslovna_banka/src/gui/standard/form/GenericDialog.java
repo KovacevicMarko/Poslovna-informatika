@@ -7,7 +7,6 @@ import gui.tablemodel.TableModel;
 
 import java.awt.Window;
 import java.sql.SQLException;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,17 +14,19 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import net.miginfocom.swing.MigLayout;
 import util.EnumActiveMode;
+import actions.main.form.GenericDialogActions;
 import actions.standard.form.CommitAction;
 import actions.standard.form.RollbackAction;
-import database.DBConnection;
-import databaseModel.DatabaseColumnModel;
 import databaseModel.DatabaseTableModel;
 
 public class GenericDialog extends JDialog 
 {
+
 	/**
 	 * 
 	 */
@@ -40,7 +41,7 @@ public class GenericDialog extends JDialog
 	
 	private GenericDialog parentDialog;
 	private TableModel tableModel;
-	private ToolBar toolbar;
+	protected ToolBar toolbar;
 	private DatabaseTableModel databaseTableModel;
 
 	public static int getMode() 
@@ -80,11 +81,12 @@ public class GenericDialog extends JDialog
 		super();
 	}
 
-	private void init(DatabaseTableModel databaseTableModel) 
+	protected void init(DatabaseTableModel databaseTableModel) 
 	{
 		setSize(800, 400);
 		setLayout(new MigLayout("fill"));
-		this.toolbar = new ToolBar(this);
+		
+		this.toolbar = databaseTableModel.getCode().equalsIgnoreCase("banka") ? new ToolBar(this,true) : new ToolBar(this,false);
 		this.add(this.toolbar,"dock north");
 		this.table = new Table(this.getdatabaseTableModel());
 		this.add(new TablePane(this.table),"grow, wrap");
@@ -101,54 +103,63 @@ public class GenericDialog extends JDialog
 		bottomPanel.add(infoPanel);
 		bottomPanel.add(panelWithButtons(),"dock east");
 		
-		add(bottomPanel, "grow, wrap");;
+		add(bottomPanel, "grow, wrap");
 		add(statusBar, "dock south");
-		
-
+		final GenericDialogActions actions = new GenericDialogActions(this);
+		this.table.getSelectionModel().addListSelectionListener(
+				new ListSelectionListener() {
+					public void valueChanged(ListSelectionEvent e) {
+						if (e.getValueIsAdjusting() && getMode() == EnumActiveMode.IZMENA)
+							return;
+						actions.sync();
+					}
+				}
+			);
 	}
 
-	public void nextFilter(String sifra,String column) throws SQLException{
+	public void refresh() throws SQLException
+	{
 
-		int br_redova= this.table.getRowCount();
-		
+		TableModel tableModel = (TableModel)table.getModel();
+		table.setModel(tableModel);
 
-
-		for(int i=0;i<br_redova;i++){
-			Vector<DatabaseColumnModel> cdatabaseTableModel = DBConnection.getDatabaseWrapper().getColumnModelByTableCode(databaseTableModel.getCode());
-			for(int j = 0; j < cdatabaseTableModel.size(); j++) {
-				String provera = (String) this.table.getValueAt(i, j);
-				System.out.print("  PRV:"+provera);
-				
-				boolean strani_kluc=false;
-
-				if(cdatabaseTableModel.get(j).getCode().contains(column))
-				strani_kluc=true;
-
-
-				if(strani_kluc){
-					
-					if(provera!=null){
-						if(!provera.contains(sifra)){
-							System.out.print("remove ");
-							TableModel dtm = (TableModel) this.table.getModel();
-							dtm.removeRow(i);
-							i--;
-							br_redova--;
-							break;
-						}
-					}	
-					
-				}
-
-				int rowCount = this.table.getRowCount();
-
-				if(rowCount>0){
-					this.table.setRowSelectionInterval(0,0);
-				}
-
-			}
+		try {
+			tableModel.fillData();
+			table.setRowSelectionInterval(0, 0);
+		} 
+		catch (SQLException e) 
+		{
+			JOptionPane.showMessageDialog(null, e.getMessage(), "GRESKA", JOptionPane.ERROR_MESSAGE);			
+		} 
+		catch (Exception ecx)
+		{
+			
 		}
+
+
 	}
+	
+	/**
+	 * Create panel with buttons for commit and rollback.
+	 * @return
+	 */
+	public JPanel panelWithButtons()
+	{
+		JPanel panel = new JPanel();
+		JButton btnCommit = new JButton(new ImageIcon(getClass().getResource("/img/commit.gif")));
+		btnCommit.setToolTipText("Potvrdi");
+		btnCommit.addActionListener(new CommitAction((JDialog) this));
+		
+		JButton btnRollback = new JButton(new ImageIcon(getClass().getResource("/img/remove.gif")));
+		btnRollback.setToolTipText("Poništi");
+		btnRollback.addActionListener(new RollbackAction((JDialog) this));
+		
+		panel.setLayout(new MigLayout("wrap"));
+		panel.add(btnCommit);
+		panel.add(btnRollback);
+		return panel;
+	}
+	
 	public DatabaseTableModel getdatabaseTableModel() {
 		return databaseTableModel;
 	}
@@ -180,41 +191,52 @@ public class GenericDialog extends JDialog
 	public void setCode(String code) {
 		this.code = code;
 	}
-
-	public void refresh(int index) throws SQLException
-	{
-
-		TableModel tableModel = (TableModel)table.getModel();
-		table.setModel(tableModel);
-
-		try {
-			tableModel.open();
-			table.setRowSelectionInterval(index, index);
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "GRESKA", JOptionPane.ERROR_MESSAGE);			
-		} 
-
-
-	}
 	
-	/**
-	 * Create panel with buttons for commit and rollback.
-	 * @return
-	 */
-	public JPanel panelWithButtons()
-	{
-		JPanel panel = new JPanel();
-		JButton btnCommit = new JButton(new ImageIcon(getClass().getResource("/img/commit.gif")));
-		btnCommit.setToolTipText("Potvrdi");
-		btnCommit.addActionListener(new CommitAction((JDialog) this));
-		
-		JButton btnRollback = new JButton(new ImageIcon(getClass().getResource("/img/remove.gif")));
-		btnRollback.setToolTipText("Poništi");
-		btnRollback.addActionListener(new RollbackAction((JDialog) this));
-		
-		panel.setLayout(new MigLayout("wrap"));
-		panel.add(btnCommit);
-		panel.add(btnRollback);
-		return panel;
+	public InfoPanel getInfoPanel() {
+		return infoPanel;
+	}
+
+	public void setInfoPanel(InfoPanel infoPanel) {
+		this.infoPanel = infoPanel;
+	}
+
+	public StatusBar getStatusBar() {
+		return statusBar;
+	}
+
+	public void setStatusBar(StatusBar statusBar) {
+		this.statusBar = statusBar;
+	}
+
+	public GenericDialog getParentDialog() {
+		return parentDialog;
+	}
+
+	public void setParentDialog(GenericDialog parentDialog) {
+		this.parentDialog = parentDialog;
+	}
+
+	public TableModel getTableModel() {
+		return tableModel;
+	}
+
+	public void setTableModel(TableModel tableModel) {
+		this.tableModel = tableModel;
+	}
+
+	public ToolBar getToolbar() {
+		return toolbar;
+	}
+
+	public void setToolbar(ToolBar toolbar) {
+		this.toolbar = toolbar;
+	}
+
+	public DatabaseTableModel getDatabaseTableModel() {
+		return databaseTableModel;
+	}
+
+	public void setDatabaseTableModel(DatabaseTableModel databaseTableModel) {
+		this.databaseTableModel = databaseTableModel;
 	}
 }

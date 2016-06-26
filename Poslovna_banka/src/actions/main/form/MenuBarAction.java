@@ -2,6 +2,7 @@ package actions.main.form;
 
 import gui.main.form.MainFrame;
 import gui.standard.form.GenericDialog;
+import gui.standard.form.concrete.RacunDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,8 +22,15 @@ public class MenuBarAction implements ActionListener
 	public void actionPerformed(ActionEvent e) 
 	{
 		//Create new dialog with specified table model.
-		GenericDialog dialog = new GenericDialog(MainFrame.getInstance(), databaseTableModel);
-		dialog.setVisible(true);
+		
+		if(databaseTableModel.getCode().equals("RACUNI")){
+			GenericDialog dialogRacuni = new RacunDialog(MainFrame.getInstance(),databaseTableModel);
+			dialogRacuni.setVisible(true);
+		}
+		else{
+			GenericDialog dialog = new GenericDialog(MainFrame.getInstance(), databaseTableModel);
+			dialog.setVisible(true);
+		}
 	}
 
 }

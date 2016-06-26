@@ -8,6 +8,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 
+import actions.main.form.GenericDialogActions;
 import util.EnumActiveMode;
 
 public class AddAction extends AbstractAction 
@@ -28,6 +29,10 @@ public class AddAction extends AbstractAction
 		if(standardForm instanceof GenericDialog)
 		{
 			((GenericDialog) standardForm).setMode(EnumActiveMode.DODAVANJE);
+			GenericDialogActions action = new GenericDialogActions((GenericDialog)standardForm);
+			action.clearAllTextFields();
+			((GenericDialog) standardForm).getInfoPanel().getTextFields().get(0).requestFocus();
+			((GenericDialog) standardForm).getInfoPanel().getTextFields().get(0).setEditable(true);
 		}
 			
 	}

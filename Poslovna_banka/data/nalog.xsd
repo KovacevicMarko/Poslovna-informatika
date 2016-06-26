@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <xs:element name="nalogZaPlacanje">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="Str50"/>
+                <xs:element name="duznik" type="Str255" minOccurs="0"/>
+                <xs:element name="svrhaPlacanja" type="Str255"/>
+                <xs:element name="primalac" type="Str255" minOccurs="0"/>
+                <xs:element name="datumNaloga" type="xs:date"/>
+                <xs:element name="datumValute" type="xs:date"/>
+                <xs:element name="racunDuznika" type="RacunType" minOccurs="0"/>
+                <xs:element name="modelZaduzenja" type="Num2" minOccurs="0"/>
+                <xs:element name="pozivNaBrojZaduzenja" type="Str20" minOccurs="0"/>
+                <xs:element name="racunPrimaoca" type="RacunType" minOccurs="0"/>
+                <xs:element name="modelOdobrenja" type="Num2" minOccurs="0"/>
+                <xs:element name="pozivNaBrojOdobrenja" type="Str20" minOccurs="0"/>
+                <xs:element name="iznos">
+                    <xs:simpleType>
+                        <xs:restriction base="Dec15d2">
+                            <xs:minExclusive value="0"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="oznakaValute" type="Str3"/>
+                <xs:element name="hitno" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="Str50">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="50"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Str255">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="RacunType">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="20"/>
+            <xs:pattern value="[0-9]{3}-[0-9]{1,13}-[0-9]{2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Str20">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="20"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Str3">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="3"/>
+            <xs:maxLength value="3"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Num2">
+        <xs:restriction base="xs:nonNegativeInteger">
+            <xs:totalDigits value="2"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Dec15d2">
+        <xs:restriction base="xs:decimal">
+            <xs:totalDigits value="15"/>
+            <xs:fractionDigits value="2"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
