@@ -70,7 +70,7 @@ public class CommitAction extends AbstractAction
 		}
 		catch(SQLException ex)
 		{
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "GRESKA", JOptionPane.ERROR_MESSAGE);	
+			JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);	
 		}
 	}
 	
