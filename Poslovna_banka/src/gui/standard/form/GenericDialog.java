@@ -41,7 +41,7 @@ public class GenericDialog extends JDialog
 	
 	private GenericDialog parentDialog;
 	private TableModel tableModel;
-	private ToolBar toolbar;
+	protected ToolBar toolbar;
 	private DatabaseTableModel databaseTableModel;
 
 	public static int getMode() 
@@ -81,7 +81,7 @@ public class GenericDialog extends JDialog
 		super();
 	}
 
-	private void init(DatabaseTableModel databaseTableModel) 
+	protected void init(DatabaseTableModel databaseTableModel) 
 	{
 		setSize(800, 400);
 		setLayout(new MigLayout("fill"));
