@@ -7,7 +7,6 @@ import gui.tablemodel.TableModel;
 
 import java.awt.Window;
 import java.sql.SQLException;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,13 +14,14 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import net.miginfocom.swing.MigLayout;
 import util.EnumActiveMode;
+import actions.main.form.GenericDialogActions;
 import actions.standard.form.CommitAction;
 import actions.standard.form.RollbackAction;
-import database.DBConnection;
-import databaseModel.DatabaseColumnModel;
 import databaseModel.DatabaseTableModel;
 
 public class GenericDialog extends JDialog 
@@ -102,84 +102,21 @@ public class GenericDialog extends JDialog
 		bottomPanel.add(infoPanel);
 		bottomPanel.add(panelWithButtons(),"dock east");
 		
-		add(bottomPanel, "grow, wrap");;
+		add(bottomPanel, "grow, wrap");
 		add(statusBar, "dock south");
+		final GenericDialogActions actions = new GenericDialogActions(this);
+		this.table.getSelectionModel().addListSelectionListener(
+				new ListSelectionListener() {
+					public void valueChanged(ListSelectionEvent e) {
+						if (e.getValueIsAdjusting())
+							return;
+						actions.sync();
+					}
+				}
+			);
+		
 		
 
-	}
-
-	public void nextFilter(String sifra,String column) throws SQLException{
-
-		int br_redova= this.table.getRowCount();
-		
-
-
-		for(int i=0;i<br_redova;i++){
-			Vector<DatabaseColumnModel> cdatabaseTableModel = DBConnection.getDatabaseWrapper().getColumnModelByTableCode(databaseTableModel.getCode());
-			for(int j = 0; j < cdatabaseTableModel.size(); j++) {
-				String provera = (String) this.table.getValueAt(i, j);
-				System.out.print("  PRV:"+provera);
-				
-				boolean strani_kluc=false;
-
-				if(cdatabaseTableModel.get(j).getCode().contains(column))
-				strani_kluc=true;
-
-
-				if(strani_kluc){
-					
-					if(provera!=null){
-						if(!provera.contains(sifra)){
-							System.out.print("remove ");
-							TableModel dtm = (TableModel) this.table.getModel();
-							dtm.removeRow(i);
-							i--;
-							br_redova--;
-							break;
-						}
-					}	
-					
-				}
-
-				int rowCount = this.table.getRowCount();
-
-				if(rowCount>0){
-					this.table.setRowSelectionInterval(0,0);
-				}
-
-			}
-		}
-	}
-	public DatabaseTableModel getdatabaseTableModel() {
-		return databaseTableModel;
-	}
-
-	public void setdatabaseTableModel(DatabaseTableModel databaseTableModel) {
-		this.databaseTableModel = databaseTableModel;
-	}
-
-	public Table getTable() {
-		return table;
-	}
-
-	public void setTable(Table table) {
-		this.table = table;
-	}
-
-	public JTextField getField() {
-		return field;
-	}
-
-	public void setField(JTextField field) {
-		this.field = field;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	public void refresh(int index) throws SQLException
@@ -217,6 +154,38 @@ public class GenericDialog extends JDialog
 		panel.add(btnCommit);
 		panel.add(btnRollback);
 		return panel;
+	}
+	
+	public DatabaseTableModel getdatabaseTableModel() {
+		return databaseTableModel;
+	}
+
+	public void setdatabaseTableModel(DatabaseTableModel databaseTableModel) {
+		this.databaseTableModel = databaseTableModel;
+	}
+
+	public Table getTable() {
+		return table;
+	}
+
+	public void setTable(Table table) {
+		this.table = table;
+	}
+
+	public JTextField getField() {
+		return field;
+	}
+
+	public void setField(JTextField field) {
+		this.field = field;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 	
 	public InfoPanel getInfoPanel() {
