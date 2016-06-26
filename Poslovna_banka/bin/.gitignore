@@ -1,8 +1,10 @@
+/img/
+/DBConnection.properties
+/META-INF/
 /actions/
 /app/
 /database/
 /databaseModel/
 /gui/
+/model/
 /util/
-/modelFromXsd/
-/img/

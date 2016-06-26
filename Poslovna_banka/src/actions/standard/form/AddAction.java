@@ -32,6 +32,7 @@ public class AddAction extends AbstractAction
 			GenericDialogActions action = new GenericDialogActions((GenericDialog)standardForm);
 			action.clearAllTextFields();
 			((GenericDialog) standardForm).getInfoPanel().getTextFields().get(0).requestFocus();
+			((GenericDialog) standardForm).getInfoPanel().getTextFields().get(0).setEditable(true);
 		}
 			
 	}
