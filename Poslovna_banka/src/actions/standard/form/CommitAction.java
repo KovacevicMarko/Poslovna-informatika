@@ -43,6 +43,11 @@ public class CommitAction extends AbstractAction
 			}
 			else if(((GenericDialog)standardForm).getMode() == EnumActiveMode.IZMENA)
 			{
+				if(((GenericDialog)standardForm).getTable().getSelectedRow() < 0)
+				{
+					JOptionPane.showMessageDialog(null, "Morate selektovati jedan red prilikom izmene!", "Greska", JOptionPane.ERROR_MESSAGE);
+				}
+					
 				updateRowInTalbe(action);
 			}else
 			{
@@ -80,8 +85,11 @@ public class CommitAction extends AbstractAction
 		{	
 			TableModel tableModel = (TableModel)((GenericDialog) standardForm).getTable().getModel();
 			int index = ((GenericDialog) standardForm).getTable().getSelectedRow();
-			tableModel.updateRow(index, action.getAllValuesFromFields());
-			((GenericDialog) standardForm).getTable().setRowSelectionInterval(index, index);
+			if(index > -1)
+			{
+				tableModel.updateRow(index, action.getAllValuesFromFields());
+				((GenericDialog) standardForm).getTable().setRowSelectionInterval(index, index);
+			}
 			((GenericDialog) standardForm).refresh();
 		}
 		catch(SQLException ex)

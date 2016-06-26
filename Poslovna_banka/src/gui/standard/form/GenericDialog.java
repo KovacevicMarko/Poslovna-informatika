@@ -73,6 +73,7 @@ public class GenericDialog extends JDialog
 		this.databaseTableModel = databaseTableModel;
 		this.init(databaseTableModel);
 		this.toolbar.disablePick();
+		
 		this.setLocationRelativeTo(parent);
 	}
 

@@ -38,7 +38,6 @@ public class ToolBar extends JToolBar
 	private JTextField doTxt;
 	public ToolBar(JDialog dialog, boolean reportForBank, boolean reportForClient) 
 	{
-
 		JButton button;
 		
 		

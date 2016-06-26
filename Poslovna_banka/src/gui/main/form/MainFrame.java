@@ -100,7 +100,8 @@ public class MainFrame extends JFrame{
 			Vector<String> nextTables = DBConnection.getDatabaseWrapper().getExportedTables(tableCodes.get(i));
 			HashMap<String,String> foreignTables = DBConnection.getDatabaseWrapper().getImportedTables(tableCodes.get(i));
 			
-			for(int j = 0; j < nextTables.size(); j++) {
+			for(int j = 0; j < nextTables.size(); j++) 
+			{
 				databaseTableModel.addNextTable(nextTables.get(j));
 			}
 			
