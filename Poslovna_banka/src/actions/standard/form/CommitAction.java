@@ -3,10 +3,15 @@ package actions.standard.form;
 import gui.standard.form.GenericDialog;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JTextField;
+
+import databaseModel.DatabaseColumnModel;
 
 public class CommitAction extends AbstractAction
 {
@@ -24,7 +29,9 @@ public class CommitAction extends AbstractAction
 	{
 		if(standardForm instanceof GenericDialog)
 		{
-			//((GenericDialog) standardForm).commit();
+			ArrayList<JTextField> txtFields=((GenericDialog)standardForm).getInfoPanel().getTextFields();
+			Vector<DatabaseColumnModel> columnModels = ((GenericDialog)standardForm).getInfoPanel().getColumnModels();
+			
 			
 		}
 		

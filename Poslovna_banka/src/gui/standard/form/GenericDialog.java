@@ -26,6 +26,7 @@ import databaseModel.DatabaseTableModel;
 
 public class GenericDialog extends JDialog 
 {
+
 	/**
 	 * 
 	 */
@@ -216,5 +217,53 @@ public class GenericDialog extends JDialog
 		panel.add(btnCommit);
 		panel.add(btnRollback);
 		return panel;
+	}
+	
+	public InfoPanel getInfoPanel() {
+		return infoPanel;
+	}
+
+	public void setInfoPanel(InfoPanel infoPanel) {
+		this.infoPanel = infoPanel;
+	}
+
+	public StatusBar getStatusBar() {
+		return statusBar;
+	}
+
+	public void setStatusBar(StatusBar statusBar) {
+		this.statusBar = statusBar;
+	}
+
+	public GenericDialog getParentDialog() {
+		return parentDialog;
+	}
+
+	public void setParentDialog(GenericDialog parentDialog) {
+		this.parentDialog = parentDialog;
+	}
+
+	public TableModel getTableModel() {
+		return tableModel;
+	}
+
+	public void setTableModel(TableModel tableModel) {
+		this.tableModel = tableModel;
+	}
+
+	public ToolBar getToolbar() {
+		return toolbar;
+	}
+
+	public void setToolbar(ToolBar toolbar) {
+		this.toolbar = toolbar;
+	}
+
+	public DatabaseTableModel getDatabaseTableModel() {
+		return databaseTableModel;
+	}
+
+	public void setDatabaseTableModel(DatabaseTableModel databaseTableModel) {
+		this.databaseTableModel = databaseTableModel;
 	}
 }

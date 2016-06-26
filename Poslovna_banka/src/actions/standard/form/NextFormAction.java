@@ -13,7 +13,7 @@ public class NextFormAction extends AbstractAction
 	private static final long serialVersionUID = 1L;
 	private JDialog standardForm;
 	
-	public NextFormAction(JDialog standardForm, String string) 
+	public NextFormAction(JDialog standardForm) 
 	{
 		putValue(SMALL_ICON, new ImageIcon(getClass().getResource("/img/nextform.gif")));
 		putValue(SHORT_DESCRIPTION, "Sledeća forma");

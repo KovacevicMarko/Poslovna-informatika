@@ -1,14 +1,16 @@
 package actions.standard.form;
 
 import gui.standard.form.GenericDialog;
+import gui.tablemodel.TableModel;
 
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
-
-import util.EnumActiveMode;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 public class DeleteAction extends AbstractAction
 {
@@ -27,7 +29,36 @@ public class DeleteAction extends AbstractAction
 	{
 		if(standardForm instanceof GenericDialog)
 		{
+			JTable table = ((GenericDialog) standardForm).getTable();
+			int index = table.getSelectedRow();
+
+			if (index == -1) {
+				JOptionPane.showMessageDialog(null, "Morate selektovati red koji zelite da obrisete!", "Greska",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
 			
+			if((JOptionPane.showConfirmDialog(null, "Da li ste sigurni da zelite da obrisete selektovani red? ",
+				"", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION))
+			{
+				int newIndex = index;
+				if (index == table.getModel().getRowCount() - 1)
+					newIndex--;
+				try 
+				 {
+					TableModel tableModel = (TableModel) table.getModel();
+					tableModel.deleteRow(index);
+					if (table.getModel().getRowCount() > 0)
+					{
+						table.setRowSelectionInterval(newIndex, newIndex);
+
+					}
+				} 
+				catch (SQLException ex) 
+				{
+					JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 		}
 	}
 }

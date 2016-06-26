@@ -35,68 +35,43 @@ public class ToolBar extends JToolBar
 
 		JButton button;
 
-		button = new JButton(new ImageIcon(getClass().getResource("/img/search.gif")));
-		button.setToolTipText("Pretraga");
-		button.addActionListener(new SearchAction(dialog));
+		button = new JButton(new SearchAction(dialog));
 		this.add(button);
 
-		button = new JButton(new ImageIcon(getClass().getResource("/img/refresh.gif")));
-		button.setToolTipText("Refresh");
-		button.addActionListener(new RefreshAction(dialog));
+		button = new JButton(new RefreshAction(dialog));
 		this.add(button);
 
-		button = new JButton(new ImageIcon(getClass().getResource("/img/zoom-pickup.gif")));
-		button.setToolTipText("Zoom pickup");
-		button.addActionListener(new PickupAction(dialog));
+		button = new JButton(new PickupAction(dialog));
 		this.pickButton = button;
 		this.add(button);
 
-		button = new JButton(new ImageIcon(getClass().getResource("/img/help.gif")));
-		button.setToolTipText("Pomoć");
-		button.addActionListener(new HelpAction(dialog));
+		button = new JButton(new HelpAction(dialog));
 		this.add(button);
 		this.addSeparator();
 
-		button = new JButton(new ImageIcon(getClass().getResource("/img/first.gif")));
-		button.setToolTipText("Početak");
-		button.addActionListener(new FirstAction(dialog));
+		button = new JButton(new FirstAction(dialog));
 		this.add(button);
-
-		button = new JButton(new ImageIcon(getClass().getResource("/img/prev.gif")));
-		button.setToolTipText("Prethodni");
-		button.addActionListener(new PreviousAction(dialog));
-		this.add(button);
-
-		button = new JButton(new ImageIcon(getClass().getResource("/img/next.gif")));
-		button.setToolTipText("Sledeći");
-		button.addActionListener(new NextAction(dialog));
-		this.add(button);
-
-		button = new JButton(new ImageIcon(getClass().getResource("/img/last.gif")));
-		button.setToolTipText("Poslednji");
-		button.addActionListener(new LastAction(dialog));
-		this.add(button);
-		this.addSeparator();
-
-		button = new JButton(new ImageIcon(getClass().getResource("/img/add.gif")));
-		button.setToolTipText("Dodavanje");
-		button.addActionListener(new AddAction(dialog));
-		this.add(button);
-
-		button = new JButton(new ImageIcon(getClass().getResource("/img/remove.gif")));
-		button.setToolTipText("Brisanje");
-		button.addActionListener(new DeleteAction(dialog));
-		this.add(button);
-		this.addSeparator();
-
-		final JButton button1 = new JButton(new ImageIcon(getClass().getResource("/img/nextForm.gif")));
-		button1.setToolTipText("Sledeća forma");
-
-		final JPopupMenu menu = new JPopupMenu("Menu");
 		
-
+		button = new JButton(new PreviousAction(dialog));
 		this.add(button);
-		this.add(button1);
+
+		button = new JButton(new NextAction(dialog));
+		this.add(button);
+
+		button = new JButton(new LastAction(dialog));
+		this.add(button);
+		this.addSeparator();
+
+		button = new JButton(new AddAction(dialog));
+		this.add(button);
+
+		button = new JButton(new DeleteAction(dialog));
+		this.add(button);
+		this.addSeparator();
+
+		button = new JButton(new NextFormAction(dialog));
+		this.add(button);		
+
 		this.setFloatable(false);
 	}
 	

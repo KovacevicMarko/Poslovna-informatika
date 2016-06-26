@@ -3,6 +3,7 @@ package gui.standard.form;
 import gui.main.form.MainFrame;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -26,11 +27,14 @@ public class InfoPanel extends JPanel
 	private ArrayList<JTextField> textFields = new ArrayList<JTextField>();
 	private ArrayList<JButton> zoomButtons = new ArrayList<JButton>();
 	private ArrayList<ButtonGroup> radioButtons = new ArrayList<ButtonGroup>();
+	private Vector<DatabaseColumnModel> columnModels = new Vector<DatabaseColumnModel>();
+
 	
 	private static int FIELDLENGTH = 8;
 	
 	public InfoPanel(DatabaseTableModel tables, GenericDialog dialog)
 	{
+		this.setColumnModels(tables.getcolumnsModel());
 		this.setLayout(new MigLayout("gapx 15px"));				
 		for(DatabaseColumnModel column : tables.getcolumnsModel())
 		{
@@ -142,5 +146,13 @@ public class InfoPanel extends JPanel
 
 	public void setRadioButtons(ArrayList<ButtonGroup> radioButtons) {
 		this.radioButtons = radioButtons;
+	}
+
+	public Vector<DatabaseColumnModel> getColumnModels() {
+		return columnModels;
+	}
+
+	public void setColumnModels(Vector<DatabaseColumnModel> columnModels) {
+		this.columnModels = columnModels;
 	}
 }
