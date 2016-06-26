@@ -33,7 +33,6 @@ public class ToolBar extends JToolBar
 	
 	public ToolBar(JDialog dialog, boolean reportForBank) 
 	{
-
 		JButton button;
 
 		button = new JButton(new SearchAction(dialog));

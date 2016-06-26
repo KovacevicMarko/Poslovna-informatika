@@ -6,7 +6,11 @@ import gui.standard.form.concrete.RacunDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
+import net.sourceforge.jtds.jdbc.ColInfo;
+import database.DBConnection;
+import databaseModel.DatabaseColumnModel;
 import databaseModel.DatabaseTableModel;
 
 public class MenuBarAction implements ActionListener
@@ -23,14 +27,18 @@ public class MenuBarAction implements ActionListener
 	{
 		//Create new dialog with specified table model.
 		
-		if(databaseTableModel.getCode().equals("RACUNI")){
+		if(databaseTableModel.getCode().equals("RACUNI"))
+		{
 			GenericDialog dialogRacuni = new RacunDialog(MainFrame.getInstance(),databaseTableModel);
 			dialogRacuni.setVisible(true);
 		}
-		else{
+		else
+		{
 			GenericDialog dialog = new GenericDialog(MainFrame.getInstance(), databaseTableModel);
 			dialog.setVisible(true);
 		}
+		
+		
 	}
-
+	
 }

@@ -1,8 +1,127 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     26.6.2016. 21:16:08                          */
+/* Created on:     06/26/2016 10:12:59 PM                       */
 /*==============================================================*/
 
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('ANALITIKA_IZVODA') and o.name = 'FK_ANALITIK_ANALITIKA_DNEVNO_S')
+alter table ANALITIKA_IZVODA
+   drop constraint FK_ANALITIK_ANALITIKA_DNEVNO_S
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('ANALITIKA_IZVODA') and o.name = 'FK_ANALITIK_MESTO_PRI_NASELJEN')
+alter table ANALITIKA_IZVODA
+   drop constraint FK_ANALITIK_MESTO_PRI_NASELJEN
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('ANALITIKA_IZVODA') and o.name = 'FK_ANALITIK_VALUTA_PL_VALUTE')
+alter table ANALITIKA_IZVODA
+   drop constraint FK_ANALITIK_VALUTA_PL_VALUTE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('ANALITIKA_IZVODA') and o.name = 'FK_ANALITIK_VRSTA_PLA_VRSTE_PL')
+alter table ANALITIKA_IZVODA
+   drop constraint FK_ANALITIK_VRSTA_PLA_VRSTE_PL
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('DNEVNO_STANJE_RACUNA') and o.name = 'FK_DNEVNO_S_DNEVNI_IZ_RACUNI')
+alter table DNEVNO_STANJE_RACUNA
+   drop constraint FK_DNEVNO_S_DNEVNI_IZ_RACUNI
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('FIZICKA_LICA') and o.name = 'FK_FIZICKA__INHERITAN_KLIJENT')
+alter table FIZICKA_LICA
+   drop constraint FK_FIZICKA__INHERITAN_KLIJENT
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('KURSNA_LISTA') and o.name = 'FK_KURSNA_L_KURS_POSL_BANKA')
+alter table KURSNA_LISTA
+   drop constraint FK_KURSNA_L_KURS_POSL_BANKA
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('KURS_U_VALUTI') and o.name = 'FK_KURS_U_V_OSNOVNA_V_VALUTE')
+alter table KURS_U_VALUTI
+   drop constraint FK_KURS_U_V_OSNOVNA_V_VALUTE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('KURS_U_VALUTI') and o.name = 'FK_KURS_U_V_PREMA_VAL_VALUTE')
+alter table KURS_U_VALUTI
+   drop constraint FK_KURS_U_V_PREMA_VAL_VALUTE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('KURS_U_VALUTI') and o.name = 'FK_KURS_U_V_VALUTE_U__KURSNA_L')
+alter table KURS_U_VALUTI
+   drop constraint FK_KURS_U_V_VALUTE_U__KURSNA_L
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('NASELJENO_MESTO') and o.name = 'FK_NASELJEN_MESTA_U_D_DRZAVA')
+alter table NASELJENO_MESTO
+   drop constraint FK_NASELJEN_MESTA_U_D_DRZAVA
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('PRAVNA_LICA') and o.name = 'FK_PRAVNA_L_INHERITAN_KLIJENT')
+alter table PRAVNA_LICA
+   drop constraint FK_PRAVNA_L_INHERITAN_KLIJENT
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('RACUNI') and o.name = 'FK_RACUNI_POSLOVNA__BANKA')
+alter table RACUNI
+   drop constraint FK_RACUNI_POSLOVNA__BANKA
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('RACUNI') and o.name = 'FK_RACUNI_VALUTA_RA_VALUTE')
+alter table RACUNI
+   drop constraint FK_RACUNI_VALUTA_RA_VALUTE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('RACUNI') and o.name = 'FK_RACUNI_VLASNIK_R_KLIJENT')
+alter table RACUNI
+   drop constraint FK_RACUNI_VLASNIK_R_KLIJENT
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('UKIDANJE') and o.name = 'FK_UKIDANJE_UKIDANJE__RACUNI')
+alter table UKIDANJE
+   drop constraint FK_UKIDANJE_UKIDANJE__RACUNI
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('VALUTE') and o.name = 'FK_VALUTE_DRZAVNA_V_DRZAVA')
+alter table VALUTE
+   drop constraint FK_VALUTE_DRZAVNA_V_DRZAVA
+go
 
 if exists (select 1
             from  sysindexes
@@ -253,9 +372,9 @@ create table ANALITIKA_IZVODA (
    BAR_RACUN            varchar(18)          not null,
    DSR_IZVOD            numeric(3)           not null,
    ASI_BROJSTAVKE       numeric(8)           not null,
-   VA_IFRA              char(3)              null,
-   VPL_OZNAKA           char(3)              null,
    NM_SIFRA             bigint               null,
+   VPL_OZNAKA           char(3)              null,
+   VA_IFRA              char(3)              null,
    ASI_DUZNIK           varchar(256)         not null,
    ASI_SVRHA            varchar(256)         not null,
    ASI_POVERILAC        varchar(256)         not null,
@@ -362,7 +481,7 @@ go
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
 execute sp_addextendedproperty 'MS_Description', 
-   'Matièni katalog država.',
+   'Maticni katalog država.',
    'user', @CurrentUser, 'table', 'DRZAVA'
 go
 
@@ -511,9 +630,9 @@ go
 /*==============================================================*/
 create table RACUNI (
    BAR_RACUN            varchar(18)          not null,
+   B_PIB                char(10)             not null,
    VA_IFRA              char(3)              not null,
    KL_ID                char(10)             not null,
-   B_PIB                char(10)             not null,
    BAR_DATOTV           datetime             not null,
    BAR_VAZI             bit                  not null default 1
       constraint CKC_BAR_VAZI_RACUNI check (BAR_VAZI between 0 and 1),
@@ -552,7 +671,7 @@ create table UKIDANJE (
    BAR_RACUN            varchar(18)          not null,
    UK_DATUKIDANJA       datetime             not null,
    UK_NARACUN           varchar(20)          not null,
-   constraint PK_UKIDANJE primary key (BAR_RACUN)
+   constraint PK_UKIDANJE primary key nonclustered (BAR_RACUN)
 )
 go
 
@@ -585,5 +704,90 @@ create table VRSTE_PLACANJA (
    VPL_NAZIV            varchar(120)         not null,
    constraint PK_VRSTE_PLACANJA primary key nonclustered (VPL_OZNAKA)
 )
+go
+
+alter table ANALITIKA_IZVODA
+   add constraint FK_ANALITIK_ANALITIKA_DNEVNO_S foreign key (BAR_RACUN, DSR_IZVOD)
+      references DNEVNO_STANJE_RACUNA (BAR_RACUN, DSR_IZVOD)
+go
+
+alter table ANALITIKA_IZVODA
+   add constraint FK_ANALITIK_MESTO_PRI_NASELJEN foreign key (NM_SIFRA)
+      references NASELJENO_MESTO (NM_SIFRA)
+go
+
+alter table ANALITIKA_IZVODA
+   add constraint FK_ANALITIK_VALUTA_PL_VALUTE foreign key (VA_IFRA)
+      references VALUTE (VA_IFRA)
+go
+
+alter table ANALITIKA_IZVODA
+   add constraint FK_ANALITIK_VRSTA_PLA_VRSTE_PL foreign key (VPL_OZNAKA)
+      references VRSTE_PLACANJA (VPL_OZNAKA)
+go
+
+alter table DNEVNO_STANJE_RACUNA
+   add constraint FK_DNEVNO_S_DNEVNI_IZ_RACUNI foreign key (BAR_RACUN)
+      references RACUNI (BAR_RACUN)
+go
+
+alter table FIZICKA_LICA
+   add constraint FK_FIZICKA__INHERITAN_KLIJENT foreign key (KL_ID)
+      references KLIJENT (KL_ID)
+go
+
+alter table KURSNA_LISTA
+   add constraint FK_KURSNA_L_KURS_POSL_BANKA foreign key (B_PIB)
+      references BANKA (B_PIB)
+go
+
+alter table KURS_U_VALUTI
+   add constraint FK_KURS_U_V_OSNOVNA_V_VALUTE foreign key (VA_IFRA)
+      references VALUTE (VA_IFRA)
+go
+
+alter table KURS_U_VALUTI
+   add constraint FK_KURS_U_V_PREMA_VAL_VALUTE foreign key (VAL_VA_IFRA)
+      references VALUTE (VA_IFRA)
+go
+
+alter table KURS_U_VALUTI
+   add constraint FK_KURS_U_V_VALUTE_U__KURSNA_L foreign key (B_PIB, KL_DATUM)
+      references KURSNA_LISTA (B_PIB, KL_DATUM)
+go
+
+alter table NASELJENO_MESTO
+   add constraint FK_NASELJEN_MESTA_U_D_DRZAVA foreign key (DR_SIFRA)
+      references DRZAVA (DR_SIFRA)
+go
+
+alter table PRAVNA_LICA
+   add constraint FK_PRAVNA_L_INHERITAN_KLIJENT foreign key (KL_ID)
+      references KLIJENT (KL_ID)
+go
+
+alter table RACUNI
+   add constraint FK_RACUNI_POSLOVNA__BANKA foreign key (B_PIB)
+      references BANKA (B_PIB)
+go
+
+alter table RACUNI
+   add constraint FK_RACUNI_VALUTA_RA_VALUTE foreign key (VA_IFRA)
+      references VALUTE (VA_IFRA)
+go
+
+alter table RACUNI
+   add constraint FK_RACUNI_VLASNIK_R_KLIJENT foreign key (KL_ID)
+      references KLIJENT (KL_ID)
+go
+
+alter table UKIDANJE
+   add constraint FK_UKIDANJE_UKIDANJE__RACUNI foreign key (BAR_RACUN)
+      references RACUNI (BAR_RACUN)
+go
+
+alter table VALUTE
+   add constraint FK_VALUTE_DRZAVNA_V_DRZAVA foreign key (DR_SIFRA)
+      references DRZAVA (DR_SIFRA)
 go
 
