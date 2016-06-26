@@ -85,7 +85,8 @@ public class GenericDialog extends JDialog
 	{
 		setSize(800, 400);
 		setLayout(new MigLayout("fill"));
-		this.toolbar = new ToolBar(this);
+		
+		this.toolbar = databaseTableModel.getCode().equalsIgnoreCase("banka") ? new ToolBar(this,true) : new ToolBar(this,false);
 		this.add(this.toolbar,"dock north");
 		this.table = new Table(this.getdatabaseTableModel());
 		this.add(new TablePane(this.table),"grow, wrap");
@@ -114,12 +115,9 @@ public class GenericDialog extends JDialog
 					}
 				}
 			);
-		
-		
-
 	}
 
-	public void refresh(int index) throws SQLException
+	public void refresh() throws SQLException
 	{
 
 		TableModel tableModel = (TableModel)table.getModel();
@@ -127,10 +125,16 @@ public class GenericDialog extends JDialog
 
 		try {
 			tableModel.fillData();
-			table.setRowSelectionInterval(index, index);
-		} catch (SQLException e) {
+			table.setRowSelectionInterval(0, 0);
+		} 
+		catch (SQLException e) 
+		{
 			JOptionPane.showMessageDialog(null, e.getMessage(), "GRESKA", JOptionPane.ERROR_MESSAGE);			
 		} 
+		catch (Exception ecx)
+		{
+			
+		}
 
 
 	}

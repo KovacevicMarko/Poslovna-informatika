@@ -17,6 +17,7 @@ import javax.swing.JToolBar;
 import actions.standard.form.AddAction;
 import actions.standard.form.DeleteAction;
 import actions.standard.form.FirstAction;
+import actions.standard.form.GenerateReportAction;
 import actions.standard.form.HelpAction;
 import actions.standard.form.LastAction;
 import actions.standard.form.NextAction;
@@ -30,7 +31,7 @@ public class ToolBar extends JToolBar
 {
 	private JButton pickButton;
 	
-	public ToolBar(JDialog dialog) 
+	public ToolBar(JDialog dialog, boolean reportForBank) 
 	{
 
 		JButton button;
@@ -70,7 +71,13 @@ public class ToolBar extends JToolBar
 		this.addSeparator();
 
 		button = new JButton(new NextFormAction(dialog));
-		this.add(button);		
+		this.add(button);
+		
+		if(reportForBank)
+		{
+			button = new JButton(new GenerateReportAction(dialog));
+			this.add(button);
+		}
 
 		this.setFloatable(false);
 	}

@@ -82,7 +82,7 @@ public class CommitAction extends AbstractAction
 			int index = ((GenericDialog) standardForm).getTable().getSelectedRow();
 			tableModel.updateRow(index, action.getAllValuesFromFields());
 			((GenericDialog) standardForm).getTable().setRowSelectionInterval(index, index);
-			((GenericDialog) standardForm).refresh(index);
+			((GenericDialog) standardForm).refresh();
 		}
 		catch(SQLException ex)
 		{
