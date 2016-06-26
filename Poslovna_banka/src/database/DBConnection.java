@@ -210,7 +210,7 @@ public class DBConnection {
 			while(rst.next()) {
 				if(rst.getString(6).equalsIgnoreCase(tableCode) 
 						&& rst.getString(7).equalsIgnoreCase(columnCode)
-						&& rst.getString(3).startsWith("FK")) 
+						&& rst.getString(3).startsWith("PK")) 
 				{
 					return true;		
 				}
@@ -228,8 +228,14 @@ public class DBConnection {
 	public HashMap<String,String> getImportedTables(String tableName) 
 	{
 		
-		String   catalog          = null;
-		String   schemaPattern    = "dbo";
+		String catalog = null;
+		try {
+			catalog = DBConnection.getDatabaseWrapper().getConnection().getCatalog();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		String   schemaPattern    = null;//"dbo";
 		String   tableNamePattern = tableName;
 	
 		HashMap<String,String> res = new HashMap<String,String>();
