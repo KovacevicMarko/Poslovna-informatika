@@ -8,7 +8,7 @@
                 <xs:element name="duznik" type="Str255" minOccurs="0"/>
                 <xs:element name="svrhaPlacanja" type="Str255"/>
                 <xs:element name="primalac" type="Str255" minOccurs="0"/>
-                <xs:element name="datumNaloga" type="xs:date"/>
+                <xs:element name="datumNaloga" type="xs:date" maxOccurs="1" minOccurs="0"/>
                 <xs:element name="datumValute" type="xs:date"/>
                 <xs:element name="racunDuznika" type="RacunType" minOccurs="0"/>
                 <xs:element name="modelZaduzenja" type="Num2" minOccurs="0"/>

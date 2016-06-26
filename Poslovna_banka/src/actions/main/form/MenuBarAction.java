@@ -2,6 +2,7 @@ package actions.main.form;
 
 import gui.main.form.MainFrame;
 import gui.standard.form.GenericDialog;
+import gui.standard.form.concrete.AnalitikeDialog;
 import gui.standard.form.concrete.RacunDialog;
 
 import java.awt.event.ActionEvent;
@@ -26,6 +27,10 @@ public class MenuBarAction implements ActionListener
 		if(databaseTableModel.getCode().equals("RACUNI")){
 			GenericDialog dialogRacuni = new RacunDialog(MainFrame.getInstance(),databaseTableModel);
 			dialogRacuni.setVisible(true);
+		}
+		else if(databaseTableModel.getCode().equals("ANALITIKA_IZVODA")){
+			GenericDialog dialogAnalitike = new AnalitikeDialog(MainFrame.getInstance(),databaseTableModel);
+			dialogAnalitike.setVisible(true);
 		}
 		else{
 			GenericDialog dialog = new GenericDialog(MainFrame.getInstance(), databaseTableModel);

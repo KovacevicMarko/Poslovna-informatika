@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<nalogZaPlacanje>
+    <duznik>123       </duznik>
+    <racunPrimaoca>111-111</racunPrimaoca>
+    <oznakaValute>RSD</oznakaValute>
+    <hitno>false</hitno>
+</nalogZaPlacanje>
