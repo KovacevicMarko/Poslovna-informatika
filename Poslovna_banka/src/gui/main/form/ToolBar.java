@@ -10,8 +10,10 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
 import actions.standard.form.AddAction;
@@ -30,12 +32,16 @@ import actions.standard.form.SearchAction;
 public class ToolBar extends JToolBar
 {
 	private JButton pickButton;
-	
-	public ToolBar(JDialog dialog, boolean reportForBank) 
+	private JLabel odLbl;
+	private JLabel doLbl;
+	private JTextField odTxt;
+	private JTextField doTxt;
+	public ToolBar(JDialog dialog, boolean reportForBank, boolean reportForClient) 
 	{
 
 		JButton button;
-
+		
+		
 		button = new JButton(new SearchAction(dialog));
 		this.add(button);
 
@@ -78,6 +84,23 @@ public class ToolBar extends JToolBar
 			button = new JButton(new GenerateReportAction(dialog));
 			this.add(button);
 		}
+		
+		if(reportForClient)
+		{
+			button = new JButton(new GenerateReportAction(dialog));
+			odLbl=new JLabel("Od:");
+			doLbl=new JLabel("Do:");
+			odTxt=new JTextField();
+			doTxt=new JTextField();
+			this.add(button);
+			this.add(odLbl);
+			this.add(odTxt);
+			this.add(doLbl);
+			this.add(doTxt);
+			
+		}
+		
+		
 
 		this.setFloatable(false);
 	}
@@ -86,4 +109,40 @@ public class ToolBar extends JToolBar
 		this.pickButton.setEnabled(false);
 	}
 
+	public JLabel getOdLbl() {
+		return odLbl;
+	}
+
+	public void setOdLbl(JLabel odLbl) {
+		this.odLbl = odLbl;
+	}
+
+	public JLabel getDoLbl() {
+		return doLbl;
+	}
+
+	public void setDoLbl(JLabel doLbl) {
+		this.doLbl = doLbl;
+	}
+
+	public JTextField getOdTxt() {
+		return odTxt;
+	}
+
+	public void setOdTxt(JTextField odTxt) {
+		this.odTxt = odTxt;
+	}
+
+	public JTextField getDoTxt() {
+		return doTxt;
+	}
+
+	public void setDoTxt(JTextField doTxt) {
+		this.doTxt = doTxt;
+	}
+	
+	
+
+	
+	
 }
