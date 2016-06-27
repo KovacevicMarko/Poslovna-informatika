@@ -87,7 +87,17 @@ public class GenericDialog extends JDialog
 		setSize(800, 400);
 		setLayout(new MigLayout("fill"));
 		
-		this.toolbar = databaseTableModel.getCode().equalsIgnoreCase("banka") ? new ToolBar(this,true) : new ToolBar(this,false);
+		if (databaseTableModel.getCode().equalsIgnoreCase("banka")) 
+		{
+			this.toolbar = new ToolBar(this,true,false);
+		}else if(databaseTableModel.getCode().equalsIgnoreCase("klijent"))
+		{
+			this.toolbar = new ToolBar(this,false,true);
+		}else
+		{
+			this.toolbar = new ToolBar(this,false,false);
+		}
+		//this.toolbar = databaseTableModel.getCode().equalsIgnoreCase("banka") ? new ToolBar(this,true) : new ToolBar(this,false);
 		this.add(this.toolbar,"dock north");
 		this.table = new Table(this.getdatabaseTableModel());
 		this.add(new TablePane(this.table),"grow, wrap");

@@ -14,25 +14,28 @@ public class RacunDialog extends GenericDialog {
 	
 	public RacunDialog(Window parent, DatabaseTableModel databaseTableModel, JTextField field, String code) {
 		super(parent,databaseTableModel,field,code);
+		setModal(false);
 	}
 
 	public RacunDialog(Window parent, DatabaseTableModel databaseTableModel) 
 	{
 		super(parent,databaseTableModel);
+		setModal(false);
 	}
 
 	public RacunDialog() 
 	{
 		super();
+		setModal(false);
+		
 	}
 	
 	@Override
 	protected void init(DatabaseTableModel tableModel) {
 		super.init(tableModel);
 		
-		JButton b = new JButton();
+		JButton b = new JButton(new GenAndExpNalogAction(this));
 		b.setIcon(new ImageIcon(getClass().getResource("/img/export.png")));
-		b.addActionListener(new GenAndExpNalogAction(this)); 
 		
 		toolbar.addSeparator();
 		toolbar.add(b);
