@@ -15,16 +15,17 @@ package exceptionHandler;
 
 public class SqlExceptionHandler 
 {
-	public static String primaryKey="Violation of PRIMARY KEY";
+	private static String primaryKey="Violation of PRIMARY KEY";
 	
-	public static String deleteReferncedFK = "The DELETE statement conflicted";
+	private static String deleteReferncedFK = "The DELETE statement conflicted";
 	
-	public static String insertReferncedFK = "The INSERT statement conflicted";
+	private static String insertReferncedFK = "The INSERT statement conflicted";
 	
-	public static String updateReferncedFK = "The UPDATE statement conflicted";
+	private static String updateReferncedFK = "The UPDATE statement conflicted";
 	
+	private static String dateInvalidFormat = "Conversion failed when converting";
 	
-	public static String nullKey = "Cannot insert the value NULL into column";
+	private static String nullKey = "Cannot insert the value NULL into column";
 	
 	/**
 	 * 
@@ -67,8 +68,13 @@ public class SqlExceptionHandler
 				tableName = message.split("dbo.")[1].split("\"")[0];
 				retVal = "Ne moze se azurirati slog: " + tableCode + ", jer ne postoji oznaka u tabeli " + tableName + ".";
 			}
+			else if(message.startsWith(dateInvalidFormat))
+			{
+				retVal = "Datum nije unesen u validnom formatu. Format je yyyy/MM/dd";
+			}
 			else
 			{
+				System.out.println(message);
 				retVal = "Neispravno uneti podaci. Proverite da li su sva obavezna polja uneta u odgovarajucem formatu.";
 			}
 		}

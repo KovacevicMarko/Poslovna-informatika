@@ -16,6 +16,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
+import util.DatabaseModelHandler;
 import actions.standard.form.AddAction;
 import actions.standard.form.DeleteAction;
 import actions.standard.form.FirstAction;
@@ -105,7 +106,7 @@ public class ToolBar extends JToolBar
 					if(foreignTables.containsKey(columnModel.getCode()))
 					{
 						String tableName = tableModel.getLabel();
-						JMenuItem tab = new JMenuItem(tableName);
+						JMenuItem tab = new JMenuItem(DatabaseModelHandler.ConvertTableLabel(tableName));
 						tab.addActionListener(new NextFormAction(dialog, tableName));
 						menu.add(tab);
 						popUpMeni++;
