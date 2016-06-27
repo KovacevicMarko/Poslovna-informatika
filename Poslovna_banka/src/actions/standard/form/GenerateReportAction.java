@@ -11,6 +11,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
+import com.sun.javafx.tk.Toolkit;
+
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
@@ -46,14 +48,15 @@ public class GenerateReportAction extends AbstractAction
 			      String status = (String) ((GenericDialog)standardForm).getTable().getModel().getValueAt(index, 0);  
 			      Map params = new HashMap(1);
 				  params.put("banka", status );
-				  System.out.println(getClass().getResource("/jasper/SpisakRacunaZaBanku.jasper"));
+				  System.out.println(getClass().getResource("/jasper/SpisakRacuna.jasper"));
 				  JasperPrint jp = JasperFillManager.fillReport(
-				  getClass().getResource("/jasper/SpisakRacunaZaBanku.jasper").openStream(),
+				  getClass().getResource("/jasper/SpisakRacuna.jasper").openStream(),
 				  params, DBConnection.getDatabaseWrapper().getConnection());
 				  JasperViewer.viewReport(jp, false);
 
 				} catch (Exception ex) {
 				  ex.printStackTrace();
+				  
 				}
 			
 			
@@ -83,11 +86,23 @@ public class GenerateReportAction extends AbstractAction
 				  getClass().getResource("/jasper/IzvodKlijenataZaInterval.jasper").openStream(),
 				  params, DBConnection.getDatabaseWrapper().getConnection());
 				  JasperViewer.viewReport(jp, false);
-	
+				  /* JasperViewer jv;
+				  jv = new JasperViewer(jp, false);
+				  JDialog dialog = new JDialog(standardForm);//the owner
+				  dialog.setContentPane(jv.getContentPane());
+				  dialog.setSize(jv.getSize());
+				  dialog.setTitle("XXXXX");
+				  //dialog.setIconImage(Toolkit.getDefaultToolkit().getImage(
+				  //getClass().getResource("URL IMG")));
+				  dialog.setVisible(true);*/
+
+				
 				} catch (Exception ex) {
 				  ex.printStackTrace();
 				}
 		}
+		//standardForm.dispose();
+		//JOptionPane.showMessageDialog(null, "Uspesno generisan izvestaj.", "Poruka", JOptionPane.INFORMATION_MESSAGE);
 				
 	}
 
