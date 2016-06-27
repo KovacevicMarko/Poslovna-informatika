@@ -54,7 +54,8 @@ public class PickupAction extends AbstractAction
 				}
 				i++;
 			}	
-			((GenericDialog) standardForm).setMode(GenericDialog.getMode());
+			//((GenericDialog) standardForm).setMode(GenericDialog.getMode());
+			((GenericDialog) standardForm).setMode(EnumActiveMode.DODAVANJE);
 			standardForm.dispose();
 		}
 	}

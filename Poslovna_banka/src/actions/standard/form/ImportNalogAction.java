@@ -37,16 +37,8 @@ public class ImportNalogAction extends AbstractAction {
 		
 		if(fc.showOpenDialog(standardForm) == JFileChooser.APPROVE_OPTION) {
 
-			try {
-				 nalog = XmlManager.generateBean(fc.getSelectedFile());
+		   nalog = XmlManager.generateBean(fc.getSelectedFile());
 				 				 
-			} catch (JAXBException e0) {
-				
-				e0.printStackTrace();
-			} catch (SAXException e1) {
-				
-				e1.printStackTrace();
-			}
 			
 		} else {
 			fc.setVisible(false);
