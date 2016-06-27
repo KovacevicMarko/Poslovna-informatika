@@ -43,6 +43,7 @@ public class GenericDialog extends JDialog
 	private TableModel tableModel;
 	protected ToolBar toolbar;
 	private DatabaseTableModel databaseTableModel;
+	private static String[] readOnlyTables = new String[] {"DNEVNO_STANJE_RACUNA", "ANALITIKA_IZVODA", "UKIDANJE"};
 
 	public static int getMode() 
 	{
@@ -166,9 +167,22 @@ public class GenericDialog extends JDialog
 		btnRollback.addActionListener(new RollbackAction((JDialog) this));
 		
 		panel.setLayout(new MigLayout("wrap"));
-		panel.add(btnCommit);
-		panel.add(btnRollback);
+		panel.add(setButtonEnabledToFalse(btnCommit));
+		panel.add(setButtonEnabledToFalse(btnRollback));
 		return panel;
+	}
+	
+	private JButton setButtonEnabledToFalse(JButton button)
+	{
+		String tableCode = this.databaseTableModel.getCode();
+		for(String readOnlyTable : readOnlyTables)
+		{
+			if(tableCode.equalsIgnoreCase(readOnlyTable))
+			{
+				button.setEnabled(false);
+			}
+		}
+		return button;
 	}
 	
 	public DatabaseTableModel getdatabaseTableModel() {

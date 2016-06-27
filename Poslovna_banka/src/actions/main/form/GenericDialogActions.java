@@ -4,8 +4,10 @@ import gui.standard.form.GenericDialog;
 import gui.tablemodel.TableModel;
 
 import java.awt.Component;
-import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -15,7 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import util.Column;
+import util.EnumActiveMode;
 
 public class GenericDialogActions 
 {
@@ -72,9 +74,29 @@ public class GenericDialogActions
 				if(((JTextField) component).getText().trim().equals(""))
 				{
 					retValue.put(((JTextField) component).getName(),null);
-				}else
+				}
+				else
 				{
-					retValue.put(((JTextField) component).getName(), ((JTextField) component).getText());
+					if(dialog.getMode() == EnumActiveMode.IZMENA && ((JTextField) component).getText().contains("/"))
+					{
+						DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+					    java.sql.Date sqlDate;
+					    Date date = new Date();
+					    try {
+							date = (Date) df.parse(((JTextField) component).getText());
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+					    
+					    sqlDate = (java.sql.Date) new Date(date.getTime());
+						retValue.put(((JTextField) component).getName(), sqlDate.toString());
+
+					}
+					else
+					{
+						retValue.put(((JTextField) component).getName(), ((JTextField) component).getText());
+
+					}
 				}
 				
 			}

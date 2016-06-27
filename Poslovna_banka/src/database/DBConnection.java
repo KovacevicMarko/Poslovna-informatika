@@ -229,13 +229,7 @@ public class DBConnection {
 	{
 		
 		String catalog = null;
-		try {
-			catalog = DBConnection.getDatabaseWrapper().getConnection().getCatalog();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		String   schemaPattern    = null;//"dbo";
+		String   schemaPattern    = "dbo";
 		String   tableNamePattern = tableName;
 	
 		HashMap<String,String> res = new HashMap<String,String>();
