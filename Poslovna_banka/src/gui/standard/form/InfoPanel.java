@@ -49,7 +49,29 @@ public class InfoPanel extends JPanel
 				textField.setName(column.getCode());
 				textField.setToolTipText("Validan format je yyyy/MM/dd");
 				textFields.add(textField);
-				this.add(textField,"wrap");
+								
+				if (column.getTableParent() != null)
+				{
+					String parent = column.getTableParent();
+					JButton zoomBtn = new JButton("...");
+					for(DatabaseTableModel tableModel : MainFrame.getInstance().getTableModels())
+					{
+						if(tableModel.getCode().contains(parent))
+						{
+							zoomBtn.addActionListener(new ZoomAction(tableModel, textField, column, dialog));
+						}
+					}
+					
+					zoomButtons.add(zoomBtn);
+					this.add(textField);
+					this.add(zoomBtn,"wrap, w 25!, h 22!");
+				}
+				
+				else {
+					
+					this.add(textField,"wrap");
+				}
+	
 			}
 			else if(column.getType().equalsIgnoreCase("bit"))
 			{
@@ -70,7 +92,6 @@ public class InfoPanel extends JPanel
 			{
 				textField = new JTextField(FIELDLENGTH);
 				textField.setName(column.getCode());
-				System.out.println(column.getType());
 				if(column.getType().equalsIgnoreCase("char"))
 				{
 					textField.setToolTipText("Polje mora imati :" + column.getLength() + " karaktera.");
@@ -90,7 +111,7 @@ public class InfoPanel extends JPanel
 					{
 						if(tableModel.getCode().contains(parent))
 						{
-							zoomBtn.addActionListener(new ZoomAction(tableModel, textField, column));
+							zoomBtn.addActionListener(new ZoomAction(tableModel, textField, column, dialog));
 						}
 					}
 					

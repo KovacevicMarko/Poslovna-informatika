@@ -39,8 +39,13 @@ public class ToolBar extends JToolBar
 	private JLabel doLbl;
 	private JTextField odTxt;
 	private JTextField doTxt;
+	private JDialog dialog;
+	
+	private static String[] readOnlyTables = new String[] {"DNEVNO_STANJE_RACUNA", "ANALITIKA_IZVODA", "UKIDANJE"};
+	
 	public ToolBar(JDialog dialog, boolean reportForBank, boolean reportForClient) 
 	{
+		this.dialog = dialog;
 		JButton button;
 		
 		
@@ -72,10 +77,10 @@ public class ToolBar extends JToolBar
 		this.addSeparator();
 
 		button = new JButton(new AddAction(dialog));
-		this.add(button);
+		this.add(setButtonEnabledToFalse(button));
 
 		button = new JButton(new DeleteAction(dialog));
-		this.add(button);
+		this.add(setButtonEnabledToFalse(button));
 		this.addSeparator();
 
 		final JButton nextFormButton = new JButton(new ImageIcon(getClass().getResource("/img/nextForm.gif")));
@@ -154,6 +159,19 @@ public class ToolBar extends JToolBar
 		this.setFloatable(false);
 	}
 	
+	private JButton setButtonEnabledToFalse(JButton button)
+	{
+		String tableCode = ((GenericDialog)dialog).getDatabaseTableModel().getCode();
+		for(String readOnlyTable : readOnlyTables)
+		{
+			if(tableCode.equalsIgnoreCase(readOnlyTable))
+			{
+				button.setEnabled(false);
+			}
+		}
+		return button;
+	}
+	
 	public void disablePick() {
 		this.pickButton.setEnabled(false);
 	}
@@ -189,9 +207,4 @@ public class ToolBar extends JToolBar
 	public void setDoTxt(JTextField doTxt) {
 		this.doTxt = doTxt;
 	}
-	
-	
-
-	
-	
 }

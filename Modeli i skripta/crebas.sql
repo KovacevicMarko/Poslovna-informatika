@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     06/26/2016 10:12:59 PM                       */
+/* Created on:     6/27/2016 10:27:20 PM                        */
 /*==============================================================*/
 
 
@@ -16,6 +16,20 @@ if exists (select 1
    where r.fkeyid = object_id('ANALITIKA_IZVODA') and o.name = 'FK_ANALITIK_MESTO_PRI_NASELJEN')
 alter table ANALITIKA_IZVODA
    drop constraint FK_ANALITIK_MESTO_PRI_NASELJEN
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('ANALITIKA_IZVODA') and o.name = 'FK_ANALITIK_RELATIONS_STAVKA_K')
+alter table ANALITIKA_IZVODA
+   drop constraint FK_ANALITIK_RELATIONS_STAVKA_K
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('ANALITIKA_IZVODA') and o.name = 'FK_ANALITIK_RTGS_PLAC_RTGS')
+alter table ANALITIKA_IZVODA
+   drop constraint FK_ANALITIK_RTGS_PLAC_RTGS
 go
 
 if exists (select 1
@@ -111,6 +125,13 @@ go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('STAVKA_KLIRINGA') and o.name = 'FK_STAVKA_K_RELATIONS_KLIRING')
+alter table STAVKA_KLIRINGA
+   drop constraint FK_STAVKA_K_RELATIONS_KLIRING
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
    where r.fkeyid = object_id('UKIDANJE') and o.name = 'FK_UKIDANJE_UKIDANJE__RACUNI')
 alter table UKIDANJE
    drop constraint FK_UKIDANJE_UKIDANJE__RACUNI
@@ -121,6 +142,24 @@ if exists (select 1
    where r.fkeyid = object_id('VALUTE') and o.name = 'FK_VALUTE_DRZAVNA_V_DRZAVA')
 alter table VALUTE
    drop constraint FK_VALUTE_DRZAVNA_V_DRZAVA
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('ANALITIKA_IZVODA')
+            and   name  = 'RELATIONSHIP_17_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index ANALITIKA_IZVODA.RELATIONSHIP_17_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('ANALITIKA_IZVODA')
+            and   name  = 'RTGS_PLACANJE_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index ANALITIKA_IZVODA.RTGS_PLACANJE_FK
 go
 
 if exists (select 1
@@ -217,6 +256,13 @@ if exists (select 1
            where  id = object_id('KLIJENT')
             and   type = 'U')
    drop table KLIJENT
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('KLIRING')
+            and   type = 'U')
+   drop table KLIRING
 go
 
 if exists (select 1
@@ -337,6 +383,29 @@ go
 
 if exists (select 1
             from  sysobjects
+           where  id = object_id('RTGS')
+            and   type = 'U')
+   drop table RTGS
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('STAVKA_KLIRINGA')
+            and   name  = 'RELATIONSHIP_18_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index STAVKA_KLIRINGA.RELATIONSHIP_18_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('STAVKA_KLIRINGA')
+            and   type = 'U')
+   drop table STAVKA_KLIRINGA
+go
+
+if exists (select 1
+            from  sysobjects
            where  id = object_id('UKIDANJE')
             and   type = 'U')
    drop table UKIDANJE
@@ -375,6 +444,8 @@ create table ANALITIKA_IZVODA (
    NM_SIFRA             bigint               null,
    VPL_OZNAKA           char(3)              null,
    VA_IFRA              char(3)              null,
+   ID_PORUKE            varchar(50)          not null,
+   ID_NALOGA            varchar(50)          not null,
    ASI_DUZNIK           varchar(256)         not null,
    ASI_SVRHA            varchar(256)         not null,
    ASI_POVERILAC        varchar(256)         not null,
@@ -427,6 +498,22 @@ go
 /*==============================================================*/
 create index VALUTA_PLA_ANJA_FK on ANALITIKA_IZVODA (
 VA_IFRA ASC
+)
+go
+
+/*==============================================================*/
+/* Index: RTGS_PLACANJE_FK                                      */
+/*==============================================================*/
+create index RTGS_PLACANJE_FK on ANALITIKA_IZVODA (
+ID_PORUKE ASC
+)
+go
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_17_FK                                    */
+/*==============================================================*/
+create index RELATIONSHIP_17_FK on ANALITIKA_IZVODA (
+ID_NALOGA ASC
 )
 go
 
@@ -517,6 +604,23 @@ create table KLIJENT (
    KL_EMAIL             varchar(128)         null,
    KL_TELEFON           varchar(20)          not null,
    constraint PK_KLIJENT primary key nonclustered (KL_ID)
+)
+go
+
+/*==============================================================*/
+/* Table: KLIRING                                               */
+/*==============================================================*/
+create table KLIRING (
+   ID_PORUKE            varchar(50)          not null,
+   SWIFT_BANKE_DUZNIKA  char(8)              not null,
+   RACUN_BANKE_DUZNIKA  varchar(18)          not null,
+   SWIFT_BANKE_POVERIOCA char(8)              not null,
+   RACUN_BANKE_POVERIOCA varchar(18)          not null,
+   UKUPAN_IZNOS         decimal(15,2)        not null,
+   SIFRA_VALUTE         char(3)              not null,
+   DATUM_VALUTE         datetime             not null,
+   DATUM                datetime             not null,
+   constraint PK_KLIRING primary key nonclustered (ID_PORUKE)
 )
 go
 
@@ -665,6 +769,70 @@ KL_ID ASC
 go
 
 /*==============================================================*/
+/* Table: RTGS                                                  */
+/*==============================================================*/
+create table RTGS (
+   ID_PORUKE            varchar(50)          not null,
+   SWIFT_BANKE_DUZNIKA  char(8)              not null,
+   RACUN_BANKE_DUZNIKA  varchar(18)          not null,
+   SWIFT_BAMKE_POVERIOCA char(8)              not null,
+   RACUN_BANKE_POVERIOCA varchar(18)          not null,
+   DUZNIK               varchar(255)         not null,
+   SVRHA_PLACANJA       varchar(255)         not null,
+   PRIMALAC             varchar(255)         not null,
+   DATUM_NALOGA         datetime             not null,
+   DATUM_VALUTE         datetime             not null,
+   RACUN_DUZNIKA        varchar(18)          not null,
+   MODEL_ZADUZENJA      numeric(2)           not null,
+   POZIV_NA_BROJ_ZADUZENJA varchar(20)          not null,
+   RACUN_POVERIOCA      varchar(18)          not null,
+   MODEL_ODOBRENJA      numeric(2)           not null,
+   POZIV_NA_BROJ_ODOBRENJA varchar(20)          not null,
+   IZNOS                decimal(15,2)        not null,
+   SIFRA_VALUTE         char(3)              not null,
+   constraint PK_RTGS primary key nonclustered (ID_PORUKE)
+)
+go
+
+declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   'Tabela u kojoj se cuvaju nalozi koji su otkaceni za hitno ili je iznos veci od
+   250 000 dinara.',
+   'user', @CurrentUser, 'table', 'RTGS'
+go
+
+/*==============================================================*/
+/* Table: STAVKA_KLIRINGA                                       */
+/*==============================================================*/
+create table STAVKA_KLIRINGA (
+   ID_NALOGA            varchar(50)          not null,
+   ID_PORUKE            varchar(50)          not null,
+   DUZNIK               varchar(255)         not null,
+   SVRHA_PLACANJA       varchar(255)         not null,
+   PRIMALAC             varchar(255)         not null,
+   DATUM_NALOGA         datetime             not null,
+   RACUN_DUZNIKA        varchar(18)          not null,
+   MODEL_ZADUZENJA      numeric(2)           not null,
+   POZIV_NA_BROJ_ZADUZENJA varchar(20)          not null,
+   RACUN_POVERIOCA      varchar(18)          not null,
+   MODEL_ODOBRENJA      numeric(2)           not null,
+   POZIV_NA_BROJ_ODOBRENJA varchar(20)          not null,
+   IZNOS                decimal(15,2)        not null,
+   SIFRA_VALUTE         char(3)              not null,
+   constraint PK_STAVKA_KLIRINGA primary key nonclustered (ID_NALOGA)
+)
+go
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_18_FK                                    */
+/*==============================================================*/
+create index RELATIONSHIP_18_FK on STAVKA_KLIRINGA (
+ID_PORUKE ASC
+)
+go
+
+/*==============================================================*/
 /* Table: UKIDANJE                                              */
 /*==============================================================*/
 create table UKIDANJE (
@@ -714,6 +882,16 @@ go
 alter table ANALITIKA_IZVODA
    add constraint FK_ANALITIK_MESTO_PRI_NASELJEN foreign key (NM_SIFRA)
       references NASELJENO_MESTO (NM_SIFRA)
+go
+
+alter table ANALITIKA_IZVODA
+   add constraint FK_ANALITIK_RELATIONS_STAVKA_K foreign key (ID_NALOGA)
+      references STAVKA_KLIRINGA (ID_NALOGA)
+go
+
+alter table ANALITIKA_IZVODA
+   add constraint FK_ANALITIK_RTGS_PLAC_RTGS foreign key (ID_PORUKE)
+      references RTGS (ID_PORUKE)
 go
 
 alter table ANALITIKA_IZVODA
@@ -779,6 +957,11 @@ go
 alter table RACUNI
    add constraint FK_RACUNI_VLASNIK_R_KLIJENT foreign key (KL_ID)
       references KLIJENT (KL_ID)
+go
+
+alter table STAVKA_KLIRINGA
+   add constraint FK_STAVKA_K_RELATIONS_KLIRING foreign key (ID_PORUKE)
+      references KLIRING (ID_PORUKE)
 go
 
 alter table UKIDANJE

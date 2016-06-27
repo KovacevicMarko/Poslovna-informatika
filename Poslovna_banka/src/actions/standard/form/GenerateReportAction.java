@@ -48,7 +48,6 @@ public class GenerateReportAction extends AbstractAction
 			      String status = (String) ((GenericDialog)standardForm).getTable().getModel().getValueAt(index, 0);  
 			      Map params = new HashMap(1);
 				  params.put("banka", status );
-				  System.out.println(getClass().getResource("/jasper/SpisakRacuna.jasper"));
 				  JasperPrint jp = JasperFillManager.fillReport(
 				  getClass().getResource("/jasper/SpisakRacuna.jasper").openStream(),
 				  params, DBConnection.getDatabaseWrapper().getConnection());
@@ -81,7 +80,6 @@ public class GenerateReportAction extends AbstractAction
 				  params.put("klijent", status );
 				  params.put("od", odTad );
 				  params.put("do", doTad );
-				  System.out.println(getClass().getResource("/jasper/IzvodKlijenataZaInterval.jasper"));
 				  JasperPrint jp = JasperFillManager.fillReport(
 				  getClass().getResource("/jasper/IzvodKlijenataZaInterval.jasper").openStream(),
 				  params, DBConnection.getDatabaseWrapper().getConnection());
