@@ -14,7 +14,6 @@ public class Application
 		UIManager.put("OptionPane.cancelButtonText", "Otkaži");
 		
 		MainFrame.getInstance().setVisible(true);
-		//TODO DNEVNOSTANJE, UKIDANJE, ANALITIKA IZVODA, KLIRING RTGS
 	}
 
 }

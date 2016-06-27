@@ -77,18 +77,10 @@ public class GenericDialogActions
 				}
 				else
 				{
-					if(dialog.getMode() == EnumActiveMode.IZMENA && ((JTextField) component).getText().contains("/"))
+					if(GenericDialog.getMode() == EnumActiveMode.IZMENA && ((JTextField) component).getText().contains("/"))
 					{
-						DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-					    java.sql.Date sqlDate;
-					    Date date = new Date();
-					    try {
-							date = (Date) df.parse(((JTextField) component).getText());
-						} catch (ParseException e) {
-							e.printStackTrace();
-						}
-					    
-					    sqlDate = (java.sql.Date) new Date(date.getTime());
+						java.sql.Date sqlDate;
+					    sqlDate = returnSqlDate(((JTextField) component).getText());
 						retValue.put(((JTextField) component).getName(), sqlDate.toString());
 
 					}
@@ -241,7 +233,6 @@ public class GenericDialogActions
 	public String makeSearchQuery()
 	{
 		LinkedHashMap<String, Object> retValue = getAllValuesFromFieldsForSearch();
-		String whereClause = "";
 		StringBuffer retVal = new StringBuffer();
 		
 		for (Map.Entry<String, Object> entry : retValue.entrySet()) {
@@ -255,10 +246,21 @@ public class GenericDialogActions
 		    
 		    if(entry.getValue() instanceof String)
 		    {
-		    	retVal.append(" LIKE ");
-				retVal.append("'");
-				retVal.append(entry.getValue());
-				retVal.append("%'");
+		    	if(((String)entry.getValue()).contains("/"))
+		    	{
+		    		retVal.append(" = ");
+		    		retVal.append("'");
+					retVal.append(returnSqlDate((String)entry.getValue()));
+					retVal.append("'");
+		    	}
+		    	else
+		    	{
+		    		retVal.append(" LIKE ");
+					retVal.append("'");
+					retVal.append(entry.getValue());
+					retVal.append("%'");
+		    	}
+		    	
 		    }
 		    else if(entry.getValue() instanceof Integer)
 		    {
@@ -267,29 +269,35 @@ public class GenericDialogActions
 				retVal.append(entry.getValue());
 				retVal.append("'");
 		    }
-
-		    
-		    
+		    else if(entry.getValue() instanceof Boolean)
+		    {
+		    	String booleanQuery = (boolean) entry.getValue() ? "1" : "0";
+		    	retVal.append(" = ");
+				retVal.append("'");
+				retVal.append(booleanQuery);
+				retVal.append("'");
+		    }	    
 		}
 
-				/*
-					retVal.append('=');
-					if (c.getValue() instanceof Number) {
-						retVal.append(c.getValue().toString());
-					} else if (c.getValue() instanceof Date) {
-						retVal.append("'");
-						retVal.append(sdf.format((Date) c.getValue()));
-						retVal.append("'");
-					} else if (c.getValue() instanceof BigDecimal) {
-						retVal.append(c.getValue());
-					}
-				}
-			}
-		}
-		*/
 		String query = "SELECT * FROM " + dialog.getdatabaseTableModel().getCode() + " WHERE " + retVal.toString();
 		
 		return query;
+	}
+	
+	private java.sql.Date returnSqlDate(String formDate)
+	{
+		DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+	    java.sql.Date sqlDate;
+	    Date date = new Date();
+	    try {
+			date = (Date) df.parse(formDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	    
+	    sqlDate = new java.sql.Date(date.getTime());
+
+		return sqlDate;
 	}
 	
 	private boolean isNumeric(String str)

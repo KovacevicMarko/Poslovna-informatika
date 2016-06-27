@@ -39,9 +39,7 @@ public class ImportNalogAction extends AbstractAction {
 
 			try {
 				 nalog = XmlManager.generateBean(fc.getSelectedFile());
-				 
-				 System.out.println(nalog);
-				 
+				 				 
 			} catch (JAXBException e0) {
 				
 				e0.printStackTrace();

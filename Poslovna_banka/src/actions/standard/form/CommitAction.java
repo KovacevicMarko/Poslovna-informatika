@@ -37,13 +37,13 @@ public class CommitAction extends AbstractAction
 		if(standardForm instanceof GenericDialog)
 		{
 			 
-			if(((GenericDialog)standardForm).getMode() == EnumActiveMode.DODAVANJE)
+			if(GenericDialog.getMode() == EnumActiveMode.DODAVANJE)
 			{
 				addNewRowToTable();
 				action.clearAllTextFields();
 				((GenericDialog) standardForm).setMode(EnumActiveMode.DODAVANJE);
 			}
-			else if(((GenericDialog)standardForm).getMode() == EnumActiveMode.IZMENA)
+			else if(GenericDialog.getMode() == EnumActiveMode.IZMENA)
 			{
 				if(((GenericDialog)standardForm).getTable().getSelectedRow() < 0)
 				{
