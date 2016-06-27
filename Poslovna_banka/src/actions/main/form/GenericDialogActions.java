@@ -1,6 +1,5 @@
 package actions.main.form;
 
-import gui.main.form.MainFrame;
 import gui.standard.form.GenericDialog;
 import gui.tablemodel.TableModel;
 

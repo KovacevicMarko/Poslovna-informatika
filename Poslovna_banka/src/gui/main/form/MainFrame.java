@@ -21,9 +21,9 @@ import database.DBConnection;
 import databaseModel.DatabaseColumnModel;
 import databaseModel.DatabaseTableModel;
 
-public class MainFrame extends JFrame{
+public class MainFrame extends JFrame
+{
 	private static final long serialVersionUID = 1L;
-	
 	public static MainFrame instance;
 	private JMenuBar menuBar;
 	private ArrayList<DatabaseTableModel> tableModels;
@@ -59,7 +59,8 @@ public class MainFrame extends JFrame{
 
 	}
 
-	public static MainFrame getInstance(){
+	public static MainFrame getInstance()
+	{
 		if (instance==null)
 			instance=new MainFrame();
 		return instance;
@@ -125,6 +126,10 @@ public class MainFrame extends JFrame{
 			}
 			databaseTableModel.setcolumnsModel(databaseColumnModel);
 			tableModels.add(databaseTableModel);
+			if(databaseTableModel.getCode().equalsIgnoreCase("klijent"))
+			{
+				continue;
+			}
 			menuItem = new JMenuItem(databaseTableModel.getLabel());
 			menuItem.addActionListener(new MenuBarAction(databaseTableModel));
 			orgMenu.add(menuItem);
