@@ -22,11 +22,13 @@ public class CommitAction extends AbstractAction
 {
 	private static final long serialVersionUID = 1L;
 	private JDialog standardForm;
+	private GenericDialogActions action;
 	
 	public CommitAction(JDialog standardForm) {
 		putValue(SMALL_ICON, new ImageIcon(getClass().getResource("/img/commit.gif")));
 		putValue(SHORT_DESCRIPTION, "Commit");
 		this.standardForm=standardForm;
+		this.action = new GenericDialogActions((GenericDialog)standardForm);
 	}
 
 	@Override
@@ -34,10 +36,10 @@ public class CommitAction extends AbstractAction
 	{
 		if(standardForm instanceof GenericDialog)
 		{
-			GenericDialogActions action = new GenericDialogActions((GenericDialog)standardForm);
+			 
 			if(((GenericDialog)standardForm).getMode() == EnumActiveMode.DODAVANJE)
 			{
-				addNewRowToTable(action);
+				addNewRowToTable();
 				action.clearAllTextFields();
 				((GenericDialog) standardForm).setMode(EnumActiveMode.DODAVANJE);
 			}
@@ -48,8 +50,9 @@ public class CommitAction extends AbstractAction
 					JOptionPane.showMessageDialog(null, "Morate selektovati jedan red prilikom izmene!", "Greska", JOptionPane.ERROR_MESSAGE);
 				}
 					
-				updateRowInTalbe(action);
-			}else
+				updateRowInTable();
+			}
+			else
 			{
 				String query = action.makeSearchQuery();
 				TableModel tableModel = (TableModel)((GenericDialog) standardForm).getTable().getModel();
@@ -65,7 +68,7 @@ public class CommitAction extends AbstractAction
 		
 	}
 	
-	private void addNewRowToTable(GenericDialogActions action)
+	private void addNewRowToTable()
 	{	
 		try
 		{	
@@ -79,7 +82,7 @@ public class CommitAction extends AbstractAction
 		}
 	}
 	
-	private void updateRowInTalbe(GenericDialogActions action)
+	private void updateRowInTable()
 	{
 		try
 		{	

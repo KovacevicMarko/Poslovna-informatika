@@ -38,7 +38,6 @@ public class InfoPanel extends JPanel
 		this.setLayout(new MigLayout("gapx 15px"));				
 		for(DatabaseColumnModel column : tables.getcolumnsModel())
 		{
-			//TODO ADD LENGTH
 			String labelText = column.isNullable()? column.getLabel() : column.getLabel() + "*" ;
 			JLabel labelName = new JLabel(labelText);
 			this.add(labelName);
@@ -46,7 +45,11 @@ public class InfoPanel extends JPanel
 			
 			if(isDateField(column))
 			{
-				System.out.println("DATE");
+				textField = new JTextField(FIELDLENGTH);
+				textField.setName(column.getCode());
+				textField.setToolTipText("Validan format je yyyy/MM/dd");
+				textFields.add(textField);
+				this.add(textField,"wrap");
 			}
 			else if(column.getType().equalsIgnoreCase("bit"))
 			{
@@ -67,6 +70,16 @@ public class InfoPanel extends JPanel
 			{
 				textField = new JTextField(FIELDLENGTH);
 				textField.setName(column.getCode());
+				System.out.println(column.getType());
+				if(column.getType().equalsIgnoreCase("char"))
+				{
+					textField.setToolTipText("Polje mora imati :" + column.getLength() + " karaktera.");
+				}
+				else
+				{
+					textField.setToolTipText("Maksimalna duzina je :" + column.getLength()+ " karaktera.");
+				}
+				
 				textFields.add(textField);
 				
 				if (column.getTableParent() != null)

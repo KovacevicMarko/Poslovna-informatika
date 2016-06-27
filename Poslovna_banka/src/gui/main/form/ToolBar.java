@@ -1,9 +1,9 @@
 package gui.main.form;
 
-import java.awt.MenuBar;
+import gui.standard.form.GenericDialog;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.Normalizer.Form;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -28,6 +28,9 @@ import actions.standard.form.PickupAction;
 import actions.standard.form.PreviousAction;
 import actions.standard.form.RefreshAction;
 import actions.standard.form.SearchAction;
+import database.DBConnection;
+import databaseModel.DatabaseColumnModel;
+import databaseModel.DatabaseTableModel;
 
 public class ToolBar extends JToolBar
 {
@@ -75,8 +78,55 @@ public class ToolBar extends JToolBar
 		this.add(button);
 		this.addSeparator();
 
-		button = new JButton(new NextFormAction(dialog));
-		this.add(button);
+		final JButton nextFormButton = new JButton(new ImageIcon(getClass().getResource("/img/nextForm.gif")));
+		nextFormButton.setToolTipText("Sledeća forma");
+		
+		final JPopupMenu menu = new JPopupMenu("Menu");
+		String actualTable = ((GenericDialog)dialog).getDatabaseTableModel().getCode();		
+		int popUpMeni = 0;
+		
+		for(DatabaseTableModel tableModel : MainFrame.getInstance().getTableModels())
+		{
+			HashMap<String, String> foreignTables = DBConnection.getDatabaseWrapper().getImportedTables(tableModel.getCode());
+			Vector<DatabaseColumnModel> columnModels = DBConnection.getDatabaseWrapper().getColumnModelByTableCode(tableModel.getCode());
+			
+			for(DatabaseColumnModel columnModel : columnModels)
+			{
+				boolean primaryKey = DBConnection.getDatabaseWrapper().isPrimaryKey(actualTable, columnModel.getCode());
+				boolean foreignKey = DBConnection.getDatabaseWrapper().isForeignKey(actualTable, columnModel.getCode());
+				
+				if(primaryKey && foreignKey)
+				{
+					if(foreignTables.containsKey(columnModel.getCode()))
+					{
+						String tableName = tableModel.getLabel();
+						JMenuItem tab = new JMenuItem(tableName);
+						tab.addActionListener(new NextFormAction(dialog, tableName));
+						menu.add(tab);
+						popUpMeni++;
+					}
+				}
+			}
+		}
+
+		if(popUpMeni>0)
+		{
+			nextFormButton.addActionListener( new ActionListener() 
+			{
+				@Override
+				public void actionPerformed(ActionEvent arg0) 
+				{
+					menu.show(nextFormButton, nextFormButton.getWidth()/2, nextFormButton.getHeight()/2);
+				}
+			} 
+			);
+		}
+		else
+		{
+			nextFormButton.setEnabled(false);
+		}
+		
+		this.add(nextFormButton);
 		
 		if(reportForBank)
 		{

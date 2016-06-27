@@ -107,9 +107,23 @@ public class TableModel extends DefaultTableModel
 		String[] row = new String[colValues.length];
 		for (int i = 0; i < colValues.length; i++) 
 		{
-			row[i] = colValues[i];
+			row[i] = checkDateField(colValues[i]);
 		}
 		return row;
+	}
+	
+	private String checkDateField(String fieldValue)
+	{
+		if(fieldValue.contains("-") && fieldValue.contains(" "))
+		{
+			String retVal = fieldValue.split(" ")[0];
+			retVal = retVal.replace("-", "/");
+			return retVal;
+		}
+		else
+		{
+			return fieldValue;
+		}
 	}
 
 	public void deleteRow(int index) throws SQLException 

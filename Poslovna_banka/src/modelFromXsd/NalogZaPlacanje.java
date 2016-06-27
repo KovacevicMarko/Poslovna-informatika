@@ -85,7 +85,6 @@ public class NalogZaPlacanje {
     @XmlElement(required = true)
     protected String svrhaPlacanja;
     protected String primalac;
-    @XmlElement(required = true)
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar datumNaloga;
     @XmlElement(required = true)

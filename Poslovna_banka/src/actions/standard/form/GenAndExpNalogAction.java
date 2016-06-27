@@ -13,6 +13,7 @@ import gui.standard.form.concrete.RacunDialog;
 import gui.tablemodel.Table;
 import modelFromXsd.NalogZaPlacanje;
 import modelFromXsd.ObjectFactory;
+import xml.XmlManager;
 
 public class GenAndExpNalogAction extends AbstractAction {
 	
@@ -34,7 +35,7 @@ public class GenAndExpNalogAction extends AbstractAction {
 		int selectedRow =  thisTable.getSelectedRow();
 		GenericDialogActions helperMethods = new GenericDialogActions(thisDialog);
 		
-		boolean racunVazi = (boolean) thisTable.getValueAt(selectedRow, 5);
+		boolean racunVazi =  thisTable.getValueAt(selectedRow, 5).equals("1")? true : false;
 		
 		NalogZaPlacanje nalog = new NalogZaPlacanje();
 		
@@ -47,7 +48,12 @@ public class GenAndExpNalogAction extends AbstractAction {
 			
 			nalog.setDuznik(klijentId);
 			nalog.setOznakaValute(valutaId);
-			nalog.setRacunPrimaoca(racunId);
+			nalog.setRacunDuznika(racunId);
+			nalog.setId("1");
+			
+			//XmlManager.generateDocument(nalog);
+			
+			
 			
 			NalogDialog nDialog = new NalogDialog(nalog);
 			nDialog.setVisible(true);
