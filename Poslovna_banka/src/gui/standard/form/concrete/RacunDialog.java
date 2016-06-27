@@ -1,5 +1,7 @@
 package gui.standard.form.concrete;
 
+import gui.standard.form.GenericDialog;
+
 import java.awt.Window;
 
 import javax.swing.ImageIcon;
@@ -8,7 +10,6 @@ import javax.swing.JTextField;
 
 import actions.standard.form.GenAndExpNalogAction;
 import databaseModel.DatabaseTableModel;
-import gui.standard.form.GenericDialog;
 
 public class RacunDialog extends GenericDialog {
 	

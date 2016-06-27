@@ -1,6 +1,5 @@
 package gui.standard.form;
 
-import gui.main.form.MainFrame;
 import gui.main.form.StatusBar;
 import gui.main.form.ToolBar;
 import gui.tablemodel.Table;
@@ -55,7 +54,7 @@ public class GenericDialog extends JDialog
 	
 	public void setMode(int mode) 
 	{
-		this.mode = mode;
+		GenericDialog.mode = mode;
 		if(mode == EnumActiveMode.DODAVANJE)
 		{
 			//Potrebno u slucaju kada se vrsi vise dodavanja uzastopno
@@ -133,11 +132,11 @@ public class GenericDialog extends JDialog
 		this.add(this.toolbar,"dock north");
 		this.table = new Table(this.getdatabaseTableModel());
 		this.add(new TablePane(this.table),"grow, wrap");
-		System.out.println("Mode odavde je: " + this.getMode());
 		this.infoPanel = new InfoPanel(databaseTableModel, this);
 		
 		//set text for labels in StatusBar
 		statusBar = new StatusBar();
+
 		setMode(EnumActiveMode.IZMENA);
 		statusBar.getLabelName().setText(databaseTableModel.getLabel());
 		

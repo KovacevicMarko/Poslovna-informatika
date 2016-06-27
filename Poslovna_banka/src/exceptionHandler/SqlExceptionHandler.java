@@ -1,8 +1,5 @@
 package exceptionHandler;
 
-import java.sql.SQLException;
-
-import application.App;
 
 /**
  * 
@@ -16,10 +13,8 @@ import application.App;
 
 
 
-public class SqlExceptionHandler {
-
-	private String message;
-	
+public class SqlExceptionHandler 
+{
 	public static String primaryKey="Violation of PRIMARY KEY";
 	
 	public static String deleteReferncedFK = "The DELETE statement conflicted";
@@ -31,15 +26,6 @@ public class SqlExceptionHandler {
 	
 	public static String nullKey = "Cannot insert the value NULL into column";
 	
-	public SqlExceptionHandler(String message) {
-		// TODO Auto-generated constructor stub
-		
-		this.message = message;
-		
-		
-		//System.out.println("PORUKA JE + " + message);
-	}
-	
 	/**
 	 * 
 	 *	
@@ -48,90 +34,50 @@ public class SqlExceptionHandler {
 	 *  @param tableCode - SQLException poruka koja se parsira
 	 *  @return poruku za korisnika
 	 */
-	
-	
-	
-	public String getHandledMessage(String tableCode){
+	public static String getHandledMessage(String tableCode, String message){
 		String retVal = "";
 		String value = "dsdsdsd";
 		String tableName = "";
 		
 		if(message != null){
-			if(message.startsWith(primaryKey)){
-				
+			if(message.startsWith(primaryKey))
+			{	
 				value = message.split("\\(")[1];
 				value = value.split("\\)")[0];
-				
-				tableName = App.getInstance().getResourceBundle().getString(tableCode);
-				
-				retVal = tableName + " " + App.getInstance().getResourceBundle().getString("SAOZNAKOM") 
-						+ " " + value + " " + App.getInstance().getResourceBundle().getString("VECPOSTOJI");
-				
+				retVal = tableCode + " " + "sa oznakom: " + " " + value + " " + "vec postoji u bazi podataka.";	
 			}
 			
-			else if(message.startsWith(deleteReferncedFK)){
-				
-			
-				String table2 = message.split("dbo.")[1].split("\"")[0];
-				
-				tableName = App.getInstance().getResourceBundle().getString(table2);
-				
-				retVal = App.getInstance().getResourceBundle().getString("NEMOGUCEOBRISATIRED") + App.getInstance().getResourceBundle().getString(tableCode) + 
-						 App.getInstance().getResourceBundle().getString("GUBISINFO") + tableName+"."; 
-				
-				
-				
-				
+			else if(message.startsWith(deleteReferncedFK))
+			{
+				tableName = message.split("dbo.")[1].split("\"")[0];
+				retVal = "Ne moze se obrisati slog: " + tableCode + ", jer je referenciran u tabeli: " + tableName + ".";
 			}
-			
-			else if(message.startsWith(insertReferncedFK)){
-				
-				
-				String table2 = message.split("dbo.")[1].split("\"")[0];
-				
-				tableName = App.getInstance().getResourceBundle().getString(table2);
-				
-				retVal = App.getInstance().getResourceBundle().getString("NEMOGUCEDODATIRED") + " " + App.getInstance().getResourceBundle().getString(tableCode) + 
-						 App.getInstance().getResourceBundle().getString("NEMAOZNAKA") + " " + tableName+"."; 
+			else if(message.startsWith(insertReferncedFK))
+			{
+				tableName = message.split("dbo.")[1].split("\"")[0];	
+				retVal = "Ne moze se dodati slog: " + tableCode + ", jer ne postoji u referencirajucoj tabeli: " + tableName + ".";
 			}
-			
-			else if(message.startsWith(nullKey)){
-				
+			else if(message.startsWith(nullKey))
+			{	
 				String column = message.split("\'")[1];
-				
-				retVal = App.getInstance().getResourceBundle().getString("UNESIVREDNOST")+ " " + column + App.getInstance().getResourceBundle().getString("UTABELI")+ " " + App.getInstance().getResourceBundle().getString(tableCode)+".";
-			}
-			
-			else if(message.startsWith(updateReferncedFK)){
-				
-				
-				String table2 = message.split("dbo.")[1].split("\"")[0];
-				
-				tableName = App.getInstance().getResourceBundle().getString(table2);
-				
-				retVal = App.getInstance().getResourceBundle().getString("NEMOGUCEAZURIRATIRED")+ " " + App.getInstance().getResourceBundle().getString(tableCode) + 
-						App.getInstance().getResourceBundle().getString("NEMAOZNAKA")+ " " + tableName+"."; 
+				retVal = "Unesite vrednost u obavezno polje: " + column + " u tabeli " + tableCode + ".";
+			}	
+			else if(message.startsWith(updateReferncedFK))
+			{
+				tableName = message.split("dbo.")[1].split("\"")[0];
+				retVal = "Ne moze se azurirati slog: " + tableCode + ", jer ne postoji oznaka u tabeli " + tableName + ".";
 			}
 			else
 			{
-				retVal = App.getInstance().getResourceBundle().getString("NEISPRAVNOUNETIPODACI");
+				retVal = "Neispravno uneti podaci. Proverite da li su sva obavezna polja uneta u odgovarajucem formatu.";
 			}
-		}else{
-			retVal = App.getInstance().getResourceBundle().getString("NEISPRAVNOUNETIPODACI");
+		}
+		else
+		{
+			retVal = "Neispravno uneti podaci. Proverite da li su sva obavezna polja uneta u odgovarajucem formatu.";
 		}
 		
 		return retVal;
-	}
-	
-	
-	
-	
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
 	}
 
 }
