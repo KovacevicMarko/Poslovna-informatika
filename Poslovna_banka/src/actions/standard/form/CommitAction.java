@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import actions.main.form.GenericDialogActions;
 import util.EnumActiveMode;
 import databaseModel.DatabaseColumnModel;
+import exceptionHandler.SqlExceptionHandler;
 
 public class CommitAction extends AbstractAction
 {
@@ -61,7 +62,8 @@ public class CommitAction extends AbstractAction
 					tableModel.fillSearchData(query);
 				} catch (SQLException e1) 
 				{
-					e1.printStackTrace();
+					String tableCode = ((GenericDialog) standardForm).getDatabaseTableModel().getCode();
+					JOptionPane.showMessageDialog(null, SqlExceptionHandler.getHandledMessage(tableCode, e1.getMessage()), "Greska", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
@@ -78,7 +80,8 @@ public class CommitAction extends AbstractAction
 		}
 		catch(SQLException ex)
 		{
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);	
+			String tableCode = ((GenericDialog) standardForm).getDatabaseTableModel().getCode();
+			JOptionPane.showMessageDialog(null, SqlExceptionHandler.getHandledMessage(tableCode, ex.getMessage()), "Greska", JOptionPane.ERROR_MESSAGE);	
 		}
 	}
 	
@@ -97,7 +100,8 @@ public class CommitAction extends AbstractAction
 		}
 		catch(SQLException ex)
 		{
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "GRESKA", JOptionPane.ERROR_MESSAGE);	
+			String tableCode = ((GenericDialog) standardForm).getDatabaseTableModel().getCode();
+			JOptionPane.showMessageDialog(null, SqlExceptionHandler.getHandledMessage(tableCode, ex.getMessage()), "Greska", JOptionPane.ERROR_MESSAGE);	
 		}
 	}
 }

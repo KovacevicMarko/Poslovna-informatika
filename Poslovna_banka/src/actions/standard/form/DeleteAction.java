@@ -1,5 +1,6 @@
 package actions.standard.form;
 
+import exceptionHandler.SqlExceptionHandler;
 import gui.standard.form.GenericDialog;
 import gui.tablemodel.TableModel;
 
@@ -56,7 +57,8 @@ public class DeleteAction extends AbstractAction
 				} 
 				catch (SQLException ex) 
 				{
-					JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+					String tableCode = ((GenericDialog) standardForm).getDatabaseTableModel().getCode();
+					JOptionPane.showMessageDialog(null, SqlExceptionHandler.getHandledMessage(tableCode, ex.getMessage()), "Greska", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
