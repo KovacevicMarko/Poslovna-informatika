@@ -1,5 +1,6 @@
 package gui.standard.form;
 
+import gui.main.form.MainFrame;
 import gui.main.form.StatusBar;
 import gui.main.form.ToolBar;
 import gui.tablemodel.Table;
@@ -36,6 +37,8 @@ public class GenericDialog extends JDialog
 	private Table table;
 	private JTextField field;
 	private String code;
+	private JButton btnCommit;
+	private JButton btnRollback;
 	
 	private static int mode;
 	
@@ -53,6 +56,28 @@ public class GenericDialog extends JDialog
 	public void setMode(int mode) 
 	{
 		this.mode = mode;
+		if(mode == EnumActiveMode.DODAVANJE)
+		{
+			//Potrebno u slucaju kada se vrsi vise dodavanja uzastopno
+			this.getInfoPanel().getTextFields().get(0).setEditable(true);
+		}
+		else if(mode == EnumActiveMode.PRETRAGA)
+		{
+			if(btnRollback != null && btnCommit != null)
+			{
+				btnRollback.setEnabled(true);
+				btnCommit.setEnabled(true);
+			}
+			
+		}
+		else
+		{
+			if(btnRollback != null && btnCommit != null)
+			{
+				setButtonEnabledToFalse(btnRollback);
+				setButtonEnabledToFalse(btnCommit);
+			}
+		}
 		statusBar.init();
 	}
 
@@ -88,13 +113,19 @@ public class GenericDialog extends JDialog
 		setSize(800, 400);
 		setLayout(new MigLayout("fill"));
 		
-		if (databaseTableModel.getCode().equalsIgnoreCase("banka")) 
+		String tableCode = databaseTableModel.getCode(); 
+		
+		if (tableCode.equalsIgnoreCase("banka")) 
 		{
+			//first boolean indicator is table used for bank report and second for client report
 			this.toolbar = new ToolBar(this,true,false);
-		}else if(databaseTableModel.getCode().equalsIgnoreCase("klijent"))
+		}
+		else if(tableCode.equalsIgnoreCase("FIZICKA_LICA") || tableCode.equalsIgnoreCase("PRAVNA_LICA"))
 		{
+			//first boolean indicator is table used for bank report and second for client report
 			this.toolbar = new ToolBar(this,false,true);
-		}else
+		}
+		else
 		{
 			this.toolbar = new ToolBar(this,false,false);
 		}
@@ -102,6 +133,7 @@ public class GenericDialog extends JDialog
 		this.add(this.toolbar,"dock north");
 		this.table = new Table(this.getdatabaseTableModel());
 		this.add(new TablePane(this.table),"grow, wrap");
+		System.out.println("Mode odavde je: " + this.getMode());
 		this.infoPanel = new InfoPanel(databaseTableModel, this);
 		
 		//set text for labels in StatusBar
@@ -158,11 +190,11 @@ public class GenericDialog extends JDialog
 	public JPanel panelWithButtons()
 	{
 		JPanel panel = new JPanel();
-		JButton btnCommit = new JButton(new ImageIcon(getClass().getResource("/img/commit.gif")));
+		btnCommit = new JButton(new ImageIcon(getClass().getResource("/img/commit.gif")));
 		btnCommit.setToolTipText("Potvrdi");
 		btnCommit.addActionListener(new CommitAction((JDialog) this));
 		
-		JButton btnRollback = new JButton(new ImageIcon(getClass().getResource("/img/remove.gif")));
+		btnRollback = new JButton(new ImageIcon(getClass().getResource("/img/remove.gif")));
 		btnRollback.setToolTipText("Poništi");
 		btnRollback.addActionListener(new RollbackAction((JDialog) this));
 		

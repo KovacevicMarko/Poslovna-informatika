@@ -58,7 +58,7 @@ public class InfoPanel extends JPanel
 					{
 						if(tableModel.getCode().contains(parent))
 						{
-							zoomBtn.addActionListener(new ZoomAction(tableModel, textField, column));
+							zoomBtn.addActionListener(new ZoomAction(tableModel, textField, column, dialog));
 						}
 					}
 					
@@ -111,7 +111,7 @@ public class InfoPanel extends JPanel
 					{
 						if(tableModel.getCode().contains(parent))
 						{
-							zoomBtn.addActionListener(new ZoomAction(tableModel, textField, column));
+							zoomBtn.addActionListener(new ZoomAction(tableModel, textField, column, dialog));
 						}
 					}
 					
