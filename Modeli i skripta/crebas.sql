@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     6/27/2016 10:27:20 PM                        */
+/* Created on:     6/27/2016 11:43:24 PM                        */
 /*==============================================================*/
 
 
@@ -121,6 +121,13 @@ if exists (select 1
    where r.fkeyid = object_id('RACUNI') and o.name = 'FK_RACUNI_VLASNIK_R_KLIJENT')
 alter table RACUNI
    drop constraint FK_RACUNI_VLASNIK_R_KLIJENT
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('RTGS') and o.name = 'FK_RTGS_RTGS_PLAC_ANALITIK')
+alter table RTGS
+   drop constraint FK_RTGS_RTGS_PLAC_ANALITIK
 go
 
 if exists (select 1
@@ -379,6 +386,15 @@ if exists (select 1
            where  id = object_id('RACUNI')
             and   type = 'U')
    drop table RACUNI
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('RTGS')
+            and   name  = 'RTGS_PLACANJE_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index RTGS.RTGS_PLACANJE_FK
 go
 
 if exists (select 1
@@ -773,23 +789,13 @@ go
 /*==============================================================*/
 create table RTGS (
    ID_PORUKE            varchar(50)          not null,
+   BAR_RACUN            varchar(18)          null,
+   DSR_IZVOD            numeric(3)           null,
+   ASI_BROJSTAVKE       numeric(8)           null,
    SWIFT_BANKE_DUZNIKA  char(8)              not null,
    RACUN_BANKE_DUZNIKA  varchar(18)          not null,
    SWIFT_BAMKE_POVERIOCA char(8)              not null,
    RACUN_BANKE_POVERIOCA varchar(18)          not null,
-   DUZNIK               varchar(255)         not null,
-   SVRHA_PLACANJA       varchar(255)         not null,
-   PRIMALAC             varchar(255)         not null,
-   DATUM_NALOGA         datetime             not null,
-   DATUM_VALUTE         datetime             not null,
-   RACUN_DUZNIKA        varchar(18)          not null,
-   MODEL_ZADUZENJA      numeric(2)           not null,
-   POZIV_NA_BROJ_ZADUZENJA varchar(20)          not null,
-   RACUN_POVERIOCA      varchar(18)          not null,
-   MODEL_ODOBRENJA      numeric(2)           not null,
-   POZIV_NA_BROJ_ODOBRENJA varchar(20)          not null,
-   IZNOS                decimal(15,2)        not null,
-   SIFRA_VALUTE         char(3)              not null,
    constraint PK_RTGS primary key nonclustered (ID_PORUKE)
 )
 go
@@ -803,23 +809,21 @@ execute sp_addextendedproperty 'MS_Description',
 go
 
 /*==============================================================*/
+/* Index: RTGS_PLACANJE_FK                                      */
+/*==============================================================*/
+create index RTGS_PLACANJE_FK on RTGS (
+BAR_RACUN ASC,
+DSR_IZVOD ASC,
+ASI_BROJSTAVKE ASC
+)
+go
+
+/*==============================================================*/
 /* Table: STAVKA_KLIRINGA                                       */
 /*==============================================================*/
 create table STAVKA_KLIRINGA (
    ID_NALOGA            varchar(50)          not null,
    ID_PORUKE            varchar(50)          not null,
-   DUZNIK               varchar(255)         not null,
-   SVRHA_PLACANJA       varchar(255)         not null,
-   PRIMALAC             varchar(255)         not null,
-   DATUM_NALOGA         datetime             not null,
-   RACUN_DUZNIKA        varchar(18)          not null,
-   MODEL_ZADUZENJA      numeric(2)           not null,
-   POZIV_NA_BROJ_ZADUZENJA varchar(20)          not null,
-   RACUN_POVERIOCA      varchar(18)          not null,
-   MODEL_ODOBRENJA      numeric(2)           not null,
-   POZIV_NA_BROJ_ODOBRENJA varchar(20)          not null,
-   IZNOS                decimal(15,2)        not null,
-   SIFRA_VALUTE         char(3)              not null,
    constraint PK_STAVKA_KLIRINGA primary key nonclustered (ID_NALOGA)
 )
 go
@@ -957,6 +961,11 @@ go
 alter table RACUNI
    add constraint FK_RACUNI_VLASNIK_R_KLIJENT foreign key (KL_ID)
       references KLIJENT (KL_ID)
+go
+
+alter table RTGS
+   add constraint FK_RTGS_RTGS_PLAC_ANALITIK foreign key (BAR_RACUN, DSR_IZVOD, ASI_BROJSTAVKE)
+      references ANALITIKA_IZVODA (BAR_RACUN, DSR_IZVOD, ASI_BROJSTAVKE)
 go
 
 alter table STAVKA_KLIRINGA
