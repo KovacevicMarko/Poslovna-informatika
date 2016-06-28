@@ -7,13 +7,14 @@
     <datumPrijema>2016-05-04</datumPrijema>
     <mestoPrijema>Novi Sad</mestoPrijema>
     <datumValute>2016-05-04</datumValute>
-    <racunDuznika>840-222222-22</racunDuznika>
+    <racunDuznika>123-123321-12</racunDuznika>
     <modelZaduzenja>97</modelZaduzenja>
     <pozivNaBrojZaduzenja>pozivNaBrojZaduzenja</pozivNaBrojZaduzenja>
-    <racunPrimaoca>840-777777-77</racunPrimaoca>
+    <racunPrimaoca>111-11111-11</racunPrimaoca>
     <modelOdobrenja>97</modelOdobrenja>
     <pozivNaBrojOdobrenja>pozivNaBrojOdobrenja</pozivNaBrojOdobrenja>
     <iznos>300.00</iznos>
     <oznakaValute>RSD</oznakaValute>
+    <sifraPlacanja>189</sifraPlacanja>
     <hitno>false</hitno>
 </nalogZaPlacanje>

@@ -1,6 +1,7 @@
 package actions.standard.form;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.sql.SQLException;
 
 import javax.swing.AbstractAction;
@@ -33,7 +34,7 @@ public class ImportNalogAction extends AbstractAction {
 		fc.setDialogTitle("Importuj nalog...");
 		fc.setFileFilter(new XMLFileFilter());
         fc.setAcceptAllFileFilterUsed(false);
-        
+        fc.setCurrentDirectory(new File("./data/nalozi"));
         NalogZaPlacanje nalog = null;
 		
 		if(fc.showOpenDialog(standardForm) == JFileChooser.APPROVE_OPTION) {

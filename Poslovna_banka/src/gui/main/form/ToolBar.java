@@ -1,8 +1,5 @@
 package gui.main.form;
 
-import gui.dialogs.DatumDijalog;
-import gui.standard.form.GenericDialog;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -17,8 +14,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
-import util.DatabaseModelHandler;
-import actions.main.form.GenericDialogActions;
 import actions.standard.form.AddAction;
 import actions.standard.form.DatumAction;
 import actions.standard.form.DeleteAction;
@@ -36,6 +31,8 @@ import actions.standard.form.SearchAction;
 import database.DBConnection;
 import databaseModel.DatabaseColumnModel;
 import databaseModel.DatabaseTableModel;
+import gui.standard.form.GenericDialog;
+import util.DatabaseModelHandler;
 
 public class ToolBar extends JToolBar
 {

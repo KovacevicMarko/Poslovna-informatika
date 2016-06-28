@@ -1,6 +1,7 @@
 package database;
 
 import java.math.BigDecimal;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,17 +33,16 @@ public class DBQueryManager {
 		
 		
 		String query = createQueryForImportNalog();
-		PreparedStatement uplataStmt = null;
+		//PreparedStatement uplataStmt = null;
+		CallableStatement uplataStmt = null;
 		
 		GenericDialogActions action = new GenericDialogActions(null);
-		java.sql.Date datumPrijema =  action.returnSqlDate(nalog.getDatumPrijema().toString());
-		java.sql.Date datumValute =  action.returnSqlDate(nalog.getDatumValute().toString());
+		java.sql.Date datumPrijema =  action.returnSqlDate(nalog.getDatumPrijema().toString().replace('-', '/'));
+		java.sql.Date datumValute =  action.returnSqlDate(nalog.getDatumValute().toString().replace('-', '/'));
 		
 		try {
-			
-			uplataStmt = conn.prepareStatement(query);
 
-			uplataStmt = conn.prepareStatement(query);
+			uplataStmt = conn.prepareCall("{call Uplata (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			uplataStmt.setString(1, nalog.getDuznik());
 			uplataStmt.setString(2,nalog.getSvrhaPlacanja() );
 			uplataStmt.setString(3,nalog.getPrimalac() );
@@ -59,9 +59,10 @@ public class DBQueryManager {
 			uplataStmt.setBigDecimal(14,nalog.getIznos());
 			uplataStmt.setString(15, nalog.getOznakaValute());
 			uplataStmt.setBoolean(16, nalog.isHitno());
-			
+			uplataStmt.registerOutParameter(17, java.sql.Types.INTEGER);
 			int res = uplataStmt.executeUpdate();
 			System.out.println(res);
+			int tipgreske = uplataStmt.getInt(17);
 			uplataStmt.close();
 			conn.commit();
 			System.out.println(res);
@@ -184,15 +185,15 @@ public class DBQueryManager {
 		Statement stmt = null;
 		
 		Date date = new Date();
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
 		String datumString = format.format(date);
 		
 		GenericDialogActions action = new GenericDialogActions(null);
 		java.sql.Date dateSql = action.returnSqlDate(datumString);
 		
 		
-		String query = "Select * from DNEVNO_STANJE_RACUNA Where BAR_RACUN = "+racun+
-				" AND DSR_DATUM = "+dateSql;
+		String query = "Select * from DNEVNO_STANJE_RACUNA Where BAR_RACUN = '"+racun+
+				"' AND CAST(DSR_DATUM as DATE) = '"+dateSql+"'";
 		IzvodStanja izvod = null;
 		
 		try
