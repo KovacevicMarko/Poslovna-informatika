@@ -8,7 +8,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
-import actions.standard.form.GenAndExpNalogAction;
 import databaseModel.DatabaseTableModel;
 
 public class RacunDialog extends GenericDialog {
@@ -34,13 +33,6 @@ public class RacunDialog extends GenericDialog {
 	@Override
 	protected void init(DatabaseTableModel tableModel) {
 		super.init(tableModel);
-		
-		JButton b = new JButton(new GenAndExpNalogAction(this));
-		b.setIcon(new ImageIcon(getClass().getResource("/img/export.png")));
-		
-		toolbar.addSeparator();
-		toolbar.add(b);
-		
 	}
 
 }

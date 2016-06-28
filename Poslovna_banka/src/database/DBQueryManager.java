@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import actions.main.form.GenericDialogActions;
+import gui.tablemodel.Table;
 import modelFromXsd.NalogZaPlacanje;
 
 public class DBQueryManager {
@@ -90,5 +91,12 @@ public class DBQueryManager {
 
 		return query.toString();
 	}
+	
+	public static void revokeBill(Table table){
+		
+		int selectedRow = table.getSelectedRow();
+		
+	}
+	
 	
 }

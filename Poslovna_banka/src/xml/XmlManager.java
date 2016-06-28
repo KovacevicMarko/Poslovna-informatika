@@ -2,6 +2,7 @@ package xml;
 
 import java.io.File;
 
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -17,8 +18,10 @@ import modelFromXsd.NalogZaPlacanje;
 
 public class XmlManager {
 
-	public static void generateDocument(NalogZaPlacanje nalog) {
-
+	public static boolean generateDocument(NalogZaPlacanje nalog,JDialog dialog) {
+		
+		boolean proslo = true;
+		
 		try {
 			
 			JAXBContext context = JAXBContext.newInstance(NalogZaPlacanje.class);
@@ -27,14 +30,17 @@ public class XmlManager {
 			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Schema schema = schemaFactory.newSchema(new File("./data/nalog.xsd"));
 			m.setSchema(schema);
-			m.marshal(nalog, new File("./data/nalozi/nalog" + ".xml"));
+			m.marshal(nalog, new File("./data/nalozi/"+nalog.getRacunDuznika() + ".xml"));
 			
 		} catch (JAXBException e) {
-			e.printStackTrace();
+			proslo = false;
+			JOptionPane.showMessageDialog(null, "Nije prosla validacija xml seme");
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			proslo = false;
+			JOptionPane.showMessageDialog(null, "Nije prosla validacija xml seme");
 		}
+		
+		return proslo;
 
 	}
 
