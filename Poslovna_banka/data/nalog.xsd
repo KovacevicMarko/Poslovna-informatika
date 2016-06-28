@@ -4,8 +4,6 @@
     <xs:element name="nalogZaPlacanje">
         <xs:complexType>
             <xs:sequence>
-            	<xs:element name="id" type="Str50" maxOccurs="1"
-            		minOccurs="1" />
             	<xs:element name="duznik" type="Str255" minOccurs="1"
             		maxOccurs="1" />
             	<xs:element name="svrhaPlacanja" type="Str255"

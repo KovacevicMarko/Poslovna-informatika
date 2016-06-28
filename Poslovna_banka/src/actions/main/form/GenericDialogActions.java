@@ -284,7 +284,7 @@ public class GenericDialogActions
 		return query;
 	}
 	
-	private java.sql.Date returnSqlDate(String formDate)
+	public java.sql.Date returnSqlDate(String formDate)
 	{
 		DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
 	    java.sql.Date sqlDate;
