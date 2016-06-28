@@ -15,18 +15,22 @@ create procedure Uplata
 	@modelOdobrenja numeric(2),
 	@pozivNaBrojOdobrenja varchar(20),
 	@sifraPlacanja char(3),
-	@sifraValute char(3),
 	@iznos decimal(15,2),
 	@oznakaValute char(3),
 	@hitno bit,
-	@tipGreske numeric(1) output
+	@tipGreske integer output
 as
 begin
-
-	declare @racunDuznikaId varchar(18);
-	declare @racunPrimaocaId varchar(18);
-	declare @dsrId varchar(18);
+	
+	declare @racunDuznikaId varchar(10);
+	declare @racunPrimaocaId varchar(10);
+	declare @bankaRacunaDuznika char(10);
+	declare @bankaRacunaPrimaoca char(10);
+	declare @dsrId numeric(3);
+	declare @dsrId2 numeric(3); 
 	declare @naseljenoMestoId varchar(18);
+
+	set @tipGreske = 1;
 
 	set @racunDuznikaId = ( select rac.KL_ID
 	from dbo.RACUNI rac
@@ -38,10 +42,20 @@ begin
 	from dbo.Racuni rac
 	where rac.BAR_RACUN = @racunPrimaoca);
 
+	set @bankaRacunaDuznika = (
+		select rac.B_PIB
+		from RACUNI rac
+		where rac.BAR_RACUN = @racunDuznika);
+
 	set @naseljenoMestoId = (
 	select nm.NM_SIFRA
 	from NASELJENO_MESTO nm
 	where nm.NM_NAZIV = @mestoPrijema);
+
+	set @bankaRacunaPrimaoca = (
+		select rac.B_PIB
+		from RACUNI rac
+		where rac.BAR_RACUN = @racunPrimaoca);
 
 	if (@racunDuznikaId is not null) and (@racunPrimaocaId is not null)
 	begin
@@ -49,7 +63,7 @@ begin
 		set @dsrId = (
 			select dsr.DSR_IZVOD
 			from DNEVNO_STANJE_RACUNA dsr
-			where dsr.DSR_DATUM = @datumPrijema AND dsr.BAR_RACUN= @racunDuznikaId);
+			where dsr.DSR_DATUM = @datumPrijema AND dsr.BAR_RACUN= @racunDuznika);
 		
 
 		-- ne postoji dnevno stanje racuna duznika za datum prijema, treba napraviti novo
@@ -60,17 +74,17 @@ begin
 			set @poslednjeStanje = (
 			select top 1 dsr.DSR_NOVOSTANJE
 			from DNEVNO_STANJE_RACUNA dsr
-			where dsr.BAR_RACUN = @racunDuznikaId
+			where dsr.BAR_RACUN = @racunDuznika
 			order by dsr.DSR_DATUM desc);
 
 			if @poslednjeStanje is null
 			begin
 				set @poslednjeStanje = 0;
 			end
-			
+			set @dsrId = 1;
 			if (@poslednjeStanje >= @iznos)
 			begin
-				set @dsrId = 0;
+				
 				insert into DNEVNO_STANJE_RACUNA(DSR_IZVOD,
 							DSR_DATUM,
 							DSR_PRETHODNO,
@@ -90,8 +104,7 @@ begin
 		else
 		begin
 			update DNEVNO_STANJE_RACUNA
-			set DSR_PRETHODNO = DSR_NOVOSTANJE,
-				DSR_NOVOSTANJE = DSR_NOVOSTANJE - @iznos,
+			set DSR_NOVOSTANJE = DSR_NOVOSTANJE - @iznos,
 				DSR_NATERET = DSR_NATERET + @iznos
 			where DSR_IZVOD = @dsrId;
 		end
@@ -117,34 +130,36 @@ begin
 									ASI_IZNOS,
 									ASI_TIPGRESKE,
 									ASI_STATUS)
-		values (@racunDuznikaId, @dsrId, (select isnull(max(ASI_BROJSTAVKE),0)
+		values (@racunDuznika, @dsrId, (select isnull(max(ASI_BROJSTAVKE),0)
 										from ANALITIKA_IZVODA ai
-										where ai.BAR_RACUN = @racunDuznikaId and ai.DSR_IZVOD = @dsrId) + 1,
-				@naseljenoMestoId,@sifraPlacanja, @sifraValute,@duznik,@svrhaPlacanja,
+										where ai.BAR_RACUN = @racunDuznika and ai.DSR_IZVOD = @dsrId) + 1,
+				@naseljenoMestoId,@sifraPlacanja, @oznakaValute,@duznik,@svrhaPlacanja,
 				@primalac,@datumPrijema,@datumValute,@racunDuznika,@modelZaduzenja,@pozivNaBrojZaduzenja,@racunPrimaoca,
-				@modelOdobrenja,@pozivNaBrojOdobrenja,@hitno,@iznos,@tipgreske,'E');
+				@modelOdobrenja,@pozivNaBrojOdobrenja,@hitno,@iznos,@tipgreske,'P');
 		
-
+		
 
 		-------------- KRAJ ZA DUZNIKA -------------------------------------------
 
 
 		---------------------------- ZA PRIMAOCA -------------------------------------
-		set @dsrId = (
+		if (@bankaRacunaDuznika = @bankaRacunaPrimaoca)
+		begin
+			set @dsrId2 = (
 			select dsr.DSR_IZVOD
 			from DNEVNO_STANJE_RACUNA dsr
-			where dsr.DSR_DATUM = @datumPrijema AND dsr.BAR_RACUN= @racunPrimaocaId);
+			where dsr.DSR_DATUM = @datumPrijema AND dsr.BAR_RACUN= @racunPrimaoca);
 		
 
 		-- ne postoji dnevno stanje racuna duznika za datum prijema, treba napraviti novo
-		if @dsrId is null
+		if @dsrId2 is null
 		begin
 			--declare @poslednjeStanje decimal(15,2);
 			
 			set @poslednjeStanje = (
 			select top 1 dsr.DSR_NOVOSTANJE
 			from DNEVNO_STANJE_RACUNA dsr
-			where dsr.BAR_RACUN = @racunPrimaocaId
+			where dsr.BAR_RACUN = @racunPrimaoca
 			order by dsr.DSR_DATUM desc);
 
 			if @poslednjeStanje is null
@@ -152,7 +167,7 @@ begin
 				set @poslednjeStanje = 0;
 			end
 			
-			set @dsrId = 0;
+			set @dsrId2 = 1;
 			insert into DNEVNO_STANJE_RACUNA(DSR_IZVOD,
 						DSR_DATUM,
 						DSR_PRETHODNO,
@@ -160,7 +175,7 @@ begin
 						DSR_NATERET,
 						DSR_NOVOSTANJE,
 						BAR_RACUN)
-			values (@dsrId, @datumPrijema, @poslednjeStanje, @iznos,0, @poslednjeStanje+@iznos, @racunPrimaocaId);
+			values (@dsrId2, @datumPrijema, @poslednjeStanje, @iznos,0, @poslednjeStanje+@iznos, @racunPrimaoca);
 		end
 		-- inace updejtovati stanje za danasnji datum
 		else
@@ -169,9 +184,9 @@ begin
 			set DSR_PRETHODNO = DSR_NOVOSTANJE,
 				DSR_NOVOSTANJE = DSR_NOVOSTANJE + @iznos,
 				DSR_UKORIST= DSR_UKORIST + @iznos
-			where DSR_IZVOD = @dsrId;
+			where DSR_IZVOD = @dsrId2;
 		end
-
+		
 		insert into ANALITIKA_IZVODA (BAR_RACUN,
 									DSR_IZVOD,
 									ASI_BROJSTAVKE,
@@ -193,12 +208,22 @@ begin
 									ASI_IZNOS,
 									ASI_TIPGRESKE,
 									ASI_STATUS)
-		values (@racunDuznikaId, @dsrId, (select isnull(max(ASI_BROJSTAVKE),0)
+		values (@racunPrimaoca, @dsrId2, (select isnull(max(ASI_BROJSTAVKE),0)
 										from ANALITIKA_IZVODA ai
-										where ai.BAR_RACUN = @racunDuznikaId and ai.DSR_IZVOD = @dsrId) + 1,
-				@naseljenoMestoId,@sifraPlacanja, @sifraValute,@duznik,@svrhaPlacanja,
+										where ai.BAR_RACUN = @racunPrimaoca and ai.DSR_IZVOD = @dsrId) + 1,
+				@naseljenoMestoId,@sifraPlacanja, @oznakaValute,@duznik,@svrhaPlacanja,
 				@primalac,@datumPrijema,@datumValute,@racunDuznika,@modelZaduzenja,@pozivNaBrojZaduzenja,@racunPrimaoca,
 				@modelOdobrenja,@pozivNaBrojOdobrenja,@hitno,@iznos,@tipgreske,'E');
+		end
+		
+		else
+		begin
+			if (@hitno = 1 or @iznos >= 250000)
+			begin
+				set @dsrId = @dsrId;
+			end
+		end
+		
 		------------------------- KRAJ ZA PRIMAOCA -----------------------------------
 	end
 
