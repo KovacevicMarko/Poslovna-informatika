@@ -120,13 +120,20 @@ public class DBQueryManager {
 		
 		List<String> racuni =  findRacuniByKlijentId(klijentId);
 		List<IzvodStanja> izvodiStanja = generateIzvodi(klijentId, racuni);
-		
+		int indik = 0;
 		for(IzvodStanja izvod : izvodiStanja)
 		{
 			if(izvod.getBrojRacuna()==null){
 				continue;
 			}
 			XmlManager.generateDocumentIzvod(izvod);
+			indik++;
+		}
+		if(indik>0){
+			JOptionPane.showMessageDialog(null,"Uspesno generisan izvestaj/i!");
+		}
+		else{
+			JOptionPane.showMessageDialog(null,"Nemate uplata/isplata danas!");
 		}
 		
 	}
