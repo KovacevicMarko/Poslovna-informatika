@@ -120,6 +120,9 @@ public class DBQueryManager {
 		
 		for(IzvodStanja izvod : izvodiStanja)
 		{
+			if(izvod.getBrojRacuna()==null){
+				continue;
+			}
 			XmlManager.generateDocumentIzvod(izvod);
 		}
 		
@@ -181,15 +184,15 @@ public class DBQueryManager {
 		Statement stmt = null;
 		
 		Date date = new Date();
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
 		String datumString = format.format(date);
 		
 		GenericDialogActions action = new GenericDialogActions(null);
 		java.sql.Date dateSql = action.returnSqlDate(datumString);
 		
 		
-		String query = "Select * from DNEVNO_STANJE_RACUNA Where BAR_RACUN = "+racun+
-				" AND DSR_DATUM = "+dateSql;
+		String query = "Select * from DNEVNO_STANJE_RACUNA Where BAR_RACUN = '"+racun+
+				"' AND CAST(DSR_DATUM as date) = '"+dateSql+"'";
 		IzvodStanja izvod = null;
 		
 		try

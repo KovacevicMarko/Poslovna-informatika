@@ -43,5 +43,9 @@ public class ObjectFactory {
     public IzvodStanja createIzvodStanja() {
         return new IzvodStanja();
     }
+    
+    public NalogZaPlacanje createNalogZaPlacanje(){
+    	return new NalogZaPlacanje();
+    }
 
 }
