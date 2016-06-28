@@ -21,6 +21,7 @@ public class TableModel extends DefaultTableModel
 	private String tableName;
 	private DatabaseTableModel databaseTableModel;
 	private String query;
+	private static String ClientTableName = "KLIJENT";
 	
 	public TableModel(Object[] colNames, int rowCount) 
 	{
@@ -50,16 +51,6 @@ public class TableModel extends DefaultTableModel
 	{
        return false;
     }
-	
-	public DatabaseTableModel getdatabaseTableModel() 
-	{
-		return databaseTableModel;
-	}
-
-	public void setdatabaseTableModel(DatabaseTableModel databaseTableModel) 
-	{
-		this.databaseTableModel = databaseTableModel;
-	}
 
 	public void fillData() throws SQLException 
 	{
@@ -194,6 +185,26 @@ public class TableModel extends DefaultTableModel
 			fireTableDataChanged();
 		}
 		return retVal;
+	}
+	
+	public void insertInClientRow(LinkedHashMap<String, String> data) throws SQLException
+	{
+		final String TYPE = "INSERT";
+		String query = makeInsertQuery(data, ClientTableName, TYPE);
+		PreparedStatement stmt = DBConnection.getDatabaseWrapper().getConnection().prepareStatement(query);
+
+		int i = 1;
+		for (String key : data.keySet()) 
+		{
+			stmt.setString(i, data.get(key));
+			i++;
+		}
+
+		int rowsAffected = stmt.executeUpdate();
+		stmt.close();
+		// inserting into database
+		DBConnection.getDatabaseWrapper().getConnection().commit();
+
 	}
 
 	private String makeInsertQuery(LinkedHashMap<String, String> data, String tableName, String type) 
@@ -348,7 +359,16 @@ public class TableModel extends DefaultTableModel
 		}
 		return retVal;
 	}
-
 	
+	public DatabaseTableModel getdatabaseTableModel() 
+	{
+		return databaseTableModel;
+	}
+
+	public void setdatabaseTableModel(DatabaseTableModel databaseTableModel) 
+	{
+		this.databaseTableModel = databaseTableModel;
+	}
+
 	
 }

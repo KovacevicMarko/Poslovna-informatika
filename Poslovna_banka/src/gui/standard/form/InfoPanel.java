@@ -2,7 +2,11 @@ package gui.standard.form;
 
 import gui.main.form.MainFrame;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.ButtonGroup;
@@ -12,8 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import util.DatabaseModelHandler;
 import net.miginfocom.swing.MigLayout;
+import util.DatabaseModelHandler;
 import actions.main.form.ZoomAction;
 import databaseModel.DatabaseColumnModel;
 import databaseModel.DatabaseTableModel;
@@ -69,9 +73,14 @@ public class InfoPanel extends JPanel
 					this.add(zoomBtn,"wrap, w 25!, h 22!");
 				}
 				
-				else {
-					
+				else 
+				{
+					DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+					Date today = Calendar.getInstance().getTime();        
+					String reportDate = df.format(today);
+					textField.setText(reportDate);
 					this.add(textField,"wrap");
+					
 				}
 	
 			}
