@@ -32,6 +32,7 @@ public class GenerateReportAction extends AbstractAction
 		this.index=index;
 		this.datumDialog=datumDialog;
 		this.standardForm = standardForm;
+		
 	}
 	
 	public GenerateReportAction(JDialog standardForm)
@@ -43,6 +44,7 @@ public class GenerateReportAction extends AbstractAction
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+	
 		// TODO Auto-generated method stub
 		if(index < 0)
 		{
@@ -119,7 +121,7 @@ public class GenerateReportAction extends AbstractAction
 		}
 		//standardForm.dispose();
 		//JOptionPane.showMessageDialog(null, "Uspesno generisan izvestaj.", "Poruka", JOptionPane.INFORMATION_MESSAGE);
-				
+		datumDialog.dispose();
 	}
 
 }

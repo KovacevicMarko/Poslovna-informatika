@@ -17,7 +17,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
-import util.DatabaseModelHandler;import actions.main.form.GenericDialogActions;import actions.standard.form.AddAction;
+import util.DatabaseModelHandler;
+import actions.main.form.GenericDialogActions;
+import actions.standard.form.AddAction;
 import actions.standard.form.DatumAction;
 import actions.standard.form.DeleteAction;
 import actions.standard.form.FirstAction;
