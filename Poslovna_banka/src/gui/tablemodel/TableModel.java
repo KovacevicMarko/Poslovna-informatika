@@ -8,8 +8,10 @@ import java.util.LinkedHashMap;
 
 import javax.swing.table.DefaultTableModel;
 
+import util.DatabaseModelHandler;
 import util.SortUtils;
 import database.DBConnection;
+import databaseModel.DatabaseColumnModel;
 import databaseModel.DatabaseTableModel;
 
 public class TableModel extends DefaultTableModel 
@@ -32,9 +34,9 @@ public class TableModel extends DefaultTableModel
 			return;
 		}
 		
-		for (int i = 0; i < databaseTableModel.getcolumnsModel().size(); i++) 
+		for(DatabaseColumnModel column : databaseTableModel.getcolumnsModel())
 		{
-			this.addColumn(databaseTableModel.getcolumnsModel().get(i).getLabel());
+			this.addColumn(DatabaseModelHandler.ConvertColumnLabel(column.getLabel()));
 		}
 
 		this.databaseTableModel = databaseTableModel;

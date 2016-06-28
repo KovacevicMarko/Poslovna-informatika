@@ -31,8 +31,9 @@ public class Table extends JTable
 		try 
 		{
 			this.model.fillData();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		}
+		catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}
 		this.setRowSelectionAllowed(true);

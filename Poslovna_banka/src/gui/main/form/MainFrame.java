@@ -16,6 +16,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import util.DatabaseModelHandler;
 import actions.main.form.MenuBarAction;
 import database.DBConnection;
 import databaseModel.DatabaseColumnModel;
@@ -130,7 +131,7 @@ public class MainFrame extends JFrame
 			{
 				continue;
 			}
-			menuItem = new JMenuItem(databaseTableModel.getLabel());
+			menuItem = new JMenuItem(DatabaseModelHandler.ConvertTableLabel(databaseTableModel.getLabel()));
 			menuItem.addActionListener(new MenuBarAction(databaseTableModel));
 			orgMenu.add(menuItem);
 

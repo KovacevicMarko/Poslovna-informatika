@@ -36,7 +36,7 @@ public class NextFormAction extends AbstractAction
 	{
 		for(DatabaseTableModel tableModel : gui.main.form.MainFrame.getInstance().getTableModels())
 		{
-			if(tableModel.getLabel().equalsIgnoreCase(tableName))
+			if(tableModel.getCode().equalsIgnoreCase(tableName))
 			{
 				int selectedRow = ((GenericDialog)standardForm).getTable().getSelectedRow();
 				if(selectedRow > 0)

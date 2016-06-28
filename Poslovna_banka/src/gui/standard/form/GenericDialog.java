@@ -18,6 +18,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.miginfocom.swing.MigLayout;
+import util.DatabaseModelHandler;
 import util.EnumActiveMode;
 import actions.main.form.GenericDialogActions;
 import actions.standard.form.CommitAction;
@@ -138,7 +139,7 @@ public class GenericDialog extends JDialog
 		statusBar = new StatusBar();
 
 		setMode(EnumActiveMode.IZMENA);
-		statusBar.getLabelName().setText(databaseTableModel.getLabel());
+		statusBar.getLabelName().setText(DatabaseModelHandler.ConvertTableLabel(databaseTableModel.getLabel()));
 		
 		//add new panel for textfields
 		JPanel bottomPanel = new JPanel();
