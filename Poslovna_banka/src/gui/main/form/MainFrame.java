@@ -30,6 +30,7 @@ public class MainFrame extends JFrame
 	private JMenuBar menuBar;
 	private ArrayList<DatabaseTableModel> tableModels;
 	private String ulogovanKorisnik;
+	private String pibBanke;
 
 	private MainFrame()
 	{
@@ -158,6 +159,14 @@ public class MainFrame extends JFrame
 
 	public void setUlogovanKorisnik(String ulogovanKorisnik) {
 		this.ulogovanKorisnik = ulogovanKorisnik;
+	}
+
+	public String getPibBanke() {
+		return pibBanke;
+	}
+
+	public void setPibBanke(String pibBanke) {
+		this.pibBanke = pibBanke;
 	}
 
 }

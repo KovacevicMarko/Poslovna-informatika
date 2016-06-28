@@ -1,4 +1,6 @@
 package database;
+import gui.main.form.MainFrame;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -293,7 +295,11 @@ public class DBConnection {
 		ResultSet rset = selectStmt.executeQuery();
 		Boolean exists = false;
 		if(rset.next())
+		{
 			exists = true;
+			MainFrame.getInstance().setPibBanke(rset.getString("B_PIB"));
+		}
+			
 		rset.close();
 		return exists;
 
