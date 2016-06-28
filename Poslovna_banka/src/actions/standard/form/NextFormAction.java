@@ -2,6 +2,7 @@ package actions.standard.form;
 
 import gui.main.form.MainFrame;
 import gui.standard.form.GenericDialog;
+import gui.tablemodel.TableModel;
 
 import java.awt.event.ActionEvent;
 import java.util.Vector;
@@ -39,7 +40,7 @@ public class NextFormAction extends AbstractAction
 			if(tableModel.getCode().equalsIgnoreCase(tableName))
 			{
 				int selectedRow = ((GenericDialog)standardForm).getTable().getSelectedRow();
-				if(selectedRow > 0)
+				if(selectedRow > -1)
 				{
 					GenericDialog genDialog = new GenericDialog(MainFrame.getInstance(), tableModel);
 					String tableCode = ((GenericDialog) standardForm).getDatabaseTableModel().getCode();
@@ -57,11 +58,11 @@ public class NextFormAction extends AbstractAction
 							String columnName = DBConnection.getDatabaseWrapper().PrimaryKeyColumnname(tableCode, column.getCode());
 							String key = (String) ((GenericDialog) standardForm).getTable().getValueAt(selectedRow, i);
 
-							//TODO Add filter by parent key
-
+							genDialog = filterNextDialogByKey(key, genDialog, columnName);
 							genDialog.setVisible(true);
 							break;
 						}
+						i++;
 					}
 				}
 				else
@@ -77,11 +78,37 @@ public class NextFormAction extends AbstractAction
 
 	}
 	
-	private void filterNextDialogByKey(String key, GenericDialog dialog)
+	/**
+	 * Filter Child dialog by selected row in parent.
+	 * @param key
+	 * @param dialog
+	 * @param columnName
+	 * @return
+	 */
+	private GenericDialog filterNextDialogByKey(String key, GenericDialog dialog, String columnName)
 	{
-		for(int i=0; i<((GenericDialog)dialog).getTable().getRowCount(); i++)
+		GenericDialog retDialog = dialog;
+		for(int i=0; i<((GenericDialog)retDialog).getTable().getRowCount(); i++)
 		{
-			
+			Vector<DatabaseColumnModel> columns = DBConnection.getDatabaseWrapper().getColumnModelByTableCode(retDialog.getDatabaseTableModel().getCode());
+			int columnNumber = 0;
+			for(DatabaseColumnModel column : columns)
+			{
+				String value = (String) retDialog.getTable().getValueAt(i, columnNumber);
+				if(column.getCode().contains(columnName))
+				{
+					if(value!=null && !value.equalsIgnoreCase(key))
+					{
+						TableModel dtm = (TableModel) retDialog.getTable().getModel();
+						dtm.removeRow(i);
+						i--;
+						break;
+					}
+				}
+				columnNumber++;
+			}
 		}
+		
+		return retDialog;
 	}
 }

@@ -28,9 +28,6 @@ import databaseModel.DatabaseTableModel;
 public class GenericDialog extends JDialog 
 {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private InfoPanel infoPanel;
 	private StatusBar statusBar;
@@ -131,7 +128,7 @@ public class GenericDialog extends JDialog
 		}
 		//this.toolbar = databaseTableModel.getCode().equalsIgnoreCase("banka") ? new ToolBar(this,true) : new ToolBar(this,false);
 		this.add(this.toolbar,"dock north");
-		this.table = new Table(this.getdatabaseTableModel());
+		this.table = new Table(this.getDatabaseTableModel());
 		this.add(new TablePane(this.table),"grow, wrap");
 		this.infoPanel = new InfoPanel(databaseTableModel, this);
 		
@@ -215,14 +212,6 @@ public class GenericDialog extends JDialog
 			}
 		}
 		return button;
-	}
-	
-	public DatabaseTableModel getdatabaseTableModel() {
-		return databaseTableModel;
-	}
-
-	public void setdatabaseTableModel(DatabaseTableModel databaseTableModel) {
-		this.databaseTableModel = databaseTableModel;
 	}
 
 	public Table getTable() {
