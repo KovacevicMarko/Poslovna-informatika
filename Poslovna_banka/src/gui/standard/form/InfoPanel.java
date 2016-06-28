@@ -115,7 +115,7 @@ public class InfoPanel extends JPanel
 				
 				textFields.add(textField);
 				
-				if (column.getTableParent() != null)
+				if (column.getTableParent() != null && checkIfIsPravnoOrFizicko(dialog.getDatabaseTableModel().getCode()))
 				{
 					String parent = column.getTableParent();
 					JButton zoomBtn = new JButton("...");
@@ -151,6 +151,15 @@ public class InfoPanel extends JPanel
 			}
 		}
 		return null;
+	}
+	
+	private boolean checkIfIsPravnoOrFizicko(String tableName)
+	{
+		if(tableName.equalsIgnoreCase("FIZICKA_LICA") || tableName.equalsIgnoreCase("PRAVNA_LICA"))
+		{
+			return false;
+		}
+		return true;
 	}
 	
 	/**

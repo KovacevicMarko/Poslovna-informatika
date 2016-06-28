@@ -78,6 +78,7 @@ public class LoginDialog extends JDialog
 				{
 					if(DBConnection.getDatabaseWrapper().checkUsernameAndPassword(username, pass))
 					{
+						MainFrame.getInstance().setUlogovanKorisnik(username);
 						LoginDialog.this.dispose();
 					}
 					else 

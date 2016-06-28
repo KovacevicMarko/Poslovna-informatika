@@ -294,7 +294,7 @@ public class DBConnection {
 		Boolean exists = false;
 		if(rset.next())
 			exists = true;
-		
+		rset.close();
 		return exists;
 
 	}

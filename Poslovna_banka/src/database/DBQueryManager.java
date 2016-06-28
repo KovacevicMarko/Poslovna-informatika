@@ -55,9 +55,10 @@ public class DBQueryManager {
 			uplataStmt.setString(10,nalog.getRacunPrimaoca());
 			uplataStmt.setBigDecimal(11,new BigDecimal(nalog.getModelOdobrenja().doubleValue()));
 			uplataStmt.setString(12,nalog.getPozivNaBrojOdobrenja());
-			uplataStmt.setBigDecimal(13,nalog.getIznos());
-			uplataStmt.setString(14, nalog.getOznakaValute());
-			uplataStmt.setBoolean(15, nalog.isHitno());
+			uplataStmt.setString(13, nalog.getSifraPlacanja());
+			uplataStmt.setBigDecimal(14,nalog.getIznos());
+			uplataStmt.setString(15, nalog.getOznakaValute());
+			uplataStmt.setBoolean(16, nalog.isHitno());
 			
 			int res = uplataStmt.executeUpdate();
 			System.out.println(res);
@@ -100,10 +101,12 @@ public class DBQueryManager {
 		query.append("@racunPrimaoca = ?,");
 		query.append("@modelOdobrenja = ?,");
 		query.append("@pozivNaBrojOdobrenja = ?,");
+		query.append("@sifraPlacanja = ?,");
 		query.append("@iznos = ?,");
 		query.append("@oznakaValute = ?,");
-		query.append("@hitno = ?");
-
+		query.append("@hitno = ?,");
+		query.append("@tipGreske = ? output");
+		
 		return query.toString();
 	}
 	

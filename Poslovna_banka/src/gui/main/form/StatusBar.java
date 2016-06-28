@@ -17,17 +17,23 @@ public class StatusBar extends JPanel
 {
 	
 	private JLabel labelWelcome = new JLabel("Dobrodosli");
+	private JLabel zaposleniIme = new JLabel("");
 	private JLabel labelName = new JLabel("");
 	private JLabel labelActualState = new JLabel("");
 	private JLabel labelDateTime = new JLabel("");
 	
 	public StatusBar() 
 	{
-        setLayout(new GridLayout(1,4,1,1));
+        setLayout(new GridLayout(1,5,1,1));
                 
         labelWelcome.setHorizontalAlignment(SwingConstants.CENTER);
         labelWelcome.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
         add(labelWelcome);
+        
+        zaposleniIme.setHorizontalAlignment(SwingConstants.CENTER);
+        zaposleniIme.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+        zaposleniIme.setText(MainFrame.getInstance().getUlogovanKorisnik());
+        add(zaposleniIme);
         
         labelName.setHorizontalAlignment(SwingConstants.CENTER);
         labelName.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
@@ -46,12 +52,19 @@ public class StatusBar extends JPanel
       
 	}
 	
+	public JLabel getZaposleniIme() {
+		return zaposleniIme;
+	}
+
+	public void setZaposleniIme(JLabel zaposleniIme) {
+		this.zaposleniIme = zaposleniIme;
+	}
+
 	/**
 	 * Set actual state on state label.
 	 */
 	public void init()
-	{
-		
+	{	
 		if(GenericDialog.getMode() == EnumActiveMode.DODAVANJE)
 		{
 			labelActualState.setText("Rezim dodavanja");
