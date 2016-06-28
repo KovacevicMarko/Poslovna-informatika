@@ -197,7 +197,7 @@ public class NalogDialog extends JDialog {
 				// TODO napraviti checkBox za ovo
 				nalog.setHitno(false);
 
-				boolean proslo = XmlManager.generateDocument(nalog, dialog);
+				boolean proslo = XmlManager.generateDocumentNalog(nalog, dialog);
 				if (proslo) {
 					dialog.dispose();
 					JOptionPane.showMessageDialog(null, "Uspesno generisan nalog za prenos");
