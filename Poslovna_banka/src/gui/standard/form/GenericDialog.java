@@ -107,7 +107,7 @@ public class GenericDialog extends JDialog
 
 	protected void init(DatabaseTableModel databaseTableModel) 
 	{
-		setSize(800, 400);
+		setSize(950, 500);
 		setLayout(new MigLayout("fill"));
 		
 		String tableCode = databaseTableModel.getCode(); 

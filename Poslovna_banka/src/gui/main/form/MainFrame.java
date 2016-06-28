@@ -16,6 +16,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import util.CliringThread;
 import util.DatabaseModelHandler;
 import actions.main.form.MenuBarAction;
 import database.DBConnection;
@@ -28,6 +29,7 @@ public class MainFrame extends JFrame
 	public static MainFrame instance;
 	private JMenuBar menuBar;
 	private ArrayList<DatabaseTableModel> tableModels;
+	private String ulogovanKorisnik;
 
 	private MainFrame()
 	{
@@ -57,6 +59,9 @@ public class MainFrame extends JFrame
 		});
 		
 		setJMenuBar(menuBar);
+		
+		Thread cliringThread = new CliringThread();
+		cliringThread.start();
 
 	}
 
@@ -145,6 +150,14 @@ public class MainFrame extends JFrame
 
 	public void setTableModels(ArrayList<DatabaseTableModel> tableModels) {
 		this.tableModels = tableModels;
+	}
+
+	public String getUlogovanKorisnik() {
+		return ulogovanKorisnik;
+	}
+
+	public void setUlogovanKorisnik(String ulogovanKorisnik) {
+		this.ulogovanKorisnik = ulogovanKorisnik;
 	}
 
 }
