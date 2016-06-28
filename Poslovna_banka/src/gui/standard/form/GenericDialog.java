@@ -46,7 +46,7 @@ public class GenericDialog extends JDialog
 	private TableModel tableModel;
 	protected ToolBar toolbar;
 	private DatabaseTableModel databaseTableModel;
-	private static String[] readOnlyTables = new String[] {"DNEVNO_STANJE_RACUNA", "ANALITIKA_IZVODA", "UKIDANJE"};
+	private static String[] readOnlyTables = new String[] {"DNEVNO_STANJE_RACUNA", "ANALITIKA_IZVODA", "UKIDANJE", "KLIRING", "RTGS", "STAVKA_KLIRINGA"};
 
 	public static int getMode() 
 	{

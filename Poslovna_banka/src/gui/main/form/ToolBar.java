@@ -42,7 +42,7 @@ public class ToolBar extends JToolBar
 	private JTextField doTxt;
 	private JDialog dialog;
 	
-	private static String[] readOnlyTables = new String[] {"DNEVNO_STANJE_RACUNA", "ANALITIKA_IZVODA", "UKIDANJE"};
+	private static String[] readOnlyTables = new String[] {"DNEVNO_STANJE_RACUNA", "ANALITIKA_IZVODA", "UKIDANJE", "KLIRING", "RTGS", "STAVKA_KLIRINGA"};
 	
 	public ToolBar(JDialog dialog, boolean reportForBank, boolean reportForClient) 
 	{
@@ -89,7 +89,7 @@ public class ToolBar extends JToolBar
 		
 		final JPopupMenu menu = new JPopupMenu("Menu");
 		String actualTable = ((GenericDialog)dialog).getDatabaseTableModel().getCode();		
-		int popUpMeni = 0;
+		boolean hasNextTable = false;
 		
 		for(DatabaseTableModel tableModel : MainFrame.getInstance().getTableModels())
 		{
@@ -105,17 +105,21 @@ public class ToolBar extends JToolBar
 				{
 					if(foreignTables.containsKey(columnModel.getCode()))
 					{
-						String tableName = tableModel.getLabel();
+						String tableName = tableModel.getCode();
+						if(tableName.equals(((GenericDialog)dialog).getDatabaseTableModel().getCode()))
+						{
+							continue;
+						}
 						JMenuItem tab = new JMenuItem(DatabaseModelHandler.ConvertTableLabel(tableName));
 						tab.addActionListener(new NextFormAction(dialog, tableName));
 						menu.add(tab);
-						popUpMeni++;
+						hasNextTable = true;
 					}
 				}
 			}
 		}
 
-		if(popUpMeni>0)
+		if(hasNextTable)
 		{
 			nextFormButton.addActionListener( new ActionListener() 
 			{

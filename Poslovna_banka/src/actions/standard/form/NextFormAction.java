@@ -76,4 +76,12 @@ public class NextFormAction extends AbstractAction
 		}
 
 	}
+	
+	private void filterNextDialogByKey(String key, GenericDialog dialog)
+	{
+		for(int i=0; i<((GenericDialog)dialog).getTable().getRowCount(); i++)
+		{
+			
+		}
+	}
 }
