@@ -17,6 +17,7 @@ import javax.swing.JToolBar;
 import actions.standard.form.AddAction;
 import actions.standard.form.DatumAction;
 import actions.standard.form.DeleteAction;
+import actions.standard.form.ExportIzvod;
 import actions.standard.form.FirstAction;
 import actions.standard.form.GenerateReportAction;
 import actions.standard.form.HelpAction;
@@ -161,6 +162,13 @@ public class ToolBar extends JToolBar
 			
 		}
 		
+		if(((GenericDialog)dialog).getDatabaseTableModel().getCode().equalsIgnoreCase("PRAVNA_LICA")
+			|| ((GenericDialog)dialog).getDatabaseTableModel().getCode().equalsIgnoreCase("FIZICKA_LICA") ){
+				 			
+				 JButton exportButton = new JButton(new ExportIzvod(dialog));
+				 this.addSeparator();
+				 this.add(exportButton);
+		}
 		
 
 		this.setFloatable(false);

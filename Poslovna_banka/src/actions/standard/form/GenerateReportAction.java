@@ -4,6 +4,10 @@ import gui.dialogs.DatumDijalog;
 import gui.standard.form.GenericDialog;
 
 import java.awt.event.ActionEvent;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,8 +15,6 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-
-import com.sun.javafx.tk.Toolkit;
 
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -85,6 +87,13 @@ public class GenerateReportAction extends AbstractAction
 			      String status = (String) ((GenericDialog)standardForm).getTable().getModel().getValueAt(index, 0);
 			      String odTad=datumDialog.getOdTxt().getText();
 			      String doTad=datumDialog.getDoTxt().getText();
+			      
+			      if(!checkDate(odTad, doTad))
+			      {
+						JOptionPane.showMessageDialog(null, "Datum nije u dobrom formatu. Validan format je yyyy-MM-dd.", "Greska", JOptionPane.ERROR_MESSAGE);
+						return;
+			      }
+			      
 			      Map params = new HashMap(1);
 				  params.put("klijent", status );
 				  params.put("od", odTad );
@@ -115,13 +124,27 @@ public class GenerateReportAction extends AbstractAction
 				  dialog.setVisible(true);*/
 
 				
-				} catch (Exception ex) {
-				  ex.printStackTrace();
+				} 
+				catch (Exception ex) 
+				{
 				}
+				datumDialog.dispose();
 		}
 		//standardForm.dispose();
-		//JOptionPane.showMessageDialog(null, "Uspesno generisan izvestaj.", "Poruka", JOptionPane.INFORMATION_MESSAGE);
-		datumDialog.dispose();
+		JOptionPane.showMessageDialog(null, "Uspesno generisan izvestaj.", "Poruka", JOptionPane.INFORMATION_MESSAGE);
+		
+	}
+	
+	private boolean checkDate(String dateFrom, String dateTo)
+	{
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			Date inputDate = dateFormat.parse(dateFrom);
+			inputDate = dateFormat.parse(dateTo);
+		} catch (ParseException e) {
+			return false;
+		}
+		return true;
 	}
 
 }

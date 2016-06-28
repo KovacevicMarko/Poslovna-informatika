@@ -1,5 +1,7 @@
 package gui.tablemodel;
 
+import gui.main.form.MainFrame;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,10 +41,18 @@ public class TableModel extends DefaultTableModel
 		{
 			this.addColumn(DatabaseModelHandler.ConvertColumnLabel(column.getLabel()));
 		}
+		
 
 		this.databaseTableModel = databaseTableModel;
 		this.tableName = databaseTableModel.getCode();
-		this.query = "SELECT * FROM " + tableName;
+		if(tableName.equals("RACUNI") || tableName.equals("BANKA") || tableName.equals("ZAPOSLENI"))
+		{
+			this.query = "SELECT * FROM " + tableName + " WHERE B_PIB = '" + MainFrame.getInstance().getPibBanke() + "'";
+		}else
+		{
+			this.query = "SELECT * FROM " + tableName;
+		}
+		
 	}
 
 

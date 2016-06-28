@@ -73,7 +73,7 @@ public class XmlManager {
 		
 		try {
 			
-			JAXBContext context = JAXBContext.newInstance(NalogZaPlacanje.class);
+			JAXBContext context = JAXBContext.newInstance(IzvodStanja.class);
 			Marshaller m = context.createMarshaller();
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
