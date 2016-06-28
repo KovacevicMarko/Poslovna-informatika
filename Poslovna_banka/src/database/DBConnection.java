@@ -2,6 +2,7 @@ package database;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,6 +18,7 @@ public class DBConnection {
 	private static Connection conn;
 	private static DBConnection dbConnection;
 	private static DatabaseMetaData dbMetadata;
+	private static String zaposleniTableName = "[Poslovna].[dbo].[ZAPOSLENI]";
 
 	public static DBConnection getDatabaseWrapper() 
 	{
@@ -277,6 +279,24 @@ public class DBConnection {
 		}
 		return columns;
 		
+	}
+	
+	public boolean checkUsernameAndPassword(String usernameForm, String passwordForm) throws SQLException
+	{
+		String username = usernameForm;
+		String password = passwordForm;
+		
+		String query = "SELECT * FROM " + zaposleniTableName + " WHERE [KORSNICKO_IME_ZAPOSLENI] = ? AND [LOZINKA_ZAPOSLENI] = ?";
+		PreparedStatement selectStmt = DBConnection.getDatabaseWrapper().getConnection().prepareStatement(query);
+		selectStmt.setString(1, username);
+		selectStmt.setString(2, password);
+		ResultSet rset = selectStmt.executeQuery();
+		Boolean exists = false;
+		if(rset.next())
+			exists = true;
+		
+		return exists;
+
 	}
 	
 }

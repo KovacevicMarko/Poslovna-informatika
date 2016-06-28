@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     6/27/2016 11:43:24 PM                        */
+/* Created on:     06/28/2016 7:46:04 PM                        */
 /*==============================================================*/
 
 
@@ -152,6 +152,13 @@ alter table VALUTE
 go
 
 if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('ZAPOSLENI') and o.name = 'FK_ZAPOSLEN_ZAPOSLENI_BANKA')
+alter table ZAPOSLENI
+   drop constraint FK_ZAPOSLEN_ZAPOSLENI_BANKA
+go
+
+if exists (select 1
             from  sysindexes
            where  id    = object_id('ANALITIKA_IZVODA')
             and   name  = 'RELATIONSHIP_17_FK'
@@ -163,10 +170,10 @@ go
 if exists (select 1
             from  sysindexes
            where  id    = object_id('ANALITIKA_IZVODA')
-            and   name  = 'RTGS_PLACANJE_FK'
+            and   name  = 'RTGS_PLACANJE2_FK'
             and   indid > 0
             and   indid < 255)
-   drop index ANALITIKA_IZVODA.RTGS_PLACANJE_FK
+   drop index ANALITIKA_IZVODA.RTGS_PLACANJE2_FK
 go
 
 if exists (select 1
@@ -450,6 +457,22 @@ if exists (select 1
    drop table VRSTE_PLACANJA
 go
 
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('ZAPOSLENI')
+            and   name  = 'ZAPOSLENI_U_BANCI_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index ZAPOSLENI.ZAPOSLENI_U_BANCI_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('ZAPOSLENI')
+            and   type = 'U')
+   drop table ZAPOSLENI
+go
+
 /*==============================================================*/
 /* Table: ANALITIKA_IZVODA                                      */
 /*==============================================================*/
@@ -518,9 +541,9 @@ VA_IFRA ASC
 go
 
 /*==============================================================*/
-/* Index: RTGS_PLACANJE_FK                                      */
+/* Index: RTGS_PLACANJE2_FK                                     */
 /*==============================================================*/
-create index RTGS_PLACANJE_FK on ANALITIKA_IZVODA (
+create index RTGS_PLACANJE2_FK on ANALITIKA_IZVODA (
 ID_PORUKE ASC
 )
 go
@@ -878,6 +901,27 @@ create table VRSTE_PLACANJA (
 )
 go
 
+/*==============================================================*/
+/* Table: ZAPOSLENI                                             */
+/*==============================================================*/
+create table ZAPOSLENI (
+   IME_ZAPOSLENI        varchar(100)         null,
+   PREZIME_ZAPOSLENI    varchar(100)         null,
+   KORSNICKO_IME_ZAPOSLENI varchar(100)         not null,
+   B_PIB                char(10)             not null,
+   LOZINKA_ZAPOSLENI    varchar(100)         null,
+   constraint PK_ZAPOSLENI primary key nonclustered (KORSNICKO_IME_ZAPOSLENI)
+)
+go
+
+/*==============================================================*/
+/* Index: ZAPOSLENI_U_BANCI_FK                                  */
+/*==============================================================*/
+create index ZAPOSLENI_U_BANCI_FK on ZAPOSLENI (
+B_PIB ASC
+)
+go
+
 alter table ANALITIKA_IZVODA
    add constraint FK_ANALITIK_ANALITIKA_DNEVNO_S foreign key (BAR_RACUN, DSR_IZVOD)
       references DNEVNO_STANJE_RACUNA (BAR_RACUN, DSR_IZVOD)
@@ -981,5 +1025,10 @@ go
 alter table VALUTE
    add constraint FK_VALUTE_DRZAVNA_V_DRZAVA foreign key (DR_SIFRA)
       references DRZAVA (DR_SIFRA)
+go
+
+alter table ZAPOSLENI
+   add constraint FK_ZAPOSLEN_ZAPOSLENI_BANKA foreign key (B_PIB)
+      references BANKA (B_PIB)
 go
 

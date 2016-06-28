@@ -1,5 +1,6 @@
 package app;
 
+import gui.dialogs.LoginDialog;
 import gui.main.form.MainFrame;
 
 import javax.swing.UIManager;
@@ -13,7 +14,11 @@ public class Application
 		UIManager.put("OptionPane.noButtonText", "Ne");
 		UIManager.put("OptionPane.cancelButtonText", "Otkaži");
 		
-		MainFrame.getInstance().setVisible(true);
+		MainFrame frame = MainFrame.getInstance();
+		frame.setVisible(true);
+		
+		LoginDialog dialog = new LoginDialog(frame);
+		dialog.setVisible(true);
 	}
 
 }
