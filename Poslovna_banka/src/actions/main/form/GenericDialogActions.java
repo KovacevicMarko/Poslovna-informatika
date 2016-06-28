@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -34,11 +35,23 @@ public class GenericDialogActions
 	public void clearAllTextFields()
 	{
 		for(JTextField txtField : dialog.getInfoPanel().getTextFields())
-		{
-			txtField.setText("");
+		{			
+			txtField.setText(checkIfisDate(txtField.getText()));
 		}
 	}
-
+	
+	private String checkIfisDate(String text)
+	{
+		if(text.contains("/"))
+		{
+			DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+			Date today = Calendar.getInstance().getTime();        
+			String reportDate = df.format(today);
+			return reportDate;
+		}
+		return "";
+	}
+	
 	/**
 	 * Fill all text fields.
 	 */
@@ -240,7 +253,7 @@ public class GenericDialogActions
 		    	retVal.append(" AND");
 		    
 		    retVal.append(' ');
-		    retVal.append(dialog.getdatabaseTableModel().getCode());
+		    retVal.append(dialog.getDatabaseTableModel().getCode());
 		    retVal.append('.');
 		    retVal.append(entry.getKey());
 		    
@@ -279,7 +292,7 @@ public class GenericDialogActions
 		    }	    
 		}
 
-		String query = "SELECT * FROM " + dialog.getdatabaseTableModel().getCode() + " WHERE " + retVal.toString();
+		String query = "SELECT * FROM " + dialog.getDatabaseTableModel().getCode() + " WHERE " + retVal.toString();
 		
 		return query;
 	}

@@ -3,9 +3,16 @@ package database;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JOptionPane;
 
 import actions.main.form.GenericDialogActions;
+import exceptionHandler.SqlExceptionHandler;
 import gui.tablemodel.Table;
 import modelFromXsd.NalogZaPlacanje;
 
@@ -98,5 +105,46 @@ public class DBQueryManager {
 		
 	}
 	
+	public static void GenerateIzvod(String klijentId){
+		
+		List<String> racuni =  findRacuniByKlijentId(klijentId);
+		
+		
+		
+	}
+	
+	private static List<String> findRacuniByKlijentId(String klijentId){
+		
+		List<String> racuni = new ArrayList<String>();
+		
+		Connection conn = DBConnection.getDatabaseWrapper().getConnection();
+		String query = "Select BAR_RACUN from RACUNI Where KL_ID = " + klijentId;
+		Statement stmt = null;
+		
+		try{
+			stmt = conn.createStatement();
+			
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				racuni.add(rs.getString(1));
+			}
+			
+			stmt.close();
+				
+		}catch(SQLException e){
+			JOptionPane.showMessageDialog(null,SqlExceptionHandler.getHandledMessage("", e.getMessage().toString()));
+		}
+		finally{
+			try{
+				stmt.close();
+				return racuni;
+			}catch(Exception e){
+				e.printStackTrace();
+				return racuni;
+			}
+			
+		}
+		
+	}
 	
 }

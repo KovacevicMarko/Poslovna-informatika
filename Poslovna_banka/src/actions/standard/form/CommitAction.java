@@ -6,6 +6,8 @@ import gui.tablemodel.TableModel;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
@@ -40,7 +42,14 @@ public class CommitAction extends AbstractAction
 			 
 			if(GenericDialog.getMode() == EnumActiveMode.DODAVANJE)
 			{
-				addNewRowToTable();
+				if(isFizickoOrPravno(((GenericDialog)standardForm).getDatabaseTableModel().getCode()))
+				{
+					addNewClientRowToTable();
+				}
+				else
+				{
+					addNewRowToTable();
+				}
 				action.clearAllTextFields();
 				((GenericDialog) standardForm).setMode(EnumActiveMode.DODAVANJE);
 			}
@@ -84,6 +93,36 @@ public class CommitAction extends AbstractAction
 			JOptionPane.showMessageDialog(null, SqlExceptionHandler.getHandledMessage(tableCode, ex.getMessage()), "Greska", JOptionPane.ERROR_MESSAGE);	
 		}
 	}
+	/**
+	 * Add new row in ClientTable
+	 */
+	private void addNewClientRowToTable()
+	{
+		try
+		{	
+			TableModel tableModel = (TableModel)((GenericDialog) standardForm).getTable().getModel();
+			LinkedHashMap<String, String> mapForClient = new LinkedHashMap<String, String>();
+			
+			for (Map.Entry<String, String> entry : action.getAllValuesFromFields().entrySet())
+			{
+				//Add to client
+				if(entry.getKey().toLowerCase().contains("kl"))
+				{
+					mapForClient.put(entry.getKey(), entry.getValue());
+				}
+	    
+			}
+			tableModel.insertInClientRow(mapForClient);
+			int index = tableModel.insertRow(action.getAllValuesFromFields());
+			
+			((GenericDialog) standardForm).getTable().setRowSelectionInterval(index, index);		
+		}
+		catch(SQLException ex)
+		{
+			String tableCode = ((GenericDialog) standardForm).getDatabaseTableModel().getCode();
+			JOptionPane.showMessageDialog(null, SqlExceptionHandler.getHandledMessage(tableCode, ex.getMessage()), "Greska", JOptionPane.ERROR_MESSAGE);	
+		}
+	}
 	
 	private void updateRowInTable()
 	{
@@ -103,6 +142,13 @@ public class CommitAction extends AbstractAction
 			String tableCode = ((GenericDialog) standardForm).getDatabaseTableModel().getCode();
 			JOptionPane.showMessageDialog(null, SqlExceptionHandler.getHandledMessage(tableCode, ex.getMessage()), "Greska", JOptionPane.ERROR_MESSAGE);	
 		}
+	}
+	
+	private boolean isFizickoOrPravno(String tableCode)
+	{
+		if(tableCode.equalsIgnoreCase("FIZICKA_LICA") || tableCode.equalsIgnoreCase("PRAVNA_LICA"))
+			return true;
+		return false;
 	}
 }
 
