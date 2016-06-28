@@ -6,6 +6,9 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 
+import gui.standard.form.GenericDialog;
+import gui.tablemodel.Table;
+
 public class ExportIzvod extends AbstractAction{
 	
 	private JDialog standardForm;
@@ -20,6 +23,17 @@ public class ExportIzvod extends AbstractAction{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		GenericDialog dialog = (GenericDialog) standardForm;
+		Table table = dialog.getTable();
+		
+		if(table.getSelectedRow()!= -1){
+			int selectedRow = table.getSelectedRow();
+			String klijentId = (String) table.getValueAt(selectedRow,0);
+			
+			
+			
+			
+		}
 		
 	}
 }

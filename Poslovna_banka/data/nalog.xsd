@@ -12,7 +12,9 @@
             		maxOccurs="1" />
             	<xs:element name="datumPrijema" type="xs:date"
             		maxOccurs="1" minOccurs="1" />
-            	<xs:element name="mestoPrijema" type="xs:string" maxOccurs="1" minOccurs="1"></xs:element>
+            	<xs:element name="mestoPrijema" type="xs:string"
+            		maxOccurs="1" minOccurs="1">
+            	</xs:element>
             	<xs:element name="datumValute" type="xs:date"
             		maxOccurs="1" minOccurs="1" />
             	<xs:element name="racunDuznika" type="RacunType"
@@ -36,6 +38,9 @@
             	</xs:element>
             	<xs:element name="oznakaValute" type="Str3"
             		maxOccurs="1" minOccurs="1" />
+            	<xs:element name="sifraPlacanja" type="Str3"
+            		maxOccurs="1" minOccurs="1">
+            	</xs:element>
             	<xs:element name="hitno" type="xs:boolean" maxOccurs="1"
             		minOccurs="1" />
             </xs:sequence>
