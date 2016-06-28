@@ -29,6 +29,7 @@ import actions.standard.form.NextFormAction;
 import actions.standard.form.PickupAction;
 import actions.standard.form.PreviousAction;
 import actions.standard.form.RefreshAction;
+import actions.standard.form.RevokeBillAction;
 import actions.standard.form.SearchAction;
 import database.DBConnection;
 import databaseModel.DatabaseColumnModel;
@@ -81,7 +82,14 @@ public class ToolBar extends JToolBar
 		button = new JButton(new AddAction(dialog));
 		this.add(setButtonEnabledToFalse(button));
 
-		button = new JButton(new DeleteAction(dialog));
+		if(((GenericDialog)dialog).getDatabaseTableModel().getCode().equalsIgnoreCase("racuni"))
+		{
+			button = new JButton(new RevokeBillAction(dialog));
+		}
+		else
+		{
+			button = new JButton(new DeleteAction(dialog));
+		}
 		this.add(setButtonEnabledToFalse(button));
 		this.addSeparator();
 
