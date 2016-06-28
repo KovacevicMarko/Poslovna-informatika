@@ -14,11 +14,12 @@ import javax.xml.validation.SchemaFactory;
 
 import org.xml.sax.SAXException;
 
+import modelFromXsd.IzvodStanja;
 import modelFromXsd.NalogZaPlacanje;
 
 public class XmlManager {
 
-	public static boolean generateDocument(NalogZaPlacanje nalog,JDialog dialog) {
+	public static boolean generateDocumentNalog(NalogZaPlacanje nalog,JDialog dialog) {
 		
 		boolean proslo = true;
 		
@@ -44,7 +45,7 @@ public class XmlManager {
 
 	}
 
-	public static NalogZaPlacanje generateBean(File file) {
+	public static NalogZaPlacanje generateBeanNalog(File file) {
 		NalogZaPlacanje nalog = new NalogZaPlacanje();
 		
 		try {
@@ -64,6 +65,32 @@ public class XmlManager {
 		} finally {
 			return nalog;
 		}
+	}
+	
+	public static boolean generateDocumentIzvod(IzvodStanja izvod) {
+		
+		boolean proslo = true;
+		
+		try {
+			
+			JAXBContext context = JAXBContext.newInstance(NalogZaPlacanje.class);
+			Marshaller m = context.createMarshaller();
+			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			Schema schema = schemaFactory.newSchema(new File("./data/izvodStanja.xsd"));
+			m.setSchema(schema);
+			m.marshal(izvod, new File("./data/izvodi/"+izvod.getBrojRacuna()+ ".xml"));
+			
+		} catch (JAXBException e) {
+			proslo = false;
+			JOptionPane.showMessageDialog(null, "Nije prosla validacija xml seme");
+		} catch (SAXException e) {
+			proslo = false;
+			JOptionPane.showMessageDialog(null, "Nije prosla validacija xml seme");
+		}
+		
+		return proslo;
+
 	}
 
 }

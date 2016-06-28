@@ -6,6 +6,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 
+import database.DBQueryManager;
 import gui.standard.form.GenericDialog;
 import gui.tablemodel.Table;
 
@@ -30,8 +31,7 @@ public class ExportIzvod extends AbstractAction{
 			int selectedRow = table.getSelectedRow();
 			String klijentId = (String) table.getValueAt(selectedRow,0);
 			
-			
-			
+			DBQueryManager.ExportIzvoda(klijentId);
 			
 		}
 		

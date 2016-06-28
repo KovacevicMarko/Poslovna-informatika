@@ -1,5 +1,8 @@
 package gui.main.form;
 
+import gui.dialogs.DatumDijalog;
+import gui.standard.form.GenericDialog;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -14,10 +17,11 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
+import util.DatabaseModelHandler;
+import actions.main.form.GenericDialogActions;
 import actions.standard.form.AddAction;
 import actions.standard.form.DatumAction;
 import actions.standard.form.DeleteAction;
-import actions.standard.form.ExportIzvod;
 import actions.standard.form.FirstAction;
 import actions.standard.form.GenerateReportAction;
 import actions.standard.form.HelpAction;
@@ -32,8 +36,6 @@ import actions.standard.form.SearchAction;
 import database.DBConnection;
 import databaseModel.DatabaseColumnModel;
 import databaseModel.DatabaseTableModel;
-import gui.standard.form.GenericDialog;
-import util.DatabaseModelHandler;
 
 public class ToolBar extends JToolBar
 {
@@ -96,8 +98,6 @@ public class ToolBar extends JToolBar
 		final JButton nextFormButton = new JButton(new ImageIcon(getClass().getResource("/img/nextForm.gif")));
 		nextFormButton.setToolTipText("Sledeća forma");
 		
-		//JButton exportButton = new JButton(new ExportIzvod(dialog));
-
 		final JPopupMenu menu = new JPopupMenu("Menu");
 		String actualTable = ((GenericDialog)dialog).getDatabaseTableModel().getCode();		
 		boolean hasNextTable = false;
@@ -164,13 +164,7 @@ public class ToolBar extends JToolBar
 			
 		}
 		
-		if(((GenericDialog)dialog).getDatabaseTableModel().getCode().equalsIgnoreCase("PRAVNA_LICA")
-				|| ((GenericDialog)dialog).getDatabaseTableModel().getCode().equalsIgnoreCase("FIZICKA_LICA") ){
-			
-			JButton exportButton = new JButton(new ExportIzvod(dialog));
-			this.addSeparator();
-			this.add(exportButton);
-		}
+		
 
 		this.setFloatable(false);
 	}
