@@ -27,7 +27,7 @@ public class XmlManager {
 			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Schema schema = schemaFactory.newSchema(new File("./data/nalog.xsd"));
 			m.setSchema(schema);
-			m.marshal(nalog, new File("./data/nalozi/nalog" + nalog.getId() + ".xml"));
+			m.marshal(nalog, new File("./data/nalozi/nalog" + ".xml"));
 			
 		} catch (JAXBException e) {
 			e.printStackTrace();

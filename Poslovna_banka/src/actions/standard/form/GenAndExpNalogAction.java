@@ -49,7 +49,7 @@ public class GenAndExpNalogAction extends AbstractAction {
 			nalog.setDuznik(klijentId);
 			nalog.setOznakaValute(valutaId);
 			nalog.setRacunDuznika(racunId);
-			nalog.setId("1");
+			//nalog.setId("1");
 			
 			//XmlManager.generateDocument(nalog);
 			
