@@ -1,5 +1,6 @@
 package gui.main.form;
 
+import gui.dialogs.DatumDijalog;
 import gui.standard.form.GenericDialog;
 
 import java.awt.event.ActionEvent;
@@ -16,7 +17,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
-import actions.standard.form.AddAction;
+import util.DatabaseModelHandler;import actions.main.form.GenericDialogActions;import actions.standard.form.AddAction;
+import actions.standard.form.DatumAction;
 import actions.standard.form.DeleteAction;
 import actions.standard.form.FirstAction;
 import actions.standard.form.GenerateReportAction;
@@ -105,7 +107,7 @@ public class ToolBar extends JToolBar
 					if(foreignTables.containsKey(columnModel.getCode()))
 					{
 						String tableName = tableModel.getLabel();
-						JMenuItem tab = new JMenuItem(tableName);
+						JMenuItem tab = new JMenuItem(DatabaseModelHandler.ConvertTableLabel(tableName));
 						tab.addActionListener(new NextFormAction(dialog, tableName));
 						menu.add(tab);
 						popUpMeni++;
@@ -137,20 +139,14 @@ public class ToolBar extends JToolBar
 		{
 			button = new JButton(new GenerateReportAction(dialog));
 			this.add(button);
+			
 		}
-		
 		if(reportForClient)
 		{
-			button = new JButton(new GenerateReportAction(dialog));
-			odLbl=new JLabel("Od:");
-			doLbl=new JLabel("Do:");
-			odTxt=new JTextField();
-			doTxt=new JTextField();
+
+			button = new JButton(new DatumAction(dialog));
 			this.add(button);
-			this.add(odLbl);
-			this.add(odTxt);
-			this.add(doLbl);
-			this.add(doTxt);
+			
 			
 		}
 		

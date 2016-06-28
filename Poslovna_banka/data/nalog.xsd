@@ -4,27 +4,40 @@
     <xs:element name="nalogZaPlacanje">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="id" type="Str50"/>
-                <xs:element name="duznik" type="Str255" minOccurs="0"/>
-                <xs:element name="svrhaPlacanja" type="Str255"/>
-                <xs:element name="primalac" type="Str255" minOccurs="0"/>
-                <xs:element name="datumNaloga" type="xs:date" maxOccurs="1" minOccurs="0"/>
-                <xs:element name="datumValute" type="xs:date"/>
-                <xs:element name="racunDuznika" type="RacunType" minOccurs="0"/>
-                <xs:element name="modelZaduzenja" type="Num2" minOccurs="0"/>
-                <xs:element name="pozivNaBrojZaduzenja" type="Str20" minOccurs="0"/>
-                <xs:element name="racunPrimaoca" type="RacunType" minOccurs="0"/>
-                <xs:element name="modelOdobrenja" type="Num2" minOccurs="0"/>
-                <xs:element name="pozivNaBrojOdobrenja" type="Str20" minOccurs="0"/>
-                <xs:element name="iznos">
-                    <xs:simpleType>
-                        <xs:restriction base="Dec15d2">
-                            <xs:minExclusive value="0"/>
-                        </xs:restriction>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="oznakaValute" type="Str3"/>
-                <xs:element name="hitno" type="xs:boolean"/>
+            	<xs:element name="duznik" type="Str255" minOccurs="1"
+            		maxOccurs="1" />
+            	<xs:element name="svrhaPlacanja" type="Str255"
+            		maxOccurs="1" minOccurs="1" />
+            	<xs:element name="primalac" type="Str255" minOccurs="1"
+            		maxOccurs="1" />
+            	<xs:element name="datumPrijema" type="xs:date"
+            		maxOccurs="1" minOccurs="1" />
+            	<xs:element name="mestoPrijema" type="xs:string" maxOccurs="1" minOccurs="1"></xs:element>
+            	<xs:element name="datumValute" type="xs:date"
+            		maxOccurs="1" minOccurs="1" />
+            	<xs:element name="racunDuznika" type="RacunType"
+            		minOccurs="1" maxOccurs="1" />
+            	<xs:element name="modelZaduzenja" type="Num2"
+            		minOccurs="1" maxOccurs="1" />
+            	<xs:element name="pozivNaBrojZaduzenja" type="Str20"
+            		minOccurs="1" maxOccurs="1" />
+            	<xs:element name="racunPrimaoca" type="RacunType"
+            		minOccurs="1" maxOccurs="1" />
+            	<xs:element name="modelOdobrenja" type="Num2"
+            		minOccurs="1" maxOccurs="1" />
+            	<xs:element name="pozivNaBrojOdobrenja" type="Str20"
+            		minOccurs="1" maxOccurs="1" />
+            	<xs:element name="iznos" maxOccurs="1" minOccurs="1">
+            		<xs:simpleType>
+            			<xs:restriction base="Dec15d2">
+            				<xs:minExclusive value="0" />
+            			</xs:restriction>
+            		</xs:simpleType>
+            	</xs:element>
+            	<xs:element name="oznakaValute" type="Str3"
+            		maxOccurs="1" minOccurs="1" />
+            	<xs:element name="hitno" type="xs:boolean" maxOccurs="1"
+            		minOccurs="1" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>

@@ -11,6 +11,7 @@ import javax.xml.bind.JAXBException;
 
 import org.xml.sax.SAXException;
 
+import database.DBQueryManager;
 import modelFromXsd.NalogZaPlacanje;
 import xml.XMLFileFilter;
 import xml.XmlManager;
@@ -37,16 +38,16 @@ public class ImportNalogAction extends AbstractAction {
 		
 		if(fc.showOpenDialog(standardForm) == JFileChooser.APPROVE_OPTION) {
 
-			try {
-				 nalog = XmlManager.generateBean(fc.getSelectedFile());
-				 				 
-			} catch (JAXBException e0) {
-				
-				e0.printStackTrace();
-			} catch (SAXException e1) {
-				
-				e1.printStackTrace();
-			}
+		   nalog = XmlManager.generateBean(fc.getSelectedFile());
+		   if(nalog!=null){
+			   
+			   
+			   DBQueryManager.importNalog(nalog);
+			   
+			   
+		   }
+		   
+		   
 			
 		} else {
 			fc.setVisible(false);

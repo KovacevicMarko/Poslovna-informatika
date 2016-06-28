@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import util.DatabaseModelHandler;
 import net.miginfocom.swing.MigLayout;
 import actions.main.form.ZoomAction;
 import databaseModel.DatabaseColumnModel;
@@ -38,7 +39,8 @@ public class InfoPanel extends JPanel
 		this.setLayout(new MigLayout("gapx 15px"));				
 		for(DatabaseColumnModel column : tables.getcolumnsModel())
 		{
-			String labelText = column.isNullable()? column.getLabel() : column.getLabel() + "*" ;
+			String columnName = DatabaseModelHandler.ConvertColumnLabel(column.getLabel());
+			String labelText = column.isNullable()? columnName : columnName + " *" ;
 			JLabel labelName = new JLabel(labelText);
 			this.add(labelName);
 			JTextField textField;
