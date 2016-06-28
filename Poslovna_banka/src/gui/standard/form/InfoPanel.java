@@ -56,7 +56,6 @@ public class InfoPanel extends JPanel
 				{
 					String parent = column.getTableParent();
 					JButton zoomBtn = new JButton("...");
-					System.out.println("MOde je ->" + GenericDialog.getMode());
 					for(DatabaseTableModel tableModel : MainFrame.getInstance().getTableModels())
 					{
 						if(tableModel.getCode().contains(parent))
@@ -101,6 +100,7 @@ public class InfoPanel extends JPanel
 				}
 				else
 				{
+					if(column.getLength()!=0)
 					textField.setToolTipText("Maksimalna duzina je :" + column.getLength()+ " karaktera.");
 				}
 				

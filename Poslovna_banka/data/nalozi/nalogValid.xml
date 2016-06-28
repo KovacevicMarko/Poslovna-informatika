@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <nalogZaPlacanje xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:noNamespaceSchemaLocation="file:/C:/Users/Milos/Dropbox/knjizurine/XML%20scheme/nalog.xsd">
-    <id>id0</id>
     <duznik>duznik0</duznik>
     <svrhaPlacanja>svrhaPlacanja0</svrhaPlacanja>
     <primalac>primalac0</primalac>

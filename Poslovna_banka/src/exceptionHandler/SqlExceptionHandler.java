@@ -43,9 +43,17 @@ public class SqlExceptionHandler
 		if(message != null){
 			if(message.startsWith(primaryKey))
 			{	
-				value = message.split("\\(")[1];
-				value = value.split("\\)")[0];
-				retVal = tableCode + " " + "sa oznakom: " + " " + value + " " + "vec postoji u bazi podataka.";	
+				try
+				{
+					value = message.split("\\(")[1];
+					value = value.split("\\)")[0];
+					retVal = tableCode + " " + "sa oznakom: " + " " + value + " " + "vec postoji u bazi podataka.";	
+				}
+				catch(Exception e)
+				{
+					retVal = "Ne mozete da menjate primarni kljuc.";
+				}
+				
 			}
 			
 			else if(message.startsWith(deleteReferncedFK))

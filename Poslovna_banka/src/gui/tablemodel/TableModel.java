@@ -71,8 +71,17 @@ public class TableModel extends DefaultTableModel
 
 		while (rset.next()) 
 		{
-			for (int i = 0; i < databaseTableModel.getcolumnsModel().size(); i++) {
-				colValues[i] = rset.getString(databaseTableModel.getcolumnsModel().get(i).getCode());
+			for (int i = 0; i < databaseTableModel.getcolumnsModel().size(); i++) 
+			{
+				if(databaseTableModel.getcolumnsModel().get(i).getType().equals("bit"))
+				{
+					String flag = rset.getString(databaseTableModel.getcolumnsModel().get(i).getCode()).equals("1") ? "da" : "ne";
+					colValues[i] = flag;
+				}
+				else
+				{
+					colValues[i] = rset.getString(databaseTableModel.getcolumnsModel().get(i).getCode());
+				}
 			}
 			addRow(prepareRow(colValues));
 		}
@@ -93,8 +102,17 @@ public class TableModel extends DefaultTableModel
 		
 		while (rset.next()) 
 		{
-			for (int i = 0; i < databaseTableModel.getcolumnsModel().size(); i++) {
-				colValues[i] = rset.getString(databaseTableModel.getcolumnsModel().get(i).getCode());
+			for (int i = 0; i < databaseTableModel.getcolumnsModel().size(); i++) 
+			{
+				if(databaseTableModel.getcolumnsModel().get(i).getType().equals("bit"))
+				{
+					String flag = rset.getString(databaseTableModel.getcolumnsModel().get(i).getCode()).equals("1") ? "da" : "ne";
+					colValues[i] = flag;
+				}
+				else
+				{
+					colValues[i] = rset.getString(databaseTableModel.getcolumnsModel().get(i).getCode());
+				}
 			}
 			addRow(prepareRow(colValues));
 		}
