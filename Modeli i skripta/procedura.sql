@@ -77,10 +77,10 @@ begin
 		from BANKA b
 		where b.B_PIB = @bankaRacunaDuznika);
 
-	set @racunBankeDuznika = (select b.B_OBRACUNSKI_RACUN
+	set @racunBankePrimaoca = (select b.B_OBRACUNSKI_RACUN
 		from BANKA b
 		where b.B_PIB = @bankaRacunaPrimaoca);
-
+	
 	if (@racunDuznikaId is not null) and (@racunPrimaocaId is not null)
 	begin
 		-------------------------------- ZA DUZNIKA ---------------------------
@@ -413,6 +413,8 @@ begin
 						from KLIRING k
 						where k.CLR_DATUM_KLIRINGA > GETDATE()
 						order by k.CLR_DATUM_KLIRINGA asc);
+			
+				set @racunBankePrimaoca = (select b.B_OBRACUNSKI_RACUN from BANKA b where b.B_PIB = @bankaRacunaPrimaoca);
 				
 			INSERT INTO [dbo].[STAVKA_KLIRINGA]
 					   ([SK_ID_STAVKE]
@@ -471,5 +473,4 @@ begin
 		set @tipGreske = 8;
 	end
 	
-
 end

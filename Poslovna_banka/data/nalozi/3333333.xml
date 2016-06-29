@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <nalogZaPlacanje>
     <duznik>3         </duznik>
-    <svrhaPlacanja>asjkf</svrhaPlacanja>
-    <primalac>askldj</primalac>
+    <svrhaPlacanja>aswdaw</svrhaPlacanja>
+    <primalac>dwa</primalac>
     <datumPrijema>2016-06-29+02:00</datumPrijema>
     <mestoPrijema>Novi Sad</mestoPrijema>
     <datumValute>2016-06-29+02:00</datumValute>
     <racunDuznika>3333333</racunDuznika>
-    <modelZaduzenja>97</modelZaduzenja>
-    <pozivNaBrojZaduzenja>12345</pozivNaBrojZaduzenja>
-    <racunPrimaoca>1111111</racunPrimaoca>
-    <modelOdobrenja>97</modelOdobrenja>
-    <pozivNaBrojOdobrenja>12345</pozivNaBrojOdobrenja>
-    <iznos>100</iznos>
+    <modelZaduzenja>12</modelZaduzenja>
+    <pozivNaBrojZaduzenja>213</pozivNaBrojZaduzenja>
+    <racunPrimaoca>2131233</racunPrimaoca>
+    <modelOdobrenja>43</modelOdobrenja>
+    <pozivNaBrojOdobrenja>543</pozivNaBrojOdobrenja>
+    <iznos>11.00</iznos>
     <oznakaValute>RSD</oznakaValute>
     <sifraPlacanja>189</sifraPlacanja>
     <hitno>true</hitno>

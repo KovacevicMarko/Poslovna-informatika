@@ -32,8 +32,6 @@ public class DBQueryManager {
 
 		Connection conn = DBConnection.getDatabaseWrapper().getConnection();
 		
-		
-		String query = createQueryForImportNalog();
 		//PreparedStatement uplataStmt = null;
 		CallableStatement uplataStmt = null;
 		
@@ -97,31 +95,6 @@ public class DBQueryManager {
 		
 	}
 
-	private static String createQueryForImportNalog() {
-		
-		StringBuilder query = new StringBuilder();
-
-		query.append("EXECUTE Uplata ");
-		query.append("@duznik = ?,");
-		query.append("@svrhaPlacanja = ?,");
-		query.append("@primalac = ?,");
-		query.append("@datumPrijema = ?,");
-		query.append("@mestoPrijema = ?,");
-		query.append("@datumValute = ?,");
-		query.append("@racunDuznika = ?,");
-		query.append("@modelZaduzenja = ?,");
-		query.append("@pozivNaBrojZaduzenja = ?,");
-		query.append("@racunPrimaoca = ?,");
-		query.append("@modelOdobrenja = ?,");
-		query.append("@pozivNaBrojOdobrenja = ?,");
-		query.append("@sifraPlacanja = ?,");
-		query.append("@iznos = ?,");
-		query.append("@oznakaValute = ?,");
-		query.append("@hitno = ?,");
-		query.append("@tipGreske = ? output,");
-		
-		return query.toString();
-	}
 	
 	private static void generateAndExportMT103(String IdPorukeRTGS){
 		MT103 mt103 = new MT103();
@@ -203,11 +176,25 @@ public class DBQueryManager {
 	
 	
 	
-	public static void revokeBill(Table table){
-		
-		int selectedRow = table.getSelectedRow();
-		
-		
+	public static void callKliring(){
+		CallableStatement stmt = null;
+		try {
+			stmt = DBConnection.getDatabaseWrapper().getConnection().prepareCall("{ call KliringProcedura}");
+			stmt.executeUpdate();			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				stmt.close();
+				DBConnection.getDatabaseWrapper().getConnection().commit();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 	}
 	
 	public static void ExportIzvoda(String klijentId){
