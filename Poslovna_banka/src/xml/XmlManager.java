@@ -15,6 +15,7 @@ import javax.xml.validation.SchemaFactory;
 import org.xml.sax.SAXException;
 
 import modelFromXsd.IzvodStanja;
+import modelFromXsd.MT103;
 import modelFromXsd.NalogZaPlacanje;
 
 public class XmlManager {
@@ -80,6 +81,32 @@ public class XmlManager {
 			Schema schema = schemaFactory.newSchema(new File("./data/izvodStanja.xsd"));
 			m.setSchema(schema);
 			m.marshal(izvod, new File("./data/izvodi/"+izvod.getBrojRacuna()+ ".xml"));
+			
+		} catch (JAXBException e) {
+			proslo = false;
+			JOptionPane.showMessageDialog(null, "Nije prosla validacija xml seme");
+		} catch (SAXException e) {
+			proslo = false;
+			JOptionPane.showMessageDialog(null, "Nije prosla validacija xml seme");
+		}
+		
+		return proslo;
+
+	}
+	
+public static boolean generateDocumentMT103(MT103 mt103) {
+		
+		boolean proslo = true;
+		
+		try {
+			
+			JAXBContext context = JAXBContext.newInstance(MT103.class);
+			Marshaller m = context.createMarshaller();
+			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			Schema schema = schemaFactory.newSchema(new File("./data/MT103.xsd"));
+			m.setSchema(schema);
+			m.marshal(mt103, new File("./data/MT103/"+mt103.getIdPoruke()+".xml"));
 			
 		} catch (JAXBException e) {
 			proslo = false;
