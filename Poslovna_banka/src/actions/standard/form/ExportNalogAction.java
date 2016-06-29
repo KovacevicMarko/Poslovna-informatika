@@ -7,21 +7,20 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 
 import actions.main.form.GenericDialogActions;
-import database.DBQueryManager;
 import gui.dialogs.NalogDialog;
-import gui.standard.form.GenericDialog;
 import gui.standard.form.concrete.RacunDialog;
 import gui.tablemodel.Table;
 import modelFromXsd.NalogZaPlacanje;
 
-public class RevokeBillAction extends AbstractAction
-{
+public class ExportNalogAction extends AbstractAction {
+	
+
 	private JDialog standardForm;
 	
-	public RevokeBillAction(JDialog standardForm)
+	public ExportNalogAction(JDialog standardForm)
 	{
-		putValue(SMALL_ICON, new ImageIcon(getClass().getResource("/img/remove.gif")));
-		putValue(SHORT_DESCRIPTION, "Ukinite racun");
+		putValue(SMALL_ICON, new ImageIcon(getClass().getResource("/img/export.png")));
+		putValue(SHORT_DESCRIPTION, "Exportuj nalog");
 		this.standardForm = standardForm;
 		
 	}
@@ -48,10 +47,12 @@ public class RevokeBillAction extends AbstractAction
 			nalog.setRacunDuznika(racunId);			
 			//XmlManager.generateDocument(nalog);
 			
-			NalogDialog nDialog = new NalogDialog(nalog,true);
+			NalogDialog nDialog = new NalogDialog(nalog,false);
 			nDialog.setVisible(true);
 		}
 		
 	}
 
+	
+	
 }

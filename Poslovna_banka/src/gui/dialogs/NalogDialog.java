@@ -10,6 +10,7 @@ import java.util.GregorianCalendar;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -63,11 +64,19 @@ public class NalogDialog extends JDialog {
 
 	JLabel oznakaValuteLbl = new JLabel("Oznaka valute:");
 	JTextField oznakaValuteTxt = new JTextField();
+	
+	JLabel sifraPlacanjaLbl = new JLabel("Sifra placanja:");
+	JTextField sifraPlacanjaTxt = new JTextField();
+	
+	JLabel hitnoLbl = new JLabel("Hitno?");
+	JCheckBox hitnoCbx = new JCheckBox();
 
 	private NalogZaPlacanje nalog;
+	private boolean isUkidanje;
 
-	public NalogDialog(NalogZaPlacanje nalog) {
+	public NalogDialog(NalogZaPlacanje nalog,boolean isUkidanje) {
 		this.nalog = nalog;
+		this.isUkidanje = isUkidanje;
 		this.setSize(200, 400);
 		setTitle("Nalog za prenos");
 		setLocationRelativeTo(this.getParent());
@@ -78,7 +87,12 @@ public class NalogDialog extends JDialog {
 	private void initGUI() {
 
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(11, 2, 10, 10));
+		if(isUkidanje){
+			panel.setLayout(new GridLayout(12, 2, 10, 10));
+		}
+		else{
+			panel.setLayout(new GridLayout(14, 2, 10, 10));
+		}
 		initPanel(panel, nalog);
 
 		JPanel buttonPanel = new JPanel();
@@ -129,11 +143,24 @@ public class NalogDialog extends JDialog {
 
 		panel.add(brojOdobrenjaLbl);
 		panel.add(brojOdobrenjaTxt);
+		
+		if(!isUkidanje){
+			panel.add(iznosLbl);
+			panel.add(iznosTxt);
+		}
 
 		oznakaValuteTxt.setText(nalog.getOznakaValute());
 		oznakaValuteTxt.setEditable(false);
 		panel.add(oznakaValuteLbl);
 		panel.add(oznakaValuteTxt);
+		
+		panel.add(sifraPlacanjaLbl);
+		panel.add(sifraPlacanjaTxt);
+		
+		if(!isUkidanje){
+			panel.add(hitnoLbl);
+			panel.add(hitnoCbx);
+		}
 	}
 	
 	private void initButtonPanel(JPanel buttonPanel){
@@ -193,16 +220,22 @@ public class NalogDialog extends JDialog {
 				nalog.setRacunPrimaoca(racunPrimaocaTxt.getText());
 				nalog.setModelOdobrenja(new BigInteger(modelOdobrenjeTxt.getText()));
 				nalog.setPozivNaBrojOdobrenja(brojOdobrenjaTxt.getText());
-				nalog.setIznos(new BigDecimal(1.00));
-				nalog.setSifraPlacanja("189");
+				nalog.setSifraPlacanja(sifraPlacanjaTxt.getText());
 				// TODO napraviti checkBox za ovo
-				nalog.setHitno(false);
+				if(isUkidanje){
+					nalog.setIznos(new BigDecimal(1.00));
+					nalog.setHitno(false);
+				}
+				else{
+					nalog.setIznos(new BigDecimal(iznosTxt.getText()));
+					nalog.setHitno(hitnoCbx.isSelected());
+				}
 
 				boolean proslo = XmlManager.generateDocumentNalog(nalog, dialog);
 				if (proslo) {
 					dialog.dispose();
-					DBQueryManager.importNalog(nalog, true);
 					JOptionPane.showMessageDialog(null, "Uspesno generisan nalog za prenos");
+					DBQueryManager.importNalog(nalog, isUkidanje);
 				}
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(null, "Niste popunili potrebna polja!");
