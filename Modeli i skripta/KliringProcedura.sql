@@ -17,5 +17,20 @@ BEGIN
 	-- Kad se dobije odgovor od narodne banke, treba update-ovati stanja
 	-- S obzirom da nemamo narodnu banku, update-ovanje nije realizovano
 	-- ali moze da se realizuje (videti kod u proceduri za uplatu)
+
+
+
+	 INSERT INTO [dbo].[KLIRING]
+           ([CLR_ID_KLIRINGA]
+           ,[CLR_DATUM_KLIRINGA])
+     VALUES
+           (convert(varchar(50), NEWID())
+           ,DATEADD(day,1,GETDATE()))
+
+
+
+
+
+
 END
 GO
