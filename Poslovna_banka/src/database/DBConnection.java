@@ -1,5 +1,6 @@
 package database;
 import gui.main.form.MainFrame;
+import gui.standard.form.concrete.RacunDialog;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -8,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
@@ -21,6 +23,7 @@ public class DBConnection {
 	private static DBConnection dbConnection;
 	private static DatabaseMetaData dbMetadata;
 	private static String zaposleniTableName = "[Poslovna].[dbo].[ZAPOSLENI]";
+	private static String analitikaTableName = "[ANALITIKA_IZVODA]"; 
 
 	public static DBConnection getDatabaseWrapper() 
 	{
@@ -282,6 +285,7 @@ public class DBConnection {
 		return columns;
 		
 	}
+
 	
 	public boolean checkUsernameAndPassword(String usernameForm, String passwordForm) throws SQLException
 	{

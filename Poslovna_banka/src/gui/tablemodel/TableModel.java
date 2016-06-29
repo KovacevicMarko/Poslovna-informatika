@@ -24,6 +24,7 @@ public class TableModel extends DefaultTableModel
 	private DatabaseTableModel databaseTableModel;
 	private String query;
 	private static String ClientTableName = "KLIJENT";
+	private static String AnalyticsTableName = "ANALITIKA_IZVODA";
 	
 	public TableModel(Object[] colNames, int rowCount) 
 	{
@@ -48,7 +49,14 @@ public class TableModel extends DefaultTableModel
 		if(tableName.equals("RACUNI") || tableName.equals("BANKA") || tableName.equals("ZAPOSLENI"))
 		{
 			this.query = "SELECT * FROM " + tableName + " WHERE B_PIB = '" + MainFrame.getInstance().getPibBanke() + "'";
-		}else
+		}
+		else if(tableName.equals("ANALITIKA_IZVODA"))
+		{
+			this.query = "SELECT * FROM " + AnalyticsTableName 
+					+ "WHERE BAR_RACUN = (SELECT RACUNI.BAR_RACUN FROM RACUNI WHERE RACUNI.B_PIB = '" 
+					+ MainFrame.getInstance().getPibBanke() + "'"; 
+		}
+		else
 		{
 			this.query = "SELECT * FROM " + tableName;
 		}

@@ -41,9 +41,9 @@ public class ImportNalogAction extends AbstractAction {
 
 		   nalog = XmlManager.generateBeanNalog(fc.getSelectedFile());
 		   if(nalog!=null){
+			   System.out.println(nalog.getRacunDuznika() + " " + nalog.getRacunPrimaoca() + " " + nalog.getIznos() );
 			   
-			   
-			   DBQueryManager.importNalog(nalog);
+			   //DBQueryManager.importNalog(nalog);
 			   
 			   
 		   }

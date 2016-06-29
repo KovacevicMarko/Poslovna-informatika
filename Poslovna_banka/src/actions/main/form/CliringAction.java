@@ -11,6 +11,7 @@ public class CliringAction
 
 	public void ShohMessage()
 	{
+		//TODO pozvati proceduru
 		JOptionPane.showMessageDialog(null, "Kliring izvrsen!");
 	}
 }
