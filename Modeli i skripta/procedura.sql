@@ -20,7 +20,8 @@ create procedure Uplata
 	@hitno bit,
 	@zaUkidanje bit,
 	@tipGreske integer output,
-	@rtgsID varchar(50) output
+	@rtgsID varchar(50) output,
+	@clearingID varchar(50) output
 as
 begin
 	set @rtgsID = '';
@@ -409,7 +410,7 @@ begin
 						@primalac,@datumPrijema,@datumValute,@racunDuznika,@modelZaduzenja,@pozivNaBrojZaduzenja,@racunPrimaoca,
 						@modelOdobrenja,@pozivNaBrojOdobrenja,@hitno,@iznos,@tipgreske,'E');
 				
-				declare @idKliringa varchar(50) = (select top 1 CLR_ID_KLIRINGA
+				set @clearingID = (select top 1 CLR_ID_KLIRINGA
 						from KLIRING k
 						where k.CLR_DATUM_KLIRINGA > GETDATE()
 						order by k.CLR_DATUM_KLIRINGA asc);
@@ -434,7 +435,7 @@ begin
 						   ,@racunPrimaoca
 						   ,@dsrId2
 						   ,@brojStavke
-						   ,@idKliringa
+						   ,@clearingID
 					   ,@swiftDuznika
 					   ,@racunBankeDuznika
 					   ,@swiftPrimaoca

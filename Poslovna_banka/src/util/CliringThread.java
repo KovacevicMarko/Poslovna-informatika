@@ -8,7 +8,7 @@ public class CliringThread extends Thread
 {
 	private CliringAction cliringAction;
 	
-	private String[] timeToSendCliring = new String[]{"22:10", "22:00"};
+	private String[] timeToSendCliring = new String[]{"23:40", "22:00"};
 	
 	public CliringThread()
 	{

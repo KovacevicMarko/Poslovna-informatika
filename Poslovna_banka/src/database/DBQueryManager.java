@@ -89,6 +89,7 @@ public class DBQueryManager {
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, SqlExceptionHandler.getHandledMessage("ANALITIKA_IZVODA", e1.getMessage()));
 		}
 		
 		finally {

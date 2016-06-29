@@ -8,4 +8,20 @@
     <prometUkorist>1200.00</prometUkorist>
     <prometNaTeret>0.00</prometNaTeret>
     <novoStanje>7200.00</novoStanje>
+    <stavka>
+        <duznik>3         </duznik>
+        <svrhaPlacanja>asdlkjfal</svrhaPlacanja>
+        <primalac>askldj</primalac>
+        <datumPrijema>2016-06-29+02:00</datumPrijema>
+        <datumValute>2016-06-29+02:00</datumValute>
+        <racunDuznika>3333333</racunDuznika>
+        <modelZaduzenja>97</modelZaduzenja>
+        <pozivNaBrojZaduzenja>12345</pozivNaBrojZaduzenja>
+        <racunPrimaoca>2222222</racunPrimaoca>
+        <modelOdobrenja>97</modelOdobrenja>
+        <pozivNaBrojOdobrenja>12345</pozivNaBrojOdobrenja>
+        <iznos>1200.00</iznos>
+        <oznakaValute>RSD</oznakaValute>
+        <smer>1</smer>
+    </stavka>
 </izvodStanja>

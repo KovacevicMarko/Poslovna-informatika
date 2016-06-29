@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<izvodStanja>
+    <klijentId>3         </klijentId>
+    <brojRacuna>3333333</brojRacuna>
+    <brojIzvoda>2</brojIzvoda>
+    <datumPrometa>2016-06-29+02:00</datumPrometa>
+    <prethodnoStanje>900000.00</prethodnoStanje>
+    <prometUkorist>0.00</prometUkorist>
+    <prometNaTeret>2900.00</prometNaTeret>
+    <novoStanje>897100.00</novoStanje>
+    <stavka>
+        <duznik>3         </duznik>
+        <svrhaPlacanja>kasdkjl</svrhaPlacanja>
+        <primalac>asdkasldj</primalac>
+        <datumPrijema>2016-06-29+02:00</datumPrijema>
+        <datumValute>2016-06-29+02:00</datumValute>
+        <racunDuznika>3333333</racunDuznika>
+        <modelZaduzenja>97</modelZaduzenja>
+        <pozivNaBrojZaduzenja>12345</pozivNaBrojZaduzenja>
+        <racunPrimaoca>1111111</racunPrimaoca>
+        <modelOdobrenja>97</modelOdobrenja>
+        <pozivNaBrojOdobrenja>12345</pozivNaBrojOdobrenja>
+        <iznos>700.00</iznos>
+        <oznakaValute>RSD</oznakaValute>
+        <smer>0</smer>
+    </stavka>
+    <stavka>
+        <duznik>3         </duznik>
+        <svrhaPlacanja>asdlkjfal</svrhaPlacanja>
+        <primalac>askldj</primalac>
+        <datumPrijema>2016-06-29+02:00</datumPrijema>
+        <datumValute>2016-06-29+02:00</datumValute>
+        <racunDuznika>3333333</racunDuznika>
+        <modelZaduzenja>97</modelZaduzenja>
+        <pozivNaBrojZaduzenja>12345</pozivNaBrojZaduzenja>
+        <racunPrimaoca>2222222</racunPrimaoca>
+        <modelOdobrenja>97</modelOdobrenja>
+        <pozivNaBrojOdobrenja>12345</pozivNaBrojOdobrenja>
+        <iznos>1200.00</iznos>
+        <oznakaValute>RSD</oznakaValute>
+        <smer>0</smer>
+    </stavka>
+    <stavka>
+        <duznik>3         </duznik>
+        <svrhaPlacanja>asdfg</svrhaPlacanja>
+        <primalac>asdfg</primalac>
+        <datumPrijema>2016-06-29+02:00</datumPrijema>
+        <datumValute>2016-06-29+02:00</datumValute>
+        <racunDuznika>3333333</racunDuznika>
+        <modelZaduzenja>97</modelZaduzenja>
+        <pozivNaBrojZaduzenja>123435</pozivNaBrojZaduzenja>
+        <racunPrimaoca>1111111</racunPrimaoca>
+        <modelOdobrenja>97</modelOdobrenja>
+        <pozivNaBrojOdobrenja>123456</pozivNaBrojOdobrenja>
+        <iznos>800.00</iznos>
+        <oznakaValute>RSD</oznakaValute>
+        <smer>0</smer>
+    </stavka>
+    <stavka>
+        <duznik>3         </duznik>
+        <svrhaPlacanja>asdjkh</svrhaPlacanja>
+        <primalac>asdklj</primalac>
+        <datumPrijema>2016-06-29+02:00</datumPrijema>
+        <datumValute>2016-06-29+02:00</datumValute>
+        <racunDuznika>3333333</racunDuznika>
+        <modelZaduzenja>97</modelZaduzenja>
+        <pozivNaBrojZaduzenja>123415</pozivNaBrojZaduzenja>
+        <racunPrimaoca>1111111</racunPrimaoca>
+        <modelOdobrenja>97</modelOdobrenja>
+        <pozivNaBrojOdobrenja>12345</pozivNaBrojOdobrenja>
+        <iznos>100.00</iznos>
+        <oznakaValute>RSD</oznakaValute>
+        <smer>0</smer>
+    </stavka>
+    <stavka>
+        <duznik>3         </duznik>
+        <svrhaPlacanja>asjkf</svrhaPlacanja>
+        <primalac>askldj</primalac>
+        <datumPrijema>2016-06-29+02:00</datumPrijema>
+        <datumValute>2016-06-29+02:00</datumValute>
+        <racunDuznika>3333333</racunDuznika>
+        <modelZaduzenja>97</modelZaduzenja>
+        <pozivNaBrojZaduzenja>12345</pozivNaBrojZaduzenja>
+        <racunPrimaoca>1111111</racunPrimaoca>
+        <modelOdobrenja>97</modelOdobrenja>
+        <pozivNaBrojOdobrenja>12345</pozivNaBrojOdobrenja>
+        <iznos>100.00</iznos>
+        <oznakaValute>RSD</oznakaValute>
+        <smer>0</smer>
+    </stavka>
+</izvodStanja>
