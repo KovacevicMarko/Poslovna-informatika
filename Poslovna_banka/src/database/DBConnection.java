@@ -292,7 +292,7 @@ public class DBConnection {
 		String username = usernameForm;
 		String password = passwordForm;
 		
-		String query = "SELECT * FROM " + zaposleniTableName + " WHERE [KORSNICKO_IME_ZAPOSLENI] = ? AND [LOZINKA_ZAPOSLENI] = ?";
+		String query = "SELECT * FROM " + zaposleniTableName + " WHERE [ZAP_KORISNICKO_IME] = ? AND [ZAP_LOZINKA] = ?";
 		PreparedStatement selectStmt = DBConnection.getDatabaseWrapper().getConnection().prepareStatement(query);
 		selectStmt.setString(1, username);
 		selectStmt.setString(2, password);
