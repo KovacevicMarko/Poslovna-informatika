@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     29.6.2016. 01.55.57                          */
+/* Created on:     06/29/2016 2:02:06 AM                        */
 /*==============================================================*/
 
 
@@ -27,9 +27,9 @@ go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('ANALITIKA_IZVODA') and o.name = 'FK_ANALITIK_STAVKA_KL_STAVKA_K')
+   where r.fkeyid = object_id('ANALITIKA_IZVODA') and o.name = 'FK_ANALITIK_STAVKA_U__STAVKA_K')
 alter table ANALITIKA_IZVODA
-   drop constraint FK_ANALITIK_STAVKA_KL_STAVKA_K
+   drop constraint FK_ANALITIK_STAVKA_U__STAVKA_K
 go
 
 if exists (select 1
@@ -132,16 +132,16 @@ go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('STAVKA_KLIRINGA') and o.name = 'FK_STAVKA_K_STAVKA_KL_ANALITIK')
+   where r.fkeyid = object_id('STAVKA_KLIRINGA') and o.name = 'FK_STAVKA_K_STAVKAUKL_KLIRING')
 alter table STAVKA_KLIRINGA
-   drop constraint FK_STAVKA_K_STAVKA_KL_ANALITIK
+   drop constraint FK_STAVKA_K_STAVKAUKL_KLIRING
 go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('STAVKA_KLIRINGA') and o.name = 'FK_STAVKA_K_STAVKA_U__KLIRING')
+   where r.fkeyid = object_id('STAVKA_KLIRINGA') and o.name = 'FK_STAVKA_K_STAVKA_U__ANALITIK')
 alter table STAVKA_KLIRINGA
-   drop constraint FK_STAVKA_K_STAVKA_U__KLIRING
+   drop constraint FK_STAVKA_K_STAVKA_U__ANALITIK
 go
 
 if exists (select 1
@@ -368,7 +368,7 @@ go
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
 execute sp_addextendedproperty 'MS_Description', 
-   'Matièni katalog država.',
+   'Maticni katalog država.',
    'user', @CurrentUser, 'table', 'DRZAVA'
 go
 
@@ -587,7 +587,7 @@ alter table ANALITIKA_IZVODA
 go
 
 alter table ANALITIKA_IZVODA
-   add constraint FK_ANALITIK_STAVKA_KL_STAVKA_K foreign key (ID_NALOGA)
+   add constraint FK_ANALITIK_STAVKA_U__STAVKA_K foreign key (ID_NALOGA)
       references STAVKA_KLIRINGA (ID_NALOGA)
 go
 
@@ -662,13 +662,13 @@ alter table RTGS
 go
 
 alter table STAVKA_KLIRINGA
-   add constraint FK_STAVKA_K_STAVKA_KL_ANALITIK foreign key (BAR_RACUN, DSR_IZVOD, ASI_BROJSTAVKE)
-      references ANALITIKA_IZVODA (BAR_RACUN, DSR_IZVOD, ASI_BROJSTAVKE)
+   add constraint FK_STAVKA_K_STAVKAUKL_KLIRING foreign key (ID_PORUKE)
+      references KLIRING (ID_PORUKE)
 go
 
 alter table STAVKA_KLIRINGA
-   add constraint FK_STAVKA_K_STAVKA_U__KLIRING foreign key (ID_PORUKE)
-      references KLIRING (ID_PORUKE)
+   add constraint FK_STAVKA_K_STAVKA_U__ANALITIK foreign key (BAR_RACUN, DSR_IZVOD, ASI_BROJSTAVKE)
+      references ANALITIKA_IZVODA (BAR_RACUN, DSR_IZVOD, ASI_BROJSTAVKE)
 go
 
 alter table UKIDANJE
