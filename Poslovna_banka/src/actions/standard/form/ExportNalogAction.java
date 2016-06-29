@@ -5,9 +5,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 import actions.main.form.GenericDialogActions;
 import gui.dialogs.NalogDialog;
+import gui.standard.form.GenericDialog;
 import gui.standard.form.concrete.RacunDialog;
 import gui.tablemodel.Table;
 import modelFromXsd.NalogZaPlacanje;
@@ -28,6 +30,10 @@ public class ExportNalogAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
+		if(((GenericDialog)standardForm).getTable().getSelectedRow() < 0)
+		{
+			JOptionPane.showMessageDialog(null, "Morate selektovati red!");
+		}
 		RacunDialog thisDialog = (RacunDialog) standardForm;
 		Table thisTable = thisDialog.getTable();
 		int selectedRow =  thisTable.getSelectedRow();

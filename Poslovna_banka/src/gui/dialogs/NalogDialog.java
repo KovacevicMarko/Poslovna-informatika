@@ -1,5 +1,7 @@
 package gui.dialogs;
 
+import gui.standard.form.GenericDialog;
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -16,13 +18,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SpringLayout;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
-import database.DBQueryManager;
 import modelFromXsd.NalogZaPlacanje;
 import xml.XmlManager;
+import database.DBQueryManager;
 
 public class NalogDialog extends JDialog {
 

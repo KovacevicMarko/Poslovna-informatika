@@ -72,6 +72,15 @@ public class DBQueryManager {
 			conn.commit();
 			System.out.println(res);
 			
+			if(tipgreske == 2)
+			{
+				JOptionPane.showMessageDialog(null, "Nemate dovoljno sredstava na racunu.");
+			}
+			else if(tipgreske == 8)
+			{
+				JOptionPane.showMessageDialog(null, "Uneti racuni su ne vazeci ili ne postoje.");
+			}
+			
 			if(!IdPorukeRTGS.equals("")){
 				generateAndExportMT103(IdPorukeRTGS);
 			}
