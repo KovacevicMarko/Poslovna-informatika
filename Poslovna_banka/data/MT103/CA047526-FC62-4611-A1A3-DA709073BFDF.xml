@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MT103>
+    <IdPoruke>CA047526-FC62-4611-A1A3-DA709073BFDF</IdPoruke>
+    <SwiftKodBankeDuznika>11111111</SwiftKodBankeDuznika>
+    <RacunBankeDuznika>3333333</RacunBankeDuznika>
+    <SwiftKodBankePrimaoca>22222222</SwiftKodBankePrimaoca>
+    <RacunBankePoverioca>1111111</RacunBankePoverioca>
+    <duznik>3         </duznik>
+    <svrhaPlacanja>asdjkh</svrhaPlacanja>
+    <primalac>asdklj</primalac>
+    <datumPrijema>2016-06-29+02:00</datumPrijema>
+    <datumValute>2016-06-29+02:00</datumValute>
+    <racunDuznika>3333333</racunDuznika>
+    <modelZaduzenja>97</modelZaduzenja>
+    <pozivNaBrojZaduzenja>123415</pozivNaBrojZaduzenja>
+    <racunPrimaoca>1111111</racunPrimaoca>
+    <modelOdobrenja>97</modelOdobrenja>
+    <pozivNaBrojOdobrenja>12345</pozivNaBrojOdobrenja>
+    <iznos>100.00</iznos>
+    <oznakaValute>RSD</oznakaValute>
+    <sifraPlacanja>189</sifraPlacanja>
+</MT103>

@@ -127,7 +127,7 @@ public class DBQueryManager {
 		query.append("@iznos = ?,");
 		query.append("@oznakaValute = ?,");
 		query.append("@hitno = ?,");
-		query.append("@tipGreske = ? output");
+		query.append("@tipGreske = ? output,");
 		
 		return query.toString();
 	}
@@ -142,7 +142,7 @@ public class DBQueryManager {
 	private static AnalitikaPkDto populateMT103FromRTGS(String idPorukeRTGS,MT103 mt103){
 		
 		AnalitikaPkDto pk = new AnalitikaPkDto();
-		String query = "SELECT * FROM RTGS where ID_PORUKE = '"+idPorukeRTGS+"'";
+		String query = "SELECT * FROM RTGS where RTGS_ID_PORUKE = '"+idPorukeRTGS+"'";
 		Connection conn = DBConnection.getDatabaseWrapper().getConnection();
 		Statement stmt = null;
 		try{
@@ -150,14 +150,14 @@ public class DBQueryManager {
 			ResultSet rst = stmt.executeQuery(query);
 			
 			while(rst.next()){
-				mt103.setIdPoruke(rst.getString(0));
-				pk.setBrojRacuna(rst.getString(1));
-				pk.setBrojIzvoda(rst.getBigDecimal(2));
-				pk.setBrojStavke(rst.getBigDecimal(3));
-				mt103.setSwiftKodBankeDuznika(rst.getString(4));
-				mt103.setRacunBankeDuznika(rst.getString(5));
-				mt103.setSwiftKodBankePrimaoca(rst.getString(6));
-				mt103.setRacunBankePoverioca(rst.getString(7));
+				mt103.setIdPoruke(rst.getString(1));
+				pk.setBrojRacuna(rst.getString(2));
+				pk.setBrojIzvoda(rst.getBigDecimal(3));
+				pk.setBrojStavke(rst.getBigDecimal(4));
+				mt103.setSwiftKodBankeDuznika(rst.getString(5));
+				mt103.setRacunBankeDuznika(rst.getString(6));
+				mt103.setSwiftKodBankePrimaoca(rst.getString(7));
+				mt103.setRacunBankePoverioca(rst.getString(8));
 			}
 			
 			rst.close();

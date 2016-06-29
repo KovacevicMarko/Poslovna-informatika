@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<izvodStanja>
+    <klijentId>2         </klijentId>
+    <brojRacuna>2222222</brojRacuna>
+    <brojIzvoda>4</brojIzvoda>
+    <datumPrometa>2016-06-29+02:00</datumPrometa>
+    <prethodnoStanje>6000.00</prethodnoStanje>
+    <prometUkorist>1200.00</prometUkorist>
+    <prometNaTeret>0.00</prometNaTeret>
+    <novoStanje>7200.00</novoStanje>
+</izvodStanja>

@@ -112,8 +112,11 @@ public class NalogDialog extends JDialog {
 		panel.add(duznikLbl);
 		panel.add(duznikTxt);
 
-		svrhaTxt.setText("Ukidanje racuna");
-		svrhaTxt.setEditable(false);
+		if (isUkidanje) {
+			svrhaTxt.setText("Ukidanje racuna");
+			svrhaTxt.setEditable(false);
+		}
+		
 		panel.add(svrhaLbl);
 		panel.add(svrhaTxt);
 

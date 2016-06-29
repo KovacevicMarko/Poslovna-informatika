@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<nalogZaPlacanje>
+    <duznik>3         </duznik>
+    <svrhaPlacanja>asjkf</svrhaPlacanja>
+    <primalac>askldj</primalac>
+    <datumPrijema>2016-06-29+02:00</datumPrijema>
+    <mestoPrijema>Novi Sad</mestoPrijema>
+    <datumValute>2016-06-29+02:00</datumValute>
+    <racunDuznika>3333333</racunDuznika>
+    <modelZaduzenja>97</modelZaduzenja>
+    <pozivNaBrojZaduzenja>12345</pozivNaBrojZaduzenja>
+    <racunPrimaoca>1111111</racunPrimaoca>
+    <modelOdobrenja>97</modelOdobrenja>
+    <pozivNaBrojOdobrenja>12345</pozivNaBrojOdobrenja>
+    <iznos>100</iznos>
+    <oznakaValute>RSD</oznakaValute>
+    <sifraPlacanja>189</sifraPlacanja>
+    <hitno>true</hitno>
+</nalogZaPlacanje>
