@@ -19,12 +19,17 @@ create procedure Uplata
 	@oznakaValute char(3),
 	@hitno bit,
 	@zaUkidanje bit,
-	@tipGreske integer output
+	@tipGreske integer output,
+	@rtgsID varchar(50) output
 as
 begin
-	
-	declare @swiftDuznika char(8) = '12345678';
-	declare @swiftPrimaoca char(8) = '87654321';
+	set @rtgsID = '';
+
+	declare @swiftDuznika char(8);
+	declare @swiftPrimaoca char(8);
+	declare @racunBankeDuznika varchar(18);
+	declare @racunBankePrimaoca varchar(18);
+
 	declare @racunDuznikaId varchar(10);
 	declare @racunPrimaocaId varchar(10);
 	declare @bankaRacunaDuznika char(10);
@@ -59,6 +64,22 @@ begin
 		select rac.B_PIB
 		from RACUNI rac
 		where rac.BAR_RACUN = @racunPrimaoca);
+	
+	set @swiftDuznika = (select b.B_SWIFT
+		from BANKA b
+		where b.B_PIB = @bankaRacunaDuznika);
+
+	set @swiftPrimaoca = (select b.B_SWIFT
+		from BANKA b
+		where b.B_PIB = @bankaRacunaPrimaoca);
+	
+	set @racunBankeDuznika = (select b.B_OBRACUNSKI_RACUN
+		from BANKA b
+		where b.B_PIB = @bankaRacunaDuznika);
+
+	set @racunBankeDuznika = (select b.B_OBRACUNSKI_RACUN
+		from BANKA b
+		where b.B_PIB = @bankaRacunaPrimaoca);
 
 	if (@racunDuznikaId is not null) and (@racunPrimaocaId is not null)
 	begin
@@ -303,20 +324,19 @@ begin
 						@primalac,@datumPrijema,@datumValute,@racunDuznika,@modelZaduzenja,@pozivNaBrojZaduzenja,@racunPrimaoca,
 						@modelOdobrenja,@pozivNaBrojOdobrenja,@hitno,@iznos,@tipgreske,'P');
 
-
+				set @rtgsID = convert(varchar(50),NEWID());
 				-- za rtgs deo
 				INSERT INTO [dbo].[RTGS]
-							   ([ID_PORUKE]
+							   ([RTGS_ID_PORUKE]
 							   ,[BAR_RACUN]
 							   ,[DSR_IZVOD]
 							   ,[ASI_BROJSTAVKE]
-							   ,[SWIFT_BANKE_DUZNIKA]
-							   ,[RACUN_BANKE_DUZNIKA]
-							   ,[SWIFT_BAMKE_POVERIOCA]
-							   ,[RACUN_BANKE_POVERIOCA])
+							   ,[RTGS_SWIFT_BANKE_DUZNIKA]
+							   ,[RTGS_RACUN_BANKE_DUZNIKA]
+							   ,[RTGS_SWIFT_BANKE_POVERIOCA]
+							   ,[RTGS_RACUN_BANKE_POVERIOCA])
 						 VALUES
-							   (convert(varchar(50),NEWID()),
-
+							   (@rtgsID,
 							   @racunPrimaoca,
 							   @dsrId2,
 							   @brojStavke,
@@ -328,7 +348,100 @@ begin
 			else
 			-- za kliring
 			begin
-				declare @tmp integer;
+				set @dsrId2 = (
+					select dsr.DSR_IZVOD
+					from DNEVNO_STANJE_RACUNA dsr
+					where dsr.DSR_DATUM = @datumPrijema AND dsr.BAR_RACUN= @racunPrimaoca);
+		
+
+				-- ne postoji dnevno stanje racuna primaoca za datum prijema, treba napraviti novo
+				if @dsrId2 is null
+				begin
+					--declare @poslednjeStanje decimal(15,2);
+			
+					set @poslednjeStanje = (
+					select top 1 dsr.DSR_NOVOSTANJE
+					from DNEVNO_STANJE_RACUNA dsr
+					where dsr.BAR_RACUN = @racunPrimaoca
+					order by dsr.DSR_DATUM desc);
+
+					if @poslednjeStanje is null
+					begin
+						set @poslednjeStanje = 0;
+					end
+			
+					set @dsrId2 = (select max(dsr.DSR_IZVOD) from DNEVNO_STANJE_RACUNA dsr) + 1;
+					insert into DNEVNO_STANJE_RACUNA(DSR_IZVOD,
+								DSR_DATUM,
+								DSR_PRETHODNO,
+								DSR_UKORIST,
+								DSR_NATERET,
+								DSR_NOVOSTANJE,
+								BAR_RACUN)
+					values (@dsrId2, @datumPrijema, @poslednjeStanje, 0,0, @poslednjeStanje, @racunPrimaoca);
+				end
+				set @brojStavke = (select isnull(max(ASI_BROJSTAVKE),0)
+												from ANALITIKA_IZVODA ai
+												where ai.BAR_RACUN = @racunPrimaoca and ai.DSR_IZVOD = @dsrId) + 1;
+				insert into ANALITIKA_IZVODA (BAR_RACUN,
+											DSR_IZVOD,
+											ASI_BROJSTAVKE,
+											NM_SIFRA,
+											VPL_OZNAKA,
+											VA_IFRA,
+											ASI_DUZNIK,
+											ASI_SVRHA,
+											ASI_POVERILAC,
+											ASI_DATPRI,
+											ASI_DATVAL,
+											ASI_RACDUZ,
+											ASI_MODZAD,
+											ASI_PBZAD,
+											ASI_RACPOV,
+											ASI_MODODOB,
+											ASI_PBODO,
+											ASI_HITNO,
+											ASI_IZNOS,
+											ASI_TIPGRESKE,
+											ASI_STATUS)
+				values (@racunPrimaoca, @dsrId2, @brojStavke,
+						@naseljenoMestoId,@sifraPlacanja, @oznakaValute,@duznik,@svrhaPlacanja,
+						@primalac,@datumPrijema,@datumValute,@racunDuznika,@modelZaduzenja,@pozivNaBrojZaduzenja,@racunPrimaoca,
+						@modelOdobrenja,@pozivNaBrojOdobrenja,@hitno,@iznos,@tipgreske,'E');
+				
+				declare @idKliringa varchar(50) = (select top 1 CLR_ID_KLIRINGA
+						from KLIRING k
+						where k.CLR_DATUM_KLIRINGA > GETDATE()
+						order by k.CLR_DATUM_KLIRINGA asc);
+				
+			INSERT INTO [dbo].[STAVKA_KLIRINGA]
+					   ([SK_ID_STAVKE]
+					   ,[BAR_RACUN]
+					   ,[DSR_IZVOD]
+					   ,[ASI_BROJSTAVKE]
+					   ,[CLR_ID_KLIRINGA]
+					   ,[CLR_SWIFT_BANKE_DUZNIKA]
+					   ,[CLR_RACUN_BANKE_DUZNIKA]
+					   ,[CLR_SWIFT_BANKE_POVERIOCA]
+					   ,[CLR_RACUN_BANKE_POVERIOCA]
+					   ,[CLR_UKUPAN_IZNOS]
+					   ,[CLR_SIFRA_VALUTE]
+					   ,[CLR_DATUM_VALUTE])
+				 VALUES
+					   (convert(varchar(50),newid())
+						   ,@racunPrimaoca
+						   ,@dsrId2
+						   ,@brojStavke
+						   ,@idKliringa
+					   ,@swiftDuznika
+					   ,@racunBankeDuznika
+					   ,@swiftPrimaoca
+					   ,@racunBankePrimaoca
+					   ,@iznos
+					   ,@oznakaValute
+					   ,@datumValute);
+
+
 			end
 		end
 		
