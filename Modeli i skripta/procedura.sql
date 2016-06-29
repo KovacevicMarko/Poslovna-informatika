@@ -243,7 +243,7 @@ begin
 									ASI_STATUS)
 		values (@racunPrimaoca, @dsrId2, (select isnull(max(ASI_BROJSTAVKE),0)
 										from ANALITIKA_IZVODA ai
-										where ai.BAR_RACUN = @racunPrimaoca and ai.DSR_IZVOD = @dsrId) + 1,
+										where ai.BAR_RACUN = @racunPrimaoca and ai.DSR_IZVOD = @dsrId2) + 1,
 				@naseljenoMestoId,@sifraPlacanja, @oznakaValute,@duznik,@svrhaPlacanja,
 				@primalac,@datumPrijema,@datumValute,@racunDuznika,@modelZaduzenja,@pozivNaBrojZaduzenja,@racunPrimaoca,
 				@modelOdobrenja,@pozivNaBrojOdobrenja,@hitno,@iznos,@tipgreske,'P');
@@ -297,7 +297,7 @@ begin
 				end
 				declare @brojStavke numeric(8,0) = (select isnull(max(ASI_BROJSTAVKE),0)
 												from ANALITIKA_IZVODA ai
-												where ai.BAR_RACUN = @racunPrimaoca and ai.DSR_IZVOD = @dsrId) + 1;
+												where ai.BAR_RACUN = @racunPrimaoca and ai.DSR_IZVOD = @dsrId2) + 1;
 				insert into ANALITIKA_IZVODA (BAR_RACUN,
 											DSR_IZVOD,
 											ASI_BROJSTAVKE,
@@ -382,7 +382,7 @@ begin
 				end
 				set @brojStavke = (select isnull(max(ASI_BROJSTAVKE),0)
 												from ANALITIKA_IZVODA ai
-												where ai.BAR_RACUN = @racunPrimaoca and ai.DSR_IZVOD = @dsrId) + 1;
+												where ai.BAR_RACUN = @racunPrimaoca and ai.DSR_IZVOD = @dsrId2) + 1;
 				insert into ANALITIKA_IZVODA (BAR_RACUN,
 											DSR_IZVOD,
 											ASI_BROJSTAVKE,
