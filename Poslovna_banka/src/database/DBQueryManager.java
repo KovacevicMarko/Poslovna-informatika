@@ -1,9 +1,9 @@
 package database;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -24,6 +24,7 @@ import gui.tablemodel.Table;
 import modelFromXsd.IzvodStanja;
 import modelFromXsd.MT103;
 import modelFromXsd.NalogZaPlacanje;
+import modelFromXsd.StavkaIzvoda;
 import xml.XmlManager;
 
 public class DBQueryManager {
@@ -282,16 +283,18 @@ public class DBQueryManager {
 		
 		for(String racun : racuni)
 		{		
-			IzvodStanja izvod = findDnevnoStanje(racun);
+			IzvodStanja izvod = populateIzvodFromDnevnoStanje(racun);
+			populateIzvodFromAnalitika(izvod);
 			izvod.setKlijentId(klijentId);
-			izvodiStanja.add(izvod);
+			if(izvod.getBrojIzvoda()!=null){
+				izvodiStanja.add(izvod);
+			}
 		}
-		
 		
 		return izvodiStanja;
 	}
 	
-	private static IzvodStanja findDnevnoStanje(String racun){
+	private static IzvodStanja populateIzvodFromDnevnoStanje(String racun){
 		
 		Connection conn = DBConnection.getDatabaseWrapper().getConnection();
 		Statement stmt = null;
@@ -325,8 +328,11 @@ public class DBQueryManager {
 				break;
 			}
 			
+			
 			rst.close();
 			stmt.close();
+			
+			return izvod;
 		}
 		catch (SQLException e) {
 			// TODO: handle exception
@@ -335,6 +341,49 @@ public class DBQueryManager {
 		finally{
 			return izvod;
 		}
+	}
+	
+	private static void populateIzvodFromAnalitika(IzvodStanja izvod){
+		
+		BigInteger brojIzvoda = izvod.getBrojIzvoda();
+		String brojRacuna = izvod.getBrojRacuna();
+		
+		String query = "SELECT * FROM ANALITIKA_IZVODA WHERE BAR_RACUN = '"+brojRacuna+
+				"' AND DSR_IZVOD = '"+brojIzvoda+"'";
+		
+		Connection conn = DBConnection.getDatabaseWrapper().getConnection();
+		Statement stmt = null;
+		try{
+			stmt = conn.createStatement();
+			ResultSet rst = stmt.executeQuery(query);
+			
+			while(rst.next()){
+				StavkaIzvoda stavka = new StavkaIzvoda();
+				stavka.setDuznik(rst.getString("ASI_DUZNIK"));
+				stavka.setSvrhaPlacanja(rst.getString("ASI_SVRHA"));
+				stavka.setPrimalac(rst.getString("ASI_POVERILAC"));
+				stavka.setDatumPrijema(createXMLdate(new Date()));
+				stavka.setDatumValute(createXMLdate(new Date()));
+				stavka.setRacunDuznika(rst.getString("ASI_RACDUZ"));
+				stavka.setRacunPrimaoca(rst.getString("ASI_RACPOV"));
+				stavka.setPozivNaBrojZaduzenja(rst.getString("ASI_PBZAD"));
+				stavka.setPozivNaBrojOdobrenja(rst.getString("ASI_PBODO"));
+				stavka.setModelZaduzenja(rst.getBigDecimal("ASI_MODZAD").toBigInteger());
+				stavka.setModelOdobrenja(rst.getBigDecimal("ASI_MODODOB").toBigInteger());
+				stavka.setOznakaValute(rst.getString("VA_IFRA"));
+				stavka.setIznos(rst.getBigDecimal("ASI_IZNOS"));
+				setSmerToStavkaIzvoda(stavka, izvod);
+				
+				izvod.getStavka().add(stavka);
+			}
+			
+			rst.close();
+			stmt.close();
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}	
 	}
 	
 	private static XMLGregorianCalendar createXMLdate(Date date){
@@ -350,4 +399,18 @@ public class DBQueryManager {
 		}
 		
 	}
+	
+	private static void setSmerToStavkaIzvoda(StavkaIzvoda stavka,IzvodStanja izvod)
+	{
+		if(izvod.getBrojRacuna().equals(stavka.getRacunDuznika())){
+			stavka.setSmer("0");
+		}
+		else if(izvod.getBrojRacuna().equals(stavka.getRacunPrimaoca())){
+			stavka.setSmer("1");
+		}
+		else{
+			stavka.setSmer("0");
+		}				
+	}
+	
 }
