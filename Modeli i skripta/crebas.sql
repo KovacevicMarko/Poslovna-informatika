@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     06/28/2016 7:46:04 PM                        */
+/* Created on:     06/29/2016 2:02:06 AM                        */
 /*==============================================================*/
 
 
@@ -20,16 +20,16 @@ go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('ANALITIKA_IZVODA') and o.name = 'FK_ANALITIK_RELATIONS_STAVKA_K')
+   where r.fkeyid = object_id('ANALITIKA_IZVODA') and o.name = 'FK_ANALITIK_RTGS_PLAC_RTGS')
 alter table ANALITIKA_IZVODA
-   drop constraint FK_ANALITIK_RELATIONS_STAVKA_K
+   drop constraint FK_ANALITIK_RTGS_PLAC_RTGS
 go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('ANALITIKA_IZVODA') and o.name = 'FK_ANALITIK_RTGS_PLAC_RTGS')
+   where r.fkeyid = object_id('ANALITIKA_IZVODA') and o.name = 'FK_ANALITIK_STAVKA_U__STAVKA_K')
 alter table ANALITIKA_IZVODA
-   drop constraint FK_ANALITIK_RTGS_PLAC_RTGS
+   drop constraint FK_ANALITIK_STAVKA_U__STAVKA_K
 go
 
 if exists (select 1
@@ -132,9 +132,16 @@ go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('STAVKA_KLIRINGA') and o.name = 'FK_STAVKA_K_RELATIONS_KLIRING')
+   where r.fkeyid = object_id('STAVKA_KLIRINGA') and o.name = 'FK_STAVKA_K_STAVKAUKL_KLIRING')
 alter table STAVKA_KLIRINGA
-   drop constraint FK_STAVKA_K_RELATIONS_KLIRING
+   drop constraint FK_STAVKA_K_STAVKAUKL_KLIRING
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('STAVKA_KLIRINGA') and o.name = 'FK_STAVKA_K_STAVKA_U__ANALITIK')
+alter table STAVKA_KLIRINGA
+   drop constraint FK_STAVKA_K_STAVKA_U__ANALITIK
 go
 
 if exists (select 1
@@ -159,60 +166,6 @@ alter table ZAPOSLENI
 go
 
 if exists (select 1
-            from  sysindexes
-           where  id    = object_id('ANALITIKA_IZVODA')
-            and   name  = 'RELATIONSHIP_17_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index ANALITIKA_IZVODA.RELATIONSHIP_17_FK
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('ANALITIKA_IZVODA')
-            and   name  = 'RTGS_PLACANJE2_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index ANALITIKA_IZVODA.RTGS_PLACANJE2_FK
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('ANALITIKA_IZVODA')
-            and   name  = 'VALUTA_PLA_ANJA_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index ANALITIKA_IZVODA.VALUTA_PLA_ANJA_FK
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('ANALITIKA_IZVODA')
-            and   name  = 'VRSTA_PLA_ANJA_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index ANALITIKA_IZVODA.VRSTA_PLA_ANJA_FK
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('ANALITIKA_IZVODA')
-            and   name  = 'MESTO_PRIJEMA_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index ANALITIKA_IZVODA.MESTO_PRIJEMA_FK
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('ANALITIKA_IZVODA')
-            and   name  = 'ANALITIKA_IZVODA_BANKE_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index ANALITIKA_IZVODA.ANALITIKA_IZVODA_BANKE_FK
-go
-
-if exists (select 1
             from  sysobjects
            where  id = object_id('ANALITIKA_IZVODA')
             and   type = 'U')
@@ -227,15 +180,6 @@ if exists (select 1
 go
 
 if exists (select 1
-            from  sysindexes
-           where  id    = object_id('DNEVNO_STANJE_RACUNA')
-            and   name  = 'DNEVNI_IZVODI_BANKE_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index DNEVNO_STANJE_RACUNA.DNEVNI_IZVODI_BANKE_FK
-go
-
-if exists (select 1
             from  sysobjects
            where  id = object_id('DNEVNO_STANJE_RACUNA')
             and   type = 'U')
@@ -247,15 +191,6 @@ if exists (select 1
            where  id = object_id('DRZAVA')
             and   type = 'U')
    drop table DRZAVA
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('FIZICKA_LICA')
-            and   name  = 'INHERITANCE_2_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index FIZICKA_LICA.INHERITANCE_2_FK
 go
 
 if exists (select 1
@@ -280,46 +215,10 @@ if exists (select 1
 go
 
 if exists (select 1
-            from  sysindexes
-           where  id    = object_id('KURSNA_LISTA')
-            and   name  = 'KURS_POSLOVNE_BANKE_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index KURSNA_LISTA.KURS_POSLOVNE_BANKE_FK
-go
-
-if exists (select 1
             from  sysobjects
            where  id = object_id('KURSNA_LISTA')
             and   type = 'U')
    drop table KURSNA_LISTA
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('KURS_U_VALUTI')
-            and   name  = 'VALUTE_U_LISTI_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index KURS_U_VALUTI.VALUTE_U_LISTI_FK
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('KURS_U_VALUTI')
-            and   name  = 'PREMA_VALUTI_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index KURS_U_VALUTI.PREMA_VALUTI_FK
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('KURS_U_VALUTI')
-            and   name  = 'OSNOVNA_VALUTA_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index KURS_U_VALUTI.OSNOVNA_VALUTA_FK
 go
 
 if exists (select 1
@@ -330,28 +229,10 @@ if exists (select 1
 go
 
 if exists (select 1
-            from  sysindexes
-           where  id    = object_id('NASELJENO_MESTO')
-            and   name  = 'MESTA_U_DRZAVI_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index NASELJENO_MESTO.MESTA_U_DRZAVI_FK
-go
-
-if exists (select 1
             from  sysobjects
            where  id = object_id('NASELJENO_MESTO')
             and   type = 'U')
    drop table NASELJENO_MESTO
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('PRAVNA_LICA')
-            and   name  = 'INHERITANCE_1_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index PRAVNA_LICA.INHERITANCE_1_FK
 go
 
 if exists (select 1
@@ -362,33 +243,6 @@ if exists (select 1
 go
 
 if exists (select 1
-            from  sysindexes
-           where  id    = object_id('RACUNI')
-            and   name  = 'VLASNIK_RACUNA_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index RACUNI.VLASNIK_RACUNA_FK
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('RACUNI')
-            and   name  = 'VALUTA_RACUNA_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index RACUNI.VALUTA_RACUNA_FK
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('RACUNI')
-            and   name  = 'POSLOVNA_BANKA_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index RACUNI.POSLOVNA_BANKA_FK
-go
-
-if exists (select 1
             from  sysobjects
            where  id = object_id('RACUNI')
             and   type = 'U')
@@ -396,28 +250,10 @@ if exists (select 1
 go
 
 if exists (select 1
-            from  sysindexes
-           where  id    = object_id('RTGS')
-            and   name  = 'RTGS_PLACANJE_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index RTGS.RTGS_PLACANJE_FK
-go
-
-if exists (select 1
             from  sysobjects
            where  id = object_id('RTGS')
             and   type = 'U')
    drop table RTGS
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('STAVKA_KLIRINGA')
-            and   name  = 'RELATIONSHIP_18_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index STAVKA_KLIRINGA.RELATIONSHIP_18_FK
 go
 
 if exists (select 1
@@ -435,15 +271,6 @@ if exists (select 1
 go
 
 if exists (select 1
-            from  sysindexes
-           where  id    = object_id('VALUTE')
-            and   name  = 'DRZAVNA_VALUTA_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index VALUTE.DRZAVNA_VALUTA_FK
-go
-
-if exists (select 1
             from  sysobjects
            where  id = object_id('VALUTE')
             and   type = 'U')
@@ -455,15 +282,6 @@ if exists (select 1
            where  id = object_id('VRSTE_PLACANJA')
             and   type = 'U')
    drop table VRSTE_PLACANJA
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('ZAPOSLENI')
-            and   name  = 'ZAPOSLENI_U_BANCI_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index ZAPOSLENI.ZAPOSLENI_U_BANCI_FK
 go
 
 if exists (select 1
@@ -483,8 +301,8 @@ create table ANALITIKA_IZVODA (
    NM_SIFRA             bigint               null,
    VPL_OZNAKA           char(3)              null,
    VA_IFRA              char(3)              null,
-   ID_PORUKE            varchar(50)          not null,
-   ID_NALOGA            varchar(50)          not null,
+   ID_PORUKE            varchar(50)          null,
+   ID_NALOGA            varchar(50)          null,
    ASI_DUZNIK           varchar(256)         not null,
    ASI_SVRHA            varchar(256)         not null,
    ASI_POVERILAC        varchar(256)         not null,
@@ -504,55 +322,6 @@ create table ANALITIKA_IZVODA (
    ASI_STATUS           char(1)              null default 'E'
       constraint CKC_ASI_STATUS_ANALITIK check (ASI_STATUS is null or (ASI_STATUS in ('E','P'))),
    constraint PK_ANALITIKA_IZVODA primary key nonclustered (BAR_RACUN, DSR_IZVOD, ASI_BROJSTAVKE)
-)
-go
-
-/*==============================================================*/
-/* Index: ANALITIKA_IZVODA_BANKE_FK                             */
-/*==============================================================*/
-create index ANALITIKA_IZVODA_BANKE_FK on ANALITIKA_IZVODA (
-BAR_RACUN ASC,
-DSR_IZVOD ASC
-)
-go
-
-/*==============================================================*/
-/* Index: MESTO_PRIJEMA_FK                                      */
-/*==============================================================*/
-create index MESTO_PRIJEMA_FK on ANALITIKA_IZVODA (
-NM_SIFRA ASC
-)
-go
-
-/*==============================================================*/
-/* Index: VRSTA_PLA_ANJA_FK                                     */
-/*==============================================================*/
-create index VRSTA_PLA_ANJA_FK on ANALITIKA_IZVODA (
-VPL_OZNAKA ASC
-)
-go
-
-/*==============================================================*/
-/* Index: VALUTA_PLA_ANJA_FK                                    */
-/*==============================================================*/
-create index VALUTA_PLA_ANJA_FK on ANALITIKA_IZVODA (
-VA_IFRA ASC
-)
-go
-
-/*==============================================================*/
-/* Index: RTGS_PLACANJE2_FK                                     */
-/*==============================================================*/
-create index RTGS_PLACANJE2_FK on ANALITIKA_IZVODA (
-ID_PORUKE ASC
-)
-go
-
-/*==============================================================*/
-/* Index: RELATIONSHIP_17_FK                                    */
-/*==============================================================*/
-create index RELATIONSHIP_17_FK on ANALITIKA_IZVODA (
-ID_NALOGA ASC
 )
 go
 
@@ -587,14 +356,6 @@ create table DNEVNO_STANJE_RACUNA (
 go
 
 /*==============================================================*/
-/* Index: DNEVNI_IZVODI_BANKE_FK                                */
-/*==============================================================*/
-create index DNEVNI_IZVODI_BANKE_FK on DNEVNO_STANJE_RACUNA (
-BAR_RACUN ASC
-)
-go
-
-/*==============================================================*/
 /* Table: DRZAVA                                                */
 /*==============================================================*/
 create table DRZAVA (
@@ -623,14 +384,6 @@ create table FIZICKA_LICA (
    FL_PREZIME           varchar(120)         not null,
    FL_IME               varchar(120)         not null,
    constraint PK_FIZICKA_LICA primary key nonclustered (KL_ID, FL_JMBG)
-)
-go
-
-/*==============================================================*/
-/* Index: INHERITANCE_2_FK                                      */
-/*==============================================================*/
-create index INHERITANCE_2_FK on FIZICKA_LICA (
-KL_ID ASC
 )
 go
 
@@ -676,14 +429,6 @@ create table KURSNA_LISTA (
 go
 
 /*==============================================================*/
-/* Index: KURS_POSLOVNE_BANKE_FK                                */
-/*==============================================================*/
-create index KURS_POSLOVNE_BANKE_FK on KURSNA_LISTA (
-B_PIB ASC
-)
-go
-
-/*==============================================================*/
 /* Table: KURS_U_VALUTI                                         */
 /*==============================================================*/
 create table KURS_U_VALUTI (
@@ -700,31 +445,6 @@ create table KURS_U_VALUTI (
 go
 
 /*==============================================================*/
-/* Index: OSNOVNA_VALUTA_FK                                     */
-/*==============================================================*/
-create index OSNOVNA_VALUTA_FK on KURS_U_VALUTI (
-VA_IFRA ASC
-)
-go
-
-/*==============================================================*/
-/* Index: PREMA_VALUTI_FK                                       */
-/*==============================================================*/
-create index PREMA_VALUTI_FK on KURS_U_VALUTI (
-VAL_VA_IFRA ASC
-)
-go
-
-/*==============================================================*/
-/* Index: VALUTE_U_LISTI_FK                                     */
-/*==============================================================*/
-create index VALUTE_U_LISTI_FK on KURS_U_VALUTI (
-B_PIB ASC,
-KL_DATUM ASC
-)
-go
-
-/*==============================================================*/
 /* Table: NASELJENO_MESTO                                       */
 /*==============================================================*/
 create table NASELJENO_MESTO (
@@ -733,14 +453,6 @@ create table NASELJENO_MESTO (
    NM_NAZIV             varchar(60)          not null,
    NM_PTTOZNAKA         varchar(12)          not null,
    constraint PK_NASELJENO_MESTO primary key nonclustered (NM_SIFRA)
-)
-go
-
-/*==============================================================*/
-/* Index: MESTA_U_DRZAVI_FK                                     */
-/*==============================================================*/
-create index MESTA_U_DRZAVI_FK on NASELJENO_MESTO (
-DR_SIFRA ASC
 )
 go
 
@@ -761,14 +473,6 @@ create table PRAVNA_LICA (
 go
 
 /*==============================================================*/
-/* Index: INHERITANCE_1_FK                                      */
-/*==============================================================*/
-create index INHERITANCE_1_FK on PRAVNA_LICA (
-KL_ID ASC
-)
-go
-
-/*==============================================================*/
 /* Table: RACUNI                                                */
 /*==============================================================*/
 create table RACUNI (
@@ -784,37 +488,13 @@ create table RACUNI (
 go
 
 /*==============================================================*/
-/* Index: POSLOVNA_BANKA_FK                                     */
-/*==============================================================*/
-create index POSLOVNA_BANKA_FK on RACUNI (
-B_PIB ASC
-)
-go
-
-/*==============================================================*/
-/* Index: VALUTA_RACUNA_FK                                      */
-/*==============================================================*/
-create index VALUTA_RACUNA_FK on RACUNI (
-VA_IFRA ASC
-)
-go
-
-/*==============================================================*/
-/* Index: VLASNIK_RACUNA_FK                                     */
-/*==============================================================*/
-create index VLASNIK_RACUNA_FK on RACUNI (
-KL_ID ASC
-)
-go
-
-/*==============================================================*/
 /* Table: RTGS                                                  */
 /*==============================================================*/
 create table RTGS (
    ID_PORUKE            varchar(50)          not null,
-   BAR_RACUN            varchar(18)          null,
-   DSR_IZVOD            numeric(3)           null,
-   ASI_BROJSTAVKE       numeric(8)           null,
+   BAR_RACUN            varchar(18)          not null,
+   DSR_IZVOD            numeric(3)           not null,
+   ASI_BROJSTAVKE       numeric(8)           not null,
    SWIFT_BANKE_DUZNIKA  char(8)              not null,
    RACUN_BANKE_DUZNIKA  varchar(18)          not null,
    SWIFT_BAMKE_POVERIOCA char(8)              not null,
@@ -832,30 +512,15 @@ execute sp_addextendedproperty 'MS_Description',
 go
 
 /*==============================================================*/
-/* Index: RTGS_PLACANJE_FK                                      */
-/*==============================================================*/
-create index RTGS_PLACANJE_FK on RTGS (
-BAR_RACUN ASC,
-DSR_IZVOD ASC,
-ASI_BROJSTAVKE ASC
-)
-go
-
-/*==============================================================*/
 /* Table: STAVKA_KLIRINGA                                       */
 /*==============================================================*/
 create table STAVKA_KLIRINGA (
    ID_NALOGA            varchar(50)          not null,
+   BAR_RACUN            varchar(18)          not null,
+   DSR_IZVOD            numeric(3)           not null,
+   ASI_BROJSTAVKE       numeric(8)           not null,
    ID_PORUKE            varchar(50)          not null,
    constraint PK_STAVKA_KLIRINGA primary key nonclustered (ID_NALOGA)
-)
-go
-
-/*==============================================================*/
-/* Index: RELATIONSHIP_18_FK                                    */
-/*==============================================================*/
-create index RELATIONSHIP_18_FK on STAVKA_KLIRINGA (
-ID_PORUKE ASC
 )
 go
 
@@ -884,14 +549,6 @@ create table VALUTE (
 go
 
 /*==============================================================*/
-/* Index: DRZAVNA_VALUTA_FK                                     */
-/*==============================================================*/
-create index DRZAVNA_VALUTA_FK on VALUTE (
-DR_SIFRA ASC
-)
-go
-
-/*==============================================================*/
 /* Table: VRSTE_PLACANJA                                        */
 /*==============================================================*/
 create table VRSTE_PLACANJA (
@@ -914,14 +571,6 @@ create table ZAPOSLENI (
 )
 go
 
-/*==============================================================*/
-/* Index: ZAPOSLENI_U_BANCI_FK                                  */
-/*==============================================================*/
-create index ZAPOSLENI_U_BANCI_FK on ZAPOSLENI (
-B_PIB ASC
-)
-go
-
 alter table ANALITIKA_IZVODA
    add constraint FK_ANALITIK_ANALITIKA_DNEVNO_S foreign key (BAR_RACUN, DSR_IZVOD)
       references DNEVNO_STANJE_RACUNA (BAR_RACUN, DSR_IZVOD)
@@ -933,13 +582,13 @@ alter table ANALITIKA_IZVODA
 go
 
 alter table ANALITIKA_IZVODA
-   add constraint FK_ANALITIK_RELATIONS_STAVKA_K foreign key (ID_NALOGA)
-      references STAVKA_KLIRINGA (ID_NALOGA)
+   add constraint FK_ANALITIK_RTGS_PLAC_RTGS foreign key (ID_PORUKE)
+      references RTGS (ID_PORUKE)
 go
 
 alter table ANALITIKA_IZVODA
-   add constraint FK_ANALITIK_RTGS_PLAC_RTGS foreign key (ID_PORUKE)
-      references RTGS (ID_PORUKE)
+   add constraint FK_ANALITIK_STAVKA_U__STAVKA_K foreign key (ID_NALOGA)
+      references STAVKA_KLIRINGA (ID_NALOGA)
 go
 
 alter table ANALITIKA_IZVODA
@@ -1013,8 +662,13 @@ alter table RTGS
 go
 
 alter table STAVKA_KLIRINGA
-   add constraint FK_STAVKA_K_RELATIONS_KLIRING foreign key (ID_PORUKE)
+   add constraint FK_STAVKA_K_STAVKAUKL_KLIRING foreign key (ID_PORUKE)
       references KLIRING (ID_PORUKE)
+go
+
+alter table STAVKA_KLIRINGA
+   add constraint FK_STAVKA_K_STAVKA_U__ANALITIK foreign key (BAR_RACUN, DSR_IZVOD, ASI_BROJSTAVKE)
+      references ANALITIKA_IZVODA (BAR_RACUN, DSR_IZVOD, ASI_BROJSTAVKE)
 go
 
 alter table UKIDANJE
