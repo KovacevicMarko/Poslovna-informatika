@@ -16,20 +16,60 @@
 				<xs:element name="prometNaTeret" type="Dec15d2" maxOccurs="1" minOccurs="1" />
 				<xs:element name="novoStanje" type="Dec15d2" maxOccurs="1" minOccurs="1" />
 				
+				<xs:element name="stavka" type="StavkaIzvoda" maxOccurs="unbounded" minOccurs="0"/>
+				
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-	
+    
+    <xs:complexType name = "StavkaIzvoda">
+            <xs:sequence>
+            	<xs:element name="duznik" type="Str255" minOccurs="1"
+            		maxOccurs="1" />
+            	<xs:element name="svrhaPlacanja" type="Str255"
+            		maxOccurs="1" minOccurs="1" />
+            	<xs:element name="primalac" type="Str255" minOccurs="1"
+            		maxOccurs="1" />
+            	<xs:element name="datumPrijema" type="xs:date"
+            		maxOccurs="1" minOccurs="1" />
+            	<xs:element name="datumValute" type="xs:date"
+            		maxOccurs="1" minOccurs="1" />
+            	<xs:element name="racunDuznika" type="RacunType"
+            		minOccurs="1" maxOccurs="1" />
+            	<xs:element name="modelZaduzenja" type="Num2"
+            		minOccurs="1" maxOccurs="1" />
+            	<xs:element name="pozivNaBrojZaduzenja" type="Str20"
+            		minOccurs="1" maxOccurs="1" />
+            	<xs:element name="racunPrimaoca" type="RacunType"
+            		minOccurs="1" maxOccurs="1" />
+            	<xs:element name="modelOdobrenja" type="Num2"
+            		minOccurs="1" maxOccurs="1" />
+            	<xs:element name="pozivNaBrojOdobrenja" type="Str20"
+            		minOccurs="1" maxOccurs="1" />
+            	<xs:element type="Dec15d2" name="iznos" maxOccurs="1" minOccurs="1"/>
+                <xs:element name="oznakaValute" type="Str3"
+            		maxOccurs="1" minOccurs="1" />
+            	<xs:element name="smer" type = "Str1" maxOccurs="1" minOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    
     <xs:simpleType name="RacunType">
         <xs:restriction base="xs:string">
             <xs:maxLength value="20"/>
             <xs:pattern value="[0-9]{1,18}"/>
         </xs:restriction>
     </xs:simpleType>
+    
     <xs:simpleType name="Str20">
         <xs:restriction base="xs:string">
             <xs:minLength value="1"/>
             <xs:maxLength value="20"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Str1">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="1"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="Str3">
@@ -43,10 +83,24 @@
             <xs:totalDigits value="3"/>
         </xs:restriction>
     </xs:simpleType>
+    <xs:simpleType name="Num2">
+        <xs:restriction base="xs:nonNegativeInteger">
+            <xs:totalDigits value="2"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Str255">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
     <xs:simpleType name="Dec15d2">
         <xs:restriction base="xs:decimal">
             <xs:totalDigits value="15"/>
             <xs:fractionDigits value="2"/>
         </xs:restriction>
     </xs:simpleType>
+    
+    
+    
 </xs:schema>

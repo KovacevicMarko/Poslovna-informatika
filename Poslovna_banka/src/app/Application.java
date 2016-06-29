@@ -17,8 +17,8 @@ public class Application
 		MainFrame frame = MainFrame.getInstance();
 		frame.setVisible(true);
 		
-		LoginDialog dialog = new LoginDialog(frame);
-		dialog.setVisible(true);
+		/*LoginDialog dialog = new LoginDialog(frame);
+		dialog.setVisible(true);*/
 	}
 
 }
