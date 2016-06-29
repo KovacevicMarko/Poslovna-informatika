@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     06/29/2016 2:02:06 AM                        */
+/* Created on:     29.6.2016. 17:58:20                          */
 /*==============================================================*/
 
 
@@ -16,20 +16,6 @@ if exists (select 1
    where r.fkeyid = object_id('ANALITIKA_IZVODA') and o.name = 'FK_ANALITIK_MESTO_PRI_NASELJEN')
 alter table ANALITIKA_IZVODA
    drop constraint FK_ANALITIK_MESTO_PRI_NASELJEN
-go
-
-if exists (select 1
-   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('ANALITIKA_IZVODA') and o.name = 'FK_ANALITIK_RTGS_PLAC_RTGS')
-alter table ANALITIKA_IZVODA
-   drop constraint FK_ANALITIK_RTGS_PLAC_RTGS
-go
-
-if exists (select 1
-   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('ANALITIKA_IZVODA') and o.name = 'FK_ANALITIK_STAVKA_U__STAVKA_K')
-alter table ANALITIKA_IZVODA
-   drop constraint FK_ANALITIK_STAVKA_U__STAVKA_K
 go
 
 if exists (select 1
@@ -132,16 +118,16 @@ go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('STAVKA_KLIRINGA') and o.name = 'FK_STAVKA_K_STAVKAUKL_KLIRING')
+   where r.fkeyid = object_id('STAVKA_KLIRINGA') and o.name = 'FK_STAVKA_K_STAVKA_KL_ANALITIK')
 alter table STAVKA_KLIRINGA
-   drop constraint FK_STAVKA_K_STAVKAUKL_KLIRING
+   drop constraint FK_STAVKA_K_STAVKA_KL_ANALITIK
 go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('STAVKA_KLIRINGA') and o.name = 'FK_STAVKA_K_STAVKA_U__ANALITIK')
+   where r.fkeyid = object_id('STAVKA_KLIRINGA') and o.name = 'FK_STAVKA_K_STAVKA_U__KLIRING')
 alter table STAVKA_KLIRINGA
-   drop constraint FK_STAVKA_K_STAVKA_U__ANALITIK
+   drop constraint FK_STAVKA_K_STAVKA_U__KLIRING
 go
 
 if exists (select 1
@@ -301,8 +287,6 @@ create table ANALITIKA_IZVODA (
    NM_SIFRA             bigint               null,
    VPL_OZNAKA           char(3)              null,
    VA_IFRA              char(3)              null,
-   ID_PORUKE            varchar(50)          null,
-   ID_NALOGA            varchar(50)          null,
    ASI_DUZNIK           varchar(256)         not null,
    ASI_SVRHA            varchar(256)         not null,
    ASI_POVERILAC        varchar(256)         not null,
@@ -336,6 +320,8 @@ create table BANKA (
    B_FAX                varchar(20)          null,
    B_ADRESA             varchar(120)         not null,
    B_EMAIL              varchar(50)          null,
+   B_SWIFT              char(8)              not null,
+   B_OBRACUNSKI_RACUN   varchar(18)          not null,
    constraint PK_BANKA primary key nonclustered (B_PIB)
 )
 go
@@ -368,7 +354,7 @@ go
 declare @CurrentUser sysname
 select @CurrentUser = user_name()
 execute sp_addextendedproperty 'MS_Description', 
-   'Maticni katalog država.',
+   'Matièni katalog država.',
    'user', @CurrentUser, 'table', 'DRZAVA'
 go
 
@@ -403,16 +389,9 @@ go
 /* Table: KLIRING                                               */
 /*==============================================================*/
 create table KLIRING (
-   ID_PORUKE            varchar(50)          not null,
-   SWIFT_BANKE_DUZNIKA  char(8)              not null,
-   RACUN_BANKE_DUZNIKA  varchar(18)          not null,
-   SWIFT_BANKE_POVERIOCA char(8)              not null,
-   RACUN_BANKE_POVERIOCA varchar(18)          not null,
-   UKUPAN_IZNOS         decimal(15,2)        not null,
-   SIFRA_VALUTE         char(3)              not null,
-   DATUM_VALUTE         datetime             not null,
-   DATUM                datetime             not null,
-   constraint PK_KLIRING primary key nonclustered (ID_PORUKE)
+   CLR_ID_KLIRINGA      varchar(50)          not null,
+   CLR_DATUM_KLIRINGA   datetime             not null,
+   constraint PK_KLIRING primary key nonclustered (CLR_ID_KLIRINGA)
 )
 go
 
@@ -491,15 +470,15 @@ go
 /* Table: RTGS                                                  */
 /*==============================================================*/
 create table RTGS (
-   ID_PORUKE            varchar(50)          not null,
+   RTGS_ID_PORUKE       varchar(50)          not null,
    BAR_RACUN            varchar(18)          not null,
    DSR_IZVOD            numeric(3)           not null,
    ASI_BROJSTAVKE       numeric(8)           not null,
-   SWIFT_BANKE_DUZNIKA  char(8)              not null,
-   RACUN_BANKE_DUZNIKA  varchar(18)          not null,
-   SWIFT_BAMKE_POVERIOCA char(8)              not null,
-   RACUN_BANKE_POVERIOCA varchar(18)          not null,
-   constraint PK_RTGS primary key nonclustered (ID_PORUKE)
+   RTGS_SWIFT_BANKE_DUZNIKA char(8)              not null,
+   RTGS_RACUN_BANKE_DUZNIKA varchar(18)          not null,
+   RTGS_SWIFT_BANKE_POVERIOCA char(8)              not null,
+   RTGS_RACUN_BANKE_POVERIOCA varchar(18)          not null,
+   constraint PK_RTGS primary key nonclustered (RTGS_ID_PORUKE)
 )
 go
 
@@ -515,12 +494,19 @@ go
 /* Table: STAVKA_KLIRINGA                                       */
 /*==============================================================*/
 create table STAVKA_KLIRINGA (
-   ID_NALOGA            varchar(50)          not null,
+   SK_ID_STAVKE         varchar(50)          not null,
    BAR_RACUN            varchar(18)          not null,
    DSR_IZVOD            numeric(3)           not null,
    ASI_BROJSTAVKE       numeric(8)           not null,
-   ID_PORUKE            varchar(50)          not null,
-   constraint PK_STAVKA_KLIRINGA primary key nonclustered (ID_NALOGA)
+   CLR_ID_KLIRINGA      varchar(50)          not null,
+   CLR_SWIFT_BANKE_DUZNIKA char(8)              not null,
+   CLR_RACUN_BANKE_DUZNIKA varchar(18)          not null,
+   CLR_SWIFT_BANKE_POVERIOCA char(8)              not null,
+   CLR_RACUN_BANKE_POVERIOCA varchar(18)          not null,
+   CLR_UKUPAN_IZNOS     decimal(15,2)        not null,
+   CLR_SIFRA_VALUTE     char(3)              not null,
+   CLR_DATUM_VALUTE     datetime             not null,
+   constraint PK_STAVKA_KLIRINGA primary key nonclustered (SK_ID_STAVKE)
 )
 go
 
@@ -562,12 +548,12 @@ go
 /* Table: ZAPOSLENI                                             */
 /*==============================================================*/
 create table ZAPOSLENI (
-   IME_ZAPOSLENI        varchar(100)         null,
-   PREZIME_ZAPOSLENI    varchar(100)         null,
-   KORSNICKO_IME_ZAPOSLENI varchar(100)         not null,
+   ZAP_IME              varchar(100)         null,
+   ZAP_PREZIME          varchar(100)         null,
+   ZAP_KORISNICKO_IME   varchar(100)         not null,
    B_PIB                char(10)             not null,
-   LOZINKA_ZAPOSLENI    varchar(100)         null,
-   constraint PK_ZAPOSLENI primary key nonclustered (KORSNICKO_IME_ZAPOSLENI)
+   ZAP_LOZINKA          varchar(100)         not null,
+   constraint PK_ZAPOSLENI primary key nonclustered (ZAP_KORISNICKO_IME)
 )
 go
 
@@ -579,16 +565,6 @@ go
 alter table ANALITIKA_IZVODA
    add constraint FK_ANALITIK_MESTO_PRI_NASELJEN foreign key (NM_SIFRA)
       references NASELJENO_MESTO (NM_SIFRA)
-go
-
-alter table ANALITIKA_IZVODA
-   add constraint FK_ANALITIK_RTGS_PLAC_RTGS foreign key (ID_PORUKE)
-      references RTGS (ID_PORUKE)
-go
-
-alter table ANALITIKA_IZVODA
-   add constraint FK_ANALITIK_STAVKA_U__STAVKA_K foreign key (ID_NALOGA)
-      references STAVKA_KLIRINGA (ID_NALOGA)
 go
 
 alter table ANALITIKA_IZVODA
@@ -662,13 +638,13 @@ alter table RTGS
 go
 
 alter table STAVKA_KLIRINGA
-   add constraint FK_STAVKA_K_STAVKAUKL_KLIRING foreign key (ID_PORUKE)
-      references KLIRING (ID_PORUKE)
+   add constraint FK_STAVKA_K_STAVKA_KL_ANALITIK foreign key (BAR_RACUN, DSR_IZVOD, ASI_BROJSTAVKE)
+      references ANALITIKA_IZVODA (BAR_RACUN, DSR_IZVOD, ASI_BROJSTAVKE)
 go
 
 alter table STAVKA_KLIRINGA
-   add constraint FK_STAVKA_K_STAVKA_U__ANALITIK foreign key (BAR_RACUN, DSR_IZVOD, ASI_BROJSTAVKE)
-      references ANALITIKA_IZVODA (BAR_RACUN, DSR_IZVOD, ASI_BROJSTAVKE)
+   add constraint FK_STAVKA_K_STAVKA_U__KLIRING foreign key (CLR_ID_KLIRINGA)
+      references KLIRING (CLR_ID_KLIRINGA)
 go
 
 alter table UKIDANJE
