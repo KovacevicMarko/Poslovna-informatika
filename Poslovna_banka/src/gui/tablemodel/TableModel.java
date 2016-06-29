@@ -135,7 +135,7 @@ public class TableModel extends DefaultTableModel
 	
 	private String checkDateField(String fieldValue)
 	{
-		if(fieldValue.contains("-") && fieldValue.contains(" "))
+		if(fieldValue != null && fieldValue.contains("-") && fieldValue.contains(" "))
 		{
 			String retVal = fieldValue.split(" ")[0];
 			retVal = retVal.replace("-", "/");

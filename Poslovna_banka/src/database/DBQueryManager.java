@@ -27,7 +27,7 @@ import xml.XmlManager;
 
 public class DBQueryManager {
 
-	public static void importNalog(NalogZaPlacanje nalog) {
+	public static void importNalog(NalogZaPlacanje nalog, boolean zaUkidanje) {
 
 		Connection conn = DBConnection.getDatabaseWrapper().getConnection();
 		
@@ -42,7 +42,7 @@ public class DBQueryManager {
 		
 		try {
 
-			uplataStmt = conn.prepareCall("{call Uplata (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+			uplataStmt = conn.prepareCall("{call Uplata (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			uplataStmt.setString(1, nalog.getDuznik());
 			uplataStmt.setString(2,nalog.getSvrhaPlacanja() );
 			uplataStmt.setString(3,nalog.getPrimalac() );
@@ -59,10 +59,11 @@ public class DBQueryManager {
 			uplataStmt.setBigDecimal(14,nalog.getIznos());
 			uplataStmt.setString(15, nalog.getOznakaValute());
 			uplataStmt.setBoolean(16, nalog.isHitno());
-			uplataStmt.registerOutParameter(17, java.sql.Types.INTEGER);
+			uplataStmt.setBoolean(17, zaUkidanje);
+			uplataStmt.registerOutParameter(18, java.sql.Types.INTEGER);
 			int res = uplataStmt.executeUpdate();
 			System.out.println(res);
-			int tipgreske = uplataStmt.getInt(17);
+			int tipgreske = uplataStmt.getInt(18);
 			uplataStmt.close();
 			conn.commit();
 			System.out.println(res);

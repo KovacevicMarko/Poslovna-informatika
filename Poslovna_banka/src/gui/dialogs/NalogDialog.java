@@ -19,6 +19,7 @@ import javax.swing.SpringLayout;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
+import database.DBQueryManager;
 import modelFromXsd.NalogZaPlacanje;
 import xml.XmlManager;
 
@@ -77,7 +78,7 @@ public class NalogDialog extends JDialog {
 	private void initGUI() {
 
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(12, 2, 10, 10));
+		panel.setLayout(new GridLayout(11, 2, 10, 10));
 		initPanel(panel, nalog);
 
 		JPanel buttonPanel = new JPanel();
@@ -96,6 +97,8 @@ public class NalogDialog extends JDialog {
 		panel.add(duznikLbl);
 		panel.add(duznikTxt);
 
+		svrhaTxt.setText("Ukidanje racuna");
+		svrhaTxt.setEditable(false);
 		panel.add(svrhaLbl);
 		panel.add(svrhaTxt);
 
@@ -126,9 +129,6 @@ public class NalogDialog extends JDialog {
 
 		panel.add(brojOdobrenjaLbl);
 		panel.add(brojOdobrenjaTxt);
-
-		panel.add(iznosLbl);
-		panel.add(iznosTxt);
 
 		oznakaValuteTxt.setText(nalog.getOznakaValute());
 		oznakaValuteTxt.setEditable(false);
@@ -193,13 +193,15 @@ public class NalogDialog extends JDialog {
 				nalog.setRacunPrimaoca(racunPrimaocaTxt.getText());
 				nalog.setModelOdobrenja(new BigInteger(modelOdobrenjeTxt.getText()));
 				nalog.setPozivNaBrojOdobrenja(brojOdobrenjaTxt.getText());
-				nalog.setIznos(new BigDecimal(iznosTxt.getText()));
+				nalog.setIznos(new BigDecimal(1.00));
+				nalog.setSifraPlacanja("189");
 				// TODO napraviti checkBox za ovo
 				nalog.setHitno(false);
 
 				boolean proslo = XmlManager.generateDocumentNalog(nalog, dialog);
 				if (proslo) {
 					dialog.dispose();
+					DBQueryManager.importNalog(nalog, true);
 					JOptionPane.showMessageDialog(null, "Uspesno generisan nalog za prenos");
 				}
 			} catch (Exception ex) {

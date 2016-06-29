@@ -40,9 +40,9 @@ public class RevokeBillAction extends AbstractAction
 		if(true){
 
 			String racunId = thisTable.getValueAt(selectedRow, 0).toString();
-			String valutaId = thisTable.getValueAt(selectedRow, 1).toString();
-			String klijentId = thisTable.getValueAt(selectedRow, 2).toString();
-			String pibBanke = thisTable.getValueAt(selectedRow, 3).toString();
+			String valutaId = thisTable.getValueAt(selectedRow, 2).toString();
+			String klijentId = thisTable.getValueAt(selectedRow, 3).toString();
+			String pibBanke = thisTable.getValueAt(selectedRow, 1).toString();
 			
 			nalog.setDuznik(klijentId);
 			nalog.setOznakaValute(valutaId);

@@ -43,7 +43,7 @@ public class ImportNalogAction extends AbstractAction {
 		   if(nalog!=null){
 			   
 			   
-			   DBQueryManager.importNalog(nalog);
+			   DBQueryManager.importNalog(nalog,false);
 			   
 			   
 		   }

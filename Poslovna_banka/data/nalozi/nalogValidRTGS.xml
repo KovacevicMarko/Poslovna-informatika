@@ -4,17 +4,17 @@
     <duznik>duznik0</duznik>
     <svrhaPlacanja>svrhaPlacanja0</svrhaPlacanja>
     <primalac>primalac0</primalac>
-    <datumPrijema>2016-05-08</datumPrijema>
+    <datumPrijema>2016-05-29</datumPrijema>
     <mestoPrijema>Novi Sad</mestoPrijema>
-    <datumValute>2016-05-08</datumValute>
+    <datumValute>2016-05-29</datumValute>
     <racunDuznika>123-123321-12</racunDuznika>
     <modelZaduzenja>97</modelZaduzenja>
     <pozivNaBrojZaduzenja>pozivNaBrojZaduzenja</pozivNaBrojZaduzenja>
-    <racunPrimaoca>111-11111-11</racunPrimaoca>
+    <racunPrimaoca>222-2222-22</racunPrimaoca>
     <modelOdobrenja>97</modelOdobrenja>
     <pozivNaBrojOdobrenja>pozivNaBrojOdobrenja</pozivNaBrojOdobrenja>
-    <iznos>300.00</iznos>
+    <iznos>500.00</iznos>
     <oznakaValute>RSD</oznakaValute>
     <sifraPlacanja>189</sifraPlacanja>
-    <hitno>false</hitno>
+    <hitno>true</hitno>
 </nalogZaPlacanje>
