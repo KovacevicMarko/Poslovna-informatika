@@ -22,6 +22,7 @@ import actions.main.form.GenericDialogActions;
 import exceptionHandler.SqlExceptionHandler;
 import gui.tablemodel.Table;
 import modelFromXsd.IzvodStanja;
+import modelFromXsd.MT103;
 import modelFromXsd.NalogZaPlacanje;
 import xml.XmlManager;
 
@@ -42,7 +43,7 @@ public class DBQueryManager {
 		
 		try {
 
-			uplataStmt = conn.prepareCall("{call Uplata (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+			uplataStmt = conn.prepareCall("{call Uplata (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			uplataStmt.setString(1, nalog.getDuznik());
 			uplataStmt.setString(2,nalog.getSvrhaPlacanja() );
 			uplataStmt.setString(3,nalog.getPrimalac() );
@@ -61,12 +62,21 @@ public class DBQueryManager {
 			uplataStmt.setBoolean(16, nalog.isHitno());
 			uplataStmt.setBoolean(17, zaUkidanje);
 			uplataStmt.registerOutParameter(18, java.sql.Types.INTEGER);
+			uplataStmt.registerOutParameter(19, java.sql.Types.VARCHAR);
 			int res = uplataStmt.executeUpdate();
 			System.out.println(res);
 			int tipgreske = uplataStmt.getInt(18);
+			String IdPorukeRTGS = uplataStmt.getString(19);
+			
 			uplataStmt.close();
 			conn.commit();
 			System.out.println(res);
+			
+			if(!IdPorukeRTGS.equals("")){
+				generateAndExportMT103(IdPorukeRTGS);
+			}
+			
+			
 
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -113,9 +123,90 @@ public class DBQueryManager {
 		return query.toString();
 	}
 	
+	private static void generateAndExportMT103(String IdPorukeRTGS){
+		MT103 mt103 = new MT103();
+		AnalitikaPkDto analitikaPk = populateMT103FromRTGS(IdPorukeRTGS, mt103);
+		populateMT103FromAnalitika(analitikaPk,mt103);
+		XmlManager.generateDocumentMT103(mt103);
+	}
+	
+	private static AnalitikaPkDto populateMT103FromRTGS(String idPorukeRTGS,MT103 mt103){
+		
+		AnalitikaPkDto pk = new AnalitikaPkDto();
+		String query = "SELECT * FROM RTGS where ID_PORUKE = '"+idPorukeRTGS+"'";
+		Connection conn = DBConnection.getDatabaseWrapper().getConnection();
+		Statement stmt = null;
+		try{
+			stmt = conn.createStatement();
+			ResultSet rst = stmt.executeQuery(query);
+			
+			while(rst.next()){
+				mt103.setIdPoruke(rst.getString(0));
+				pk.setBrojRacuna(rst.getString(1));
+				pk.setBrojIzvoda(rst.getBigDecimal(2));
+				pk.setBrojStavke(rst.getBigDecimal(3));
+				mt103.setSwiftKodBankeDuznika(rst.getString(4));
+				mt103.setRacunBankeDuznika(rst.getString(5));
+				mt103.setSwiftKodBankePrimaoca(rst.getString(6));
+				mt103.setRacunBankePoverioca(rst.getString(7));
+			}
+			
+			rst.close();
+			stmt.close();
+			
+			return pk;
+			
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		finally{
+			return pk;
+		}
+	}
+	
+	private static void populateMT103FromAnalitika(AnalitikaPkDto pk,MT103 mt103){
+		
+		String query = "SELECT * FROM ANALITIKA_IZVODA WHERE BAR_RACUN = '"+pk.getBrojRacuna()+
+				"' AND DSR_IZVOD = '"+pk.getBrojIzvoda()+"' AND ASI_BROJSTAVKE = '"+
+					pk.getBrojStavke()+"'";
+		
+		Connection conn = DBConnection.getDatabaseWrapper().getConnection();
+		Statement stmt = null;
+		try{
+			stmt = conn.createStatement();
+			ResultSet rst = stmt.executeQuery(query);
+			
+			while(rst.next()){
+				mt103.setDuznik(rst.getString("ASI_DUZNIK"));
+				mt103.setSvrhaPlacanja(rst.getString("ASI_SVRHA"));
+				mt103.setPrimalac(rst.getString("ASI_POVERILAC"));
+				mt103.setDatumPrijema(createXMLdate(new Date()));
+				mt103.setDatumValute(createXMLdate(new Date()));
+				mt103.setRacunDuznika(rst.getString("ASI_RACDUZ"));
+				mt103.setRacunPrimaoca(rst.getString("ASI_RACPOV"));
+				mt103.setPozivNaBrojZaduzenja(rst.getString("ASI_PBZAD"));
+				mt103.setPozivNaBrojOdobrenja(rst.getString("ASI_PBODO"));
+				mt103.setModelZaduzenja(rst.getBigDecimal("ASI_MODZAD").toBigInteger());
+				mt103.setModelOdobrenja(rst.getBigDecimal("ASI_MODODOB").toBigInteger());
+				mt103.setSifraPlacanja(rst.getString("VPL_OZNAKA"));
+				mt103.setOznakaValute(rst.getString("VA_IFRA"));
+				mt103.setIznos(rst.getBigDecimal("ASI_IZNOS"));
+			}
+			
+			rst.close();
+			stmt.close();
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
 	public static void revokeBill(Table table){
 		
 		int selectedRow = table.getSelectedRow();
+		
 		
 	}
 	
