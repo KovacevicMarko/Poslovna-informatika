@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <nalogZaPlacanje>
-    <duznik>3         </duznik>
-    <svrhaPlacanja>askdjl</svrhaPlacanja>
-    <primalac>asdklj</primalac>
+    <duznik>2         </duznik>
+    <svrhaPlacanja>Ukidanje racuna</svrhaPlacanja>
+    <primalac>asdf</primalac>
     <datumPrijema>2016-06-29+02:00</datumPrijema>
     <mestoPrijema>Novi Sad</mestoPrijema>
     <datumValute>2016-06-29+02:00</datumValute>
-    <racunDuznika>3333333</racunDuznika>
+    <racunDuznika>2222222</racunDuznika>
     <modelZaduzenja>97</modelZaduzenja>
     <pozivNaBrojZaduzenja>12345</pozivNaBrojZaduzenja>
-    <racunPrimaoca>1234567</racunPrimaoca>
+    <racunPrimaoca>1111111</racunPrimaoca>
     <modelOdobrenja>97</modelOdobrenja>
     <pozivNaBrojOdobrenja>12345</pozivNaBrojOdobrenja>
-    <iznos>500.00</iznos>
+    <iznos>1</iznos>
     <oznakaValute>RSD</oznakaValute>
     <sifraPlacanja>189</sifraPlacanja>
     <hitno>false</hitno>

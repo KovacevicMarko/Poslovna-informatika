@@ -53,7 +53,7 @@ public class TableModel extends DefaultTableModel
 		else if(tableName.equals("ANALITIKA_IZVODA"))
 		{
 			this.query = "SELECT * FROM " + AnalyticsTableName 
-					+ " WHERE BAR_RACUN = (SELECT RACUNI.BAR_RACUN FROM RACUNI WHERE RACUNI.B_PIB = '" 
+					+ " WHERE BAR_RACUN in (SELECT RACUNI.BAR_RACUN FROM RACUNI WHERE RACUNI.B_PIB = '" 
 					+ MainFrame.getInstance().getPibBanke() + "')"; 
 		}
 		else

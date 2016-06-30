@@ -94,6 +94,7 @@ public class DBQueryManager {
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, SqlExceptionHandler.getHandledMessage("ANALITIKA_IZVODA", e1.getMessage()));
 		}
 		
 		finally {
@@ -280,6 +281,29 @@ public class DBQueryManager {
 		}
 		catch(SQLException e){
 			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	public static void callKliring(){
+		CallableStatement stmt = null;
+		try {
+			stmt = DBConnection.getDatabaseWrapper().getConnection().prepareCall("{ call KliringProcedura}");
+			stmt.executeUpdate();			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				stmt.close();
+				DBConnection.getDatabaseWrapper().getConnection().commit();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 	}
 	

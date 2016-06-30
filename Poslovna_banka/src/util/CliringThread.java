@@ -8,7 +8,7 @@ public class CliringThread extends Thread
 {
 	private CliringAction cliringAction;
 	
-	private String[] timeToSendCliring = new String[]{"21:24", "22:00"};
+	private String[] timeToSendCliring = new String[]{"23:40", "22:00"};
 	
 	public CliringThread()
 	{
@@ -23,7 +23,7 @@ public class CliringThread extends Thread
 			
 			if(CheckDate())
 			{
-				cliringAction.ShohMessage();
+				cliringAction.executeClearing();
 				try 
 				{
 					Thread.sleep(60000);
