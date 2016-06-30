@@ -15,6 +15,7 @@ import javax.xml.validation.SchemaFactory;
 import org.xml.sax.SAXException;
 
 import modelFromXsd.IzvodStanja;
+import modelFromXsd.MT102;
 import modelFromXsd.MT103;
 import modelFromXsd.NalogZaPlacanje;
 
@@ -36,10 +37,10 @@ public class XmlManager {
 			
 		} catch (JAXBException e) {
 			proslo = false;
-			JOptionPane.showMessageDialog(null, "Nije prosla validacija xml seme");
+			JOptionPane.showMessageDialog(null, "Neki od podataka nije u dobrom formatu. Proverite!");
 		} catch (SAXException e) {
 			proslo = false;
-			JOptionPane.showMessageDialog(null, "Nije prosla validacija xml seme");
+			JOptionPane.showMessageDialog(null, "Neki od podataka nije u dobrom formatu. Proverite!");
 		}
 		
 		return proslo;
@@ -84,36 +85,62 @@ public class XmlManager {
 			
 		} catch (JAXBException e) {
 			proslo = false;
-			JOptionPane.showMessageDialog(null, "Nije prosla validacija xml seme");
+			JOptionPane.showMessageDialog(null, "Neki od podataka nije u dobrom formatu. Proverite!");
 		} catch (SAXException e) {
 			proslo = false;
-			JOptionPane.showMessageDialog(null, "Nije prosla validacija xml seme");
+			JOptionPane.showMessageDialog(null, "Neki od podataka nije u dobrom formatu. Proverite!");
 		}
 		
 		return proslo;
 
 	}
 	
-public static boolean generateDocumentMT103(MT103 mt103) {
+	public static boolean generateDocumentMT103(MT103 mt103) {
+			
+			boolean proslo = true;
+			
+			try {
+				
+				JAXBContext context = JAXBContext.newInstance(MT103.class);
+				Marshaller m = context.createMarshaller();
+				m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+				SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+				Schema schema = schemaFactory.newSchema(new File("./data/MT103.xsd"));
+				m.setSchema(schema);
+				m.marshal(mt103, new File("./data/MT103/"+mt103.getIdPoruke()+".xml"));
+				
+			} catch (JAXBException e) {
+				proslo = false;
+				JOptionPane.showMessageDialog(null, "Neki od podataka nije u dobrom formatu. Proverite!");
+			} catch (SAXException e) {
+				proslo = false;
+				JOptionPane.showMessageDialog(null, "Neki od podataka nije u dobrom formatu. Proverite!");
+			}
+			
+			return proslo;
+	
+		}
+	
+	public static boolean generateDocumentMT102(MT102 mt102) {
 		
 		boolean proslo = true;
 		
 		try {
 			
-			JAXBContext context = JAXBContext.newInstance(MT103.class);
+			JAXBContext context = JAXBContext.newInstance(MT102.class);
 			Marshaller m = context.createMarshaller();
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			Schema schema = schemaFactory.newSchema(new File("./data/MT103.xsd"));
+			Schema schema = schemaFactory.newSchema(new File("./data/MT102.xsd"));
 			m.setSchema(schema);
-			m.marshal(mt103, new File("./data/MT103/"+mt103.getIdPoruke()+".xml"));
+			m.marshal(mt102, new File("./data/MT102/"+mt102.getZaglavljeKliringa().getIdKliringa()+".xml"));
 			
 		} catch (JAXBException e) {
 			proslo = false;
-			JOptionPane.showMessageDialog(null, "Nije prosla validacija xml seme");
+			JOptionPane.showMessageDialog(null, "Neki od podataka nije u dobrom formatu. Proverite!");
 		} catch (SAXException e) {
 			proslo = false;
-			JOptionPane.showMessageDialog(null, "Nije prosla validacija xml seme");
+			JOptionPane.showMessageDialog(null, "Neki od podataka nije u dobrom formatu. Proverite!");
 		}
 		
 		return proslo;

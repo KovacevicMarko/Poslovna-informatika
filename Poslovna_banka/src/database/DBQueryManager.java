@@ -22,9 +22,11 @@ import actions.main.form.GenericDialogActions;
 import exceptionHandler.SqlExceptionHandler;
 import gui.tablemodel.Table;
 import modelFromXsd.IzvodStanja;
+import modelFromXsd.MT102;
 import modelFromXsd.MT103;
 import modelFromXsd.NalogZaPlacanje;
 import modelFromXsd.StavkaIzvoda;
+import modelFromXsd.StavkaKliringa;
 import xml.XmlManager;
 
 public class DBQueryManager {
@@ -32,10 +34,6 @@ public class DBQueryManager {
 	public static void importNalog(NalogZaPlacanje nalog, boolean zaUkidanje) {
 
 		Connection conn = DBConnection.getDatabaseWrapper().getConnection();
-		
-		
-		String query = createQueryForImportNalog();
-		//PreparedStatement uplataStmt = null;
 		CallableStatement uplataStmt = null;
 		
 		GenericDialogActions action = new GenericDialogActions(null);
@@ -44,7 +42,7 @@ public class DBQueryManager {
 		
 		try {
 
-			uplataStmt = conn.prepareCall("{call Uplata (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+			uplataStmt = conn.prepareCall("{call Uplata (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			uplataStmt.setString(1, nalog.getDuznik());
 			uplataStmt.setString(2,nalog.getSvrhaPlacanja() );
 			uplataStmt.setString(3,nalog.getPrimalac() );
@@ -64,10 +62,12 @@ public class DBQueryManager {
 			uplataStmt.setBoolean(17, zaUkidanje);
 			uplataStmt.registerOutParameter(18, java.sql.Types.INTEGER);
 			uplataStmt.registerOutParameter(19, java.sql.Types.VARCHAR);
+			uplataStmt.registerOutParameter(20, java.sql.Types.VARCHAR);
 			int res = uplataStmt.executeUpdate();
 			System.out.println(res);
 			int tipgreske = uplataStmt.getInt(18);
 			String IdPorukeRTGS = uplataStmt.getString(19);
+			String idKliringa = uplataStmt.getString(20);
 			
 			uplataStmt.close();
 			conn.commit();
@@ -86,6 +86,9 @@ public class DBQueryManager {
 				generateAndExportMT103(IdPorukeRTGS);
 			}
 			
+			if(!idKliringa.equals("")){
+				generateAndExportMT102(idKliringa);
+			}
 			
 
 		} catch (Exception e1) {
@@ -106,32 +109,101 @@ public class DBQueryManager {
 		}
 		
 	}
-
-	private static String createQueryForImportNalog() {
-		
-		StringBuilder query = new StringBuilder();
-
-		query.append("EXECUTE Uplata ");
-		query.append("@duznik = ?,");
-		query.append("@svrhaPlacanja = ?,");
-		query.append("@primalac = ?,");
-		query.append("@datumPrijema = ?,");
-		query.append("@mestoPrijema = ?,");
-		query.append("@datumValute = ?,");
-		query.append("@racunDuznika = ?,");
-		query.append("@modelZaduzenja = ?,");
-		query.append("@pozivNaBrojZaduzenja = ?,");
-		query.append("@racunPrimaoca = ?,");
-		query.append("@modelOdobrenja = ?,");
-		query.append("@pozivNaBrojOdobrenja = ?,");
-		query.append("@sifraPlacanja = ?,");
-		query.append("@iznos = ?,");
-		query.append("@oznakaValute = ?,");
-		query.append("@hitno = ?,");
-		query.append("@tipGreske = ? output,");
-		
-		return query.toString();
+	
+	private static void generateAndExportMT102(String idKliringa){
+		MT102 mt102 = new MT102();
+		mt102.getZaglavljeKliringa().setIdKliringa(idKliringa);
+		mt102.getZaglavljeKliringa().setDatumKliringa(createXMLdate(new Date()));
+		populateMT102FromStavkaKliringa(idKliringa,mt102);
+		XmlManager.generateDocumentMT102(mt102);
 	}
+	
+	private static void populateMT102FromStavkaKliringa(String idKliringa,MT102 mt102)
+	{
+		List<AnalitikaPkDto> pkList = new ArrayList< AnalitikaPkDto>();
+		String query = "SELECT * FROM STAVKA_KLIRINGA where CLR_ID_KLIRINGA = '"+idKliringa+"'";
+		Connection conn = DBConnection.getDatabaseWrapper().getConnection();
+		Statement stmt = null;
+		try{
+			stmt = conn.createStatement();
+			ResultSet rst = stmt.executeQuery(query);
+			
+			while(rst.next()){
+				AnalitikaPkDto pk = new AnalitikaPkDto();
+				StavkaKliringa stavka = new StavkaKliringa();
+				stavka.setIdStavke(rst.getString(1));
+				pk.setBrojRacuna(rst.getString(2));
+				pk.setBrojIzvoda(rst.getBigDecimal(3));
+				pk.setBrojStavke(rst.getBigDecimal(4));
+				stavka.setSwiftKodBankeDuznika(rst.getString(6));
+				stavka.setRacunBankeDuznika(rst.getString(7));
+				stavka.setSwiftKodBankePrimaoca(rst.getString(8));
+				stavka.setRacunBankePoverioca(rst.getString(9));
+				
+				mt102.getStavkeKliringa().add(stavka);
+				pkList.add(pk);
+			}
+			
+			rst.close();
+			stmt.close();
+			
+			int brojStavki = pkList.size();
+			for(int i = 0; i<brojStavki; i++){
+				populateMT102FromAnalitika(pkList.get(i),i,mt102);
+			}
+			
+			//return pk;
+			
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
+	private static void populateMT102FromAnalitika(AnalitikaPkDto pk, int index, MT102 mt102){
+		
+		String query = "SELECT * FROM ANALITIKA_IZVODA WHERE BAR_RACUN = '"+pk.getBrojRacuna()+
+				"' AND DSR_IZVOD = '"+pk.getBrojIzvoda()+"' AND ASI_BROJSTAVKE = '"+
+					pk.getBrojStavke()+"'";
+		
+		Connection conn = DBConnection.getDatabaseWrapper().getConnection();
+		Statement stmt = null;
+		try{
+			stmt = conn.createStatement();
+			ResultSet rst = stmt.executeQuery(query);
+			
+			while(rst.next()){
+				mt102.getStavkeKliringa().get(index).setDuznik(rst.getString("ASI_DUZNIK"));
+				mt102.getStavkeKliringa().get(index).setSvrhaPlacanja(rst.getString("ASI_SVRHA"));
+				mt102.getStavkeKliringa().get(index).setPrimalac(rst.getString("ASI_POVERILAC"));
+				mt102.getStavkeKliringa().get(index).setDatumPrijema(createXMLdate(new Date()));
+				mt102.getStavkeKliringa().get(index).setDatumValute(createXMLdate(new Date()));
+				mt102.getStavkeKliringa().get(index).setRacunDuznika(rst.getString("ASI_RACDUZ"));
+				mt102.getStavkeKliringa().get(index).setRacunPrimaoca(rst.getString("ASI_RACPOV"));
+				mt102.getStavkeKliringa().get(index).setPozivNaBrojZaduzenja(rst.getString("ASI_PBZAD"));
+				mt102.getStavkeKliringa().get(index).setPozivNaBrojOdobrenja(rst.getString("ASI_PBODO"));
+				mt102.getStavkeKliringa().get(index).setModelZaduzenja(rst.getBigDecimal("ASI_MODZAD").toBigInteger());
+				mt102.getStavkeKliringa().get(index).setModelOdobrenja(rst.getBigDecimal("ASI_MODODOB").toBigInteger());
+				mt102.getStavkeKliringa().get(index).setOznakaValute(rst.getString("VA_IFRA"));
+				mt102.getStavkeKliringa().get(index).setIznos(rst.getBigDecimal("ASI_IZNOS"));
+				
+				//Uvecaj ukupan iznos u zaglavlju
+				if(mt102.getZaglavljeKliringa().getUkupanIznos()==null){
+					mt102.getZaglavljeKliringa().setUkupanIznos(new BigDecimal(0.00));
+				}
+				
+				mt102.getZaglavljeKliringa().setUkupanIznos(mt102.getZaglavljeKliringa()
+						.getUkupanIznos().add(mt102.getStavkeKliringa().get(index).getIznos()));
+			}
+			
+			rst.close();
+			stmt.close();
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+	}
+	
 	
 	private static void generateAndExportMT103(String IdPorukeRTGS){
 		MT103 mt103 = new MT103();
@@ -209,15 +281,6 @@ public class DBQueryManager {
 		catch(SQLException e){
 			e.printStackTrace();
 		}
-	}
-	
-	
-	
-	public static void revokeBill(Table table){
-		
-		int selectedRow = table.getSelectedRow();
-		
-		
 	}
 	
 	public static void ExportIzvoda(String klijentId){
