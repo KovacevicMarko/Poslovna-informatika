@@ -40,7 +40,17 @@ public class ObjectFactory {
     	return new IzvodStanja();
     }
     
+    public StavkaIzvoda createStavkaIzvoda(){
+    	return new StavkaIzvoda();
+    }
     
+    public NalogZaPlacanje createNalogZaPlacanje(){
+    	return new NalogZaPlacanje();
+    }
+    
+    public MT103 createMT103(){
+    	return new MT103();
+    }
     /**
      * Create an instance of {@link MT102 }
      * 
